@@ -10,7 +10,7 @@
   <tr>
     <td>Karyenne Vuong</td>
     <td>40157011</td>
-    <td>karyennevu</td>
+    <td>[karyennevu](https://github.com/karyennevu)</td>
   </tr>
   
   <tr>

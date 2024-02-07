@@ -26,9 +26,9 @@
   </tr>
 
   <tr>
-    <td></td>
-    <td></td>
-    <td></td>
+    <td>William Nazarian</td>
+    <td>40213100</td>
+    <td>https://github.com/WilliamNazarian</td>
   </tr>
 
   <tr>

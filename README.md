@@ -85,7 +85,8 @@
 **6. Testing** <br> <br>
 **7. Short sprint #1 retrospective** <br> <br>
 **8. Release Plan (Sprint #2 planning)** <br> <br>
-**9. UI prototypes for Sprint #2 user stories** <br> <br>
+**9. UI prototypes for Sprint #2 user stories** <br>
+<a href="https://docs.google.com/document/d/1F6TDlHc062L3lyELrQC-HfE5Fhymkumo/edit">UI Prototypes for Sprint #2 User Stories</a> <br> <br>
 **10. Testing Plan for Sprint #2** <br>
 <a href="https://docs.google.com/document/d/1myRVIsLsitkuvCj1IxaO4D6uLwUdmwQ5xo2TXdCYDuk/edit"> Testing Plan </a> 
 

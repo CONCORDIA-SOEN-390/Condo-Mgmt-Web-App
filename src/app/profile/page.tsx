@@ -12,6 +12,7 @@ function page() {
                     <div className=" mt-5 w-32 h-32 bg-blue-500 rounded-full flex items-center justify-center">
                         <span className="text-white text-4xl font-bold">W</span>
                     </div>
+                    <p className='text-center font-semibold mt-2'>Individual</p>
                   </div>
                 </div>
               </div>
@@ -20,6 +21,7 @@ function page() {
                 <div className="text-xs mt-0 mb-2 text-slate-400 font-bold uppercase">
                   <i className="fas fa-map-marker-alt text-slate-400 opacity-75"></i>willnazarian@gmail.com
                 </div>
+                <p>514-222-9009</p>
               </div>
               <div className="mt-6 py-6 border-t border-slate-200 text-center">
                 <div className="flex flex-wrap justify-center">

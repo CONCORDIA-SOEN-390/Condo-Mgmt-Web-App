@@ -14,15 +14,15 @@
   </tr>
   
   <tr>
-    <td></td>
-    <td></td>
-    <td></td>
+    <td>Cristian Gasparesc</td>
+    <td>40209208</td>
+    <td>[Cristian](https://github.com/CritixGames)</td>
   </tr>
 
   <tr>
-    <td></td>
-    <td></td>
-    <td></td>
+    <td>Amirhossein Tavakkoly</td>
+    <td>40203604</td>
+    <td>[Amir] (https://github.com/amirhossein942)</td>
   </tr>
 
   <tr>
@@ -87,6 +87,7 @@
 **8. Release Plan (Sprint #2 planning)** <br> <br>
 **9. UI prototypes for Sprint #2 user stories** <br> <br>
 **10. Testing Plan for Sprint #2**
+<a href="https://docs.google.com/document/d/1myRVIsLsitkuvCj1IxaO4D6uLwUdmwQ5xo2TXdCYDuk/edit"> Testing Plan </a> <br> 
 
 
 

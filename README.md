@@ -32,9 +32,9 @@
   </tr>
 
   <tr>
-    <td></td>
-    <td></td>
-    <td></td>
+    <td>Vanisha Patel</td>
+    <td>40242554</td>
+    <td>[vani2525] (https://github.com/vani2525)</td>
   </tr>
 
   <tr>

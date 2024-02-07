@@ -76,7 +76,7 @@
 <h2>Sprint 1</h2>
 
 **1. Product vision statement** <br> <br>
-**2. Requirements and User Stories Backlog (USB)** <br>  <a href="[https://docs.google.com/document/d/1kVzTHhXFTLIS2IXmU4jpsxdrNCQ-xKOn/edit?usp=sharing&ouid=117308092083738229587&rtpof=true&sd=true](https://docs.google.com/document/d/1nUSjszSEiqj2-frMTft6wzstjd057xVLYd28h7r9Xh0/edit)"> Implementation User Stories</a> <br> <br> <br>
+**2. Requirements and User Stories Backlog (USB)** <br>  <a href="https://docs.google.com/document/d/1kVzTHhXFTLIS2IXmU4jpsxdrNCQ-xKOn/edit?usp=sharing&ouid=117308092083738229587&rtpof=true&sd=true](https://docs.google.com/document/d/1nUSjszSEiqj2-frMTft6wzstjd057xVLYd28h7r9Xh0/edit)"> Implementation User Stories</a> <br> <br> <br>
 **3. Software Architecture Document (SAD)** <br> <br>
 **4. Risk Assesment and Management Plan** <br>
  <a href="https://docs.google.com/document/d/1kVzTHhXFTLIS2IXmU4jpsxdrNCQ-xKOn/edit?usp=sharing&ouid=117308092083738229587&rtpof=true&sd=true">Risk Assesment and Management Plan </a> <br>

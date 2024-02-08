@@ -84,9 +84,9 @@
 **5. Running prototype** <br> <br>
 **6. Testing** <br> <br>
 **7. Short sprint #1 retrospective** <br> <br>
-<a href="https://docs.google.com/document/d/1qvAvFqHRSajobD32D6GlsT5lPsO1yR8X/edit"></a> <br> <br>
+<a href="https://docs.google.com/document/d/1qvAvFqHRSajobD32D6GlsT5lPsO1yR8X/edit">Sprint #1 Retrospective</a> <br> <br>
 **8. Release Plan (Sprint #2 planning)** <br> <br>
-<a href="https://docs.google.com/document/d/1nwkFhbhMXYxjpyTaXZ21rp9LClPL8FUY/edit"></a> <br> <br>
+<a href="https://docs.google.com/document/d/1nwkFhbhMXYxjpyTaXZ21rp9LClPL8FUY/edit">Sprint #2 Release Plan</a> <br> <br>
 **9. UI prototypes for Sprint #2 user stories** <br>
 <a href="https://docs.google.com/document/d/1F6TDlHc062L3lyELrQC-HfE5Fhymkumo/edit">UI Prototypes for Sprint #2 User Stories</a> <br> <br>
 **10. Testing Plan for Sprint #2** <br>

@@ -38,9 +38,9 @@
   </tr>
 
   <tr>
-    <td></td>
-    <td></td>
-    <td></td>
+    <td>Racha Kara</td>
+    <td>40210865</td>
+    <td>[r-kara] (https://github.com/r-kara)</td>
   </tr>
 
 

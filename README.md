@@ -45,9 +45,9 @@
 
 
   <tr>
-    <td></td>
-    <td></td>
-    <td></td>
+    <td>Ryan Guzelian</td>
+    <td>40211846</td>
+    <td>[RyanGuzelian] (https://github.com/ryanguzelian)</td>
   </tr>
 
 
@@ -77,7 +77,7 @@
 
 **1. Product vision statement** <br> <br>
 **2. Requirements and User Stories Backlog (USB)** <br>  <a href="https://docs.google.com/document/d/1nUSjszSEiqj2-frMTft6wzstjd057xVLYd28h7r9Xh0/edit"> Implementation User Stories</a><br> <br>
-**3. Software Architecture Document (SAD)** <br> <br>
+**3. Software Architecture Document (SAD)** <br><a href="https://docs.google.com/document/d/1eQVRxt3JX2LYbJ1-B7WSg-BhIpafmLLU/edit"> Software Architecture Document </a> <br>
 **4. Risk Assesment and Management Plan** <br>
  <a href="https://docs.google.com/document/d/1kVzTHhXFTLIS2IXmU4jpsxdrNCQ-xKOn/edit?usp=sharing&ouid=117308092083738229587&rtpof=true&sd=true">Risk Assesment and Management Plan </a> <br>
  <a href="https://docs.google.com/spreadsheets/d/1mI_D5lBJim7m-mxVObdMf_5LxiT-qM4l/edit?usp=sharing&ouid=117308092083738229587&rtpof=true&sd=true">Risk Analysis </a> <br> <br>

@@ -75,7 +75,10 @@
 
 <h2>Sprint 1</h2>
 
-**1. Product vision statement** <br> <br>
+ <br> <a href="https://drive.google.com/drive/folders/1Vsr0mZFP2RmtuVDbYk3VzxJ2AIYcYo2o">Link to the Google Drive Repository</a> <br> <br>
+
+**1. Product vision statement** <br>
+<a href="https://docs.google.com/document/d/1tS8w4iYZ728Z95waX4_3n9eHt1DvkdJS/edit">Stakeholders and Users</a> <br> <br>
 **2. Requirements and User Stories Backlog (USB)** <br>  <a href="https://docs.google.com/document/d/1nUSjszSEiqj2-frMTft6wzstjd057xVLYd28h7r9Xh0/edit"> Implementation User Stories</a><br> <br>
 **3. Software Architecture Document (SAD)** <br><a href="https://docs.google.com/document/d/1eQVRxt3JX2LYbJ1-B7WSg-BhIpafmLLU/edit"> Software Architecture Document </a> <br>
 **4. Risk Assesment and Management Plan** <br>

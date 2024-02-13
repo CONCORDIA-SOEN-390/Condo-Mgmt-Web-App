@@ -52,9 +52,9 @@
 
 
   <tr>
-    <td></td>
-    <td></td>
-    <td></td>
+    <td>Fadi Nimer</td>
+    <td>40183225</td>
+    <td>[Lukateki] (https://github.com/Lukateki)</td>
   </tr>
 
 

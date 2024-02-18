@@ -1,0 +1,53 @@
+
+.Navbar {
+    display: flex;
+    background-color: #90c5fd00;
+    top: 0;
+    width: 100%;
+    overflow: hidden;
+    position: fixed;
+    margin-top: 5px;
+
+    &.solid-nav {
+        background: linear-gradient(#90C4FD,#abd1fd);
+        transition: background-color 0.2s linear;
+      }
+
+}
+
+.navbar-logo {
+    color: #332d2d;
+    font-size: 1.7rem;
+    font-weight: 800;
+    padding-top: 1rem;
+    text-align: center;
+    margin-left: 30px;
+
+}
+
+.navbar-content {
+    text-align: center;
+    margin: auto;
+    margin-left: 360px;
+    
+    ul {
+        display: flex;
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+        top: 0;
+        width: 100%;
+      }
+
+      li a {
+        display: block;
+        color: #332d2d;
+        text-align: center;
+        padding: 20px 40px;
+        font-weight: 530;
+        font-size: 1.4rem;
+      }
+      a:hover {
+        font-weight: 700;
+      }
+}

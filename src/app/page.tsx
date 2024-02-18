@@ -1,10 +1,12 @@
 import Image from "next/image";
 import "./styling/style.css";
+import NavBar from "./components/Navigation/NavBar";
 
 export default function Home() {
   return (
     
     <div className="container-hero">
+      <NavBar/>
       <div className="content-hero">
         <div className="hero-section-1">
           <h1>Condo Life Made Simple</h1>

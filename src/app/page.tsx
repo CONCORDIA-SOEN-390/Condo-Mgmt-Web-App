@@ -35,7 +35,7 @@ export default function Home() {
               </div>
 
               <div className="card">
-                <h5 className="card-title">Transparency</h5>
+                <h5 className="card-title">Variety of Choice</h5>
                 <p>
                 Lorem Ipsum is simply dummy text of the printing and typesetting industry. 
                   Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, 

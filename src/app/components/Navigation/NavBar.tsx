@@ -1,11 +1,8 @@
 import Link from "next/link";
 import React, { useState } from "react";
 import "./NavBar.css";
-import * as Sample from "./NavBar";
 
 const Navbar = () => {
-
-var Sample = require("./NavBar.js");
 
   return (
     <div className="Navbar">

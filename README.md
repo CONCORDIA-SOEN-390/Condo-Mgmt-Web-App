@@ -43,13 +43,11 @@
     <td>[r-kara] (https://github.com/r-kara)</td>
   </tr>
 
-
   <tr>
     <td>Ryan Guzelian</td>
     <td>40211846</td>
     <td>[RyanGuzelian] (https://github.com/ryanguzelian)</td>
   </tr>
-
 
   <tr>
     <td>Fadi Nimer</td>
@@ -57,6 +55,11 @@
     <td>[Lukateki] (https://github.com/Lukateki)</td>
   </tr>
 
+  <tr>
+    <td>Imane Madda</td>
+    <td>40208741</td>
+    <td>[imanemadda](https://github.com/imanemadda)</td>
+  </tr>
 
   <tr>
     <td></td>

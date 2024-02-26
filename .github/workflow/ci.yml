@@ -3,11 +3,9 @@ name: Continuous Integration
 on:
   push:
     branches: 
-      - main
       - CI_setup
   pull_request:
     branches: 
-      - main
       - CI_setup
 
 jobs:

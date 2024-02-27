@@ -7,6 +7,7 @@ import { IoSettingsSharp } from "react-icons/io5";
 import { IoIosHelpCircle } from "react-icons/io";
 import { FiLogOut } from "react-icons/fi";
 import { MdEditSquare } from "react-icons/md";
+import Link from 'next/link';
 
 function page() {
   return (
@@ -23,7 +24,7 @@ function page() {
             <FaChartColumn className='ml-10 mt-2 text-white text-3xl' />
             Finances
             <FaBuilding className='ml-10 mt-2 text-white text-3xl' />
-            Properties
+            <Link href={"properties"}>Properties</Link>
             <IoSettingsSharp className='ml-10 mt-16 text-white text-3xl' />
             Settings
             <IoIosHelpCircle className='ml-10 mt-2 text-white text-3xl' />

@@ -8,6 +8,7 @@ import { IoIosHelpCircle } from "react-icons/io";
 import { FiLogOut } from "react-icons/fi";
 import { MdEditSquare } from "react-icons/md";
 import { MdCancel } from "react-icons/md";
+import Link from 'next/link';
 
 function page() {
     return (
@@ -20,7 +21,7 @@ function page() {
                     <div className="text-center mt-2 text-white text-xl font-semibold">
                         John Smith
                         <MdDashboard className='ml-10 mt-20 text-white text-3xl' />
-                        Dashboard
+                        <Link href={"profile"}>Dashboard</Link>
                         <FaChartColumn className='ml-10 mt-2 text-white text-3xl' />
                         Finances
                         <FaBuilding className='ml-10 mt-2 text-blue-600 text-3xl' />

@@ -64,7 +64,7 @@
   <tr>
     <td>Daniel Bondar</td>
     <td>40213095</td>
-    <td>https://github.com/KiwamiMeansExtreme</td>
+    <td>[Daniel]https://github.com/KiwamiMeansExtreme</td>
   </tr>
 
   <tr>

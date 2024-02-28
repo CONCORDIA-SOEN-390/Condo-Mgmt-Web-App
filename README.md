@@ -62,9 +62,9 @@
   </tr>
 
   <tr>
-    <td></td>
-    <td></td>
-    <td></td>
+    <td>Daniel Bondar</td>
+    <td>40213095</td>
+    <td>https://github.com/KiwamiMeansExtreme</td>
   </tr>
 
   <tr>

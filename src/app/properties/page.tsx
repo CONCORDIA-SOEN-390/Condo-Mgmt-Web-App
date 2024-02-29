@@ -13,7 +13,7 @@ import { PiPlusSquareFill } from "react-icons/pi";
 import { MdCancel } from "react-icons/md";
 import Link from "next/link";
 
-function Page() {
+function page() {
   const [showAddPropertyForm, setshowAddPropertyFormStatus] = useState(false);
 
   const toggleForm = () => {
@@ -67,4 +67,4 @@ function Page() {
   );
 }
 
-export default Page;
+export default page;

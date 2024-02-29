@@ -136,7 +136,7 @@ input{
 
 }
 
-@media only screen and (max-width: 525px) {
+@media only screen and (max-width: 650px) {
     .row{
         height: 100vh;
         display: flex;

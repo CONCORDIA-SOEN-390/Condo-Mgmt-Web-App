@@ -52,9 +52,9 @@
 
 
   <tr>
-    <td></td>
-    <td></td>
-    <td></td>
+    <td>Imane Madda</td>
+    <td>40208741</td>
+    <td>[imanemadda] (https://github.com/imanemadda)</td>
   </tr>
 
 

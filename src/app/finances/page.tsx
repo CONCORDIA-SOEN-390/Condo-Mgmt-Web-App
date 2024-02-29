@@ -1,8 +1,6 @@
 "use client";
 import React, { useState } from "react";
 import "./finances.css";
-import { UserBio } from "@/components/ProfilePageComponents//ProfileInfo";
-import AddPropertyForm from "@/components/AddPropertyFormComponent/AddPropertyForm";
 import CondoFinanceInfoBox from "@/components/CondoFinanceComponents/CondoFinancenfoBox";
 import { MdDashboard } from "react-icons/md";
 import { FaBuilding } from "react-icons/fa6";
@@ -11,7 +9,7 @@ import { IoSettingsSharp } from "react-icons/io5";
 import { IoIosHelpCircle } from "react-icons/io";
 import { FiLogOut } from "react-icons/fi";
 import { MdEditSquare } from "react-icons/md";
-import { PiPlusSquareFill } from "react-icons/pi";
+import { GrDocumentText } from "react-icons/gr";
 import { MdCancel } from "react-icons/md";
 import Link from "next/link";
 

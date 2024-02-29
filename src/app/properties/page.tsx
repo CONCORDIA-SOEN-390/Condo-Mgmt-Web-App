@@ -10,6 +10,7 @@ import { IoIosHelpCircle } from "react-icons/io";
 import { FiLogOut } from "react-icons/fi";
 import { MdEditSquare } from "react-icons/md";
 import { PiPlusSquareFill } from "react-icons/pi";
+import { GrDocumentText } from "react-icons/gr";
 import { MdCancel } from "react-icons/md";
 import Link from "next/link";
 

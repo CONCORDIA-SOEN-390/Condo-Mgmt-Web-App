@@ -7,6 +7,8 @@ import { IoSettingsSharp } from "react-icons/io5";
 import { IoIosHelpCircle } from "react-icons/io";
 import { FiLogOut } from "react-icons/fi";
 import { MdEditSquare } from "react-icons/md";
+import { GrDocumentText } from "react-icons/gr";
+import UploadForm from "@/components/UploadFormComponent/UploadForm";
 import Link from "next/link";
 
 function page() {
@@ -77,7 +79,7 @@ function page() {
             <div>Condo 1</div>
             <div className="flex justify-end items-center">
               Some info on Condo 1
-            </div>
+            </div><UploadForm/> 
           </div>
         </div>
       </div>

@@ -1,0 +1,31 @@
+.financeMainContainer{
+    display: flex;
+    flex-direction: column;
+    margin: 2rem;
+}
+
+.CategoryNameContainer{
+    display: flex;
+    flex-direction: row;
+    background-color: #7DD3FC;
+    width: 100%;
+    color: white;
+    font-weight:bold;
+    height: 3.5rem;
+    justify-content: space-between;
+    padding: 1rem;
+    padding-left: 2rem;
+    padding-right: 2rem;
+}
+
+@media only screen and (max-width: 730px) {
+    .CategoryNameContainer{
+        display: none;
+    }
+
+    .financeMainContainer{
+        display: flex;
+        flex-direction: column;
+        margin-top: 0.5rem;
+    }
+}

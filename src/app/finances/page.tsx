@@ -1,7 +1,9 @@
 "use client";
 import React, { useState } from "react";
+import "./finances.css";
 import { UserBio } from "@/components/ProfilePageComponents//ProfileInfo";
 import AddPropertyForm from "@/components/AddPropertyFormComponent/AddPropertyForm";
+import CondoFinanceInfoBox from "@/components/CondoFinanceComponents/CondoFinancenfoBox";
 import { MdDashboard } from "react-icons/md";
 import { FaBuilding } from "react-icons/fa6";
 import { FaChartColumn } from "react-icons/fa6";
@@ -14,12 +16,6 @@ import { MdCancel } from "react-icons/md";
 import Link from "next/link";
 
 function page() {
-  const [showAddPropertyForm, setshowAddPropertyFormStatus] = useState(false);
-
-  const toggleForm = () => {
-    setshowAddPropertyFormStatus(!showAddPropertyForm);
-  };
-
   return (
     <div className="flex min-h-screen-nav items-center justify-center h-full bg-white">
       <div className="absolute left-0 bg-sky-300 min-h-screen w-48 rounded-r-lg">
@@ -34,11 +30,13 @@ function page() {
               Dashboard
             </Link>
             <Link href={"finances"}>
-              <FaChartColumn className="ml-10 mt-2 text-white text-3xl" />
-              Finances
+              <FaChartColumn className="ml-10 mt-2  text-blue-600 text-3xl" />
+              <span className="text-blue-600">Finances</span>
             </Link>
-            <FaBuilding className="ml-10 mt-2 text-blue-600 text-3xl" />
-            <span className="text-blue-600">Properties</span>
+            <Link href={"properties"}>
+              <FaBuilding className="ml-10 mt-2 text-white text-3xl" />
+              Properties
+            </Link>
             <IoSettingsSharp className="ml-10 mt-16 text-white text-3xl" />
             Settings
             <IoIosHelpCircle className="ml-10 mt-2 text-white text-3xl" />
@@ -50,20 +48,31 @@ function page() {
       </div>
       <div className="absolute w-5/6 right-6 top-5 bottom-5 bg-white shadow-lg rounded-xl">
         <div className="grid grid-cols-2 bg-sky-300 rounded-t-lg">
-          <div className="p-2 font-semibold text-white text-2xl">
-            Properties
-          </div>
+          <div className="p-2 font-semibold text-white text-2xl">Finances</div>
           <div className="p-2 flex justify-end items-center text-white text-3xl gap-5">
-            <PiPlusSquareFill onClick={toggleForm} />
             <MdEditSquare className="" />
             <MdCancel className="" />
           </div>
         </div>
-        {showAddPropertyForm && <AddPropertyForm />}
-        <div className="grid grid-cols-2 p-5 text-black text-xl">
-          <div>Condo 1</div>
-          <div className="flex justify-end items-center">
-            Some info on Condo 1
+
+        <div className="financeMainContainer">
+          <div className="CategoryNameContainer">
+            <h2>Condo Number</h2>
+            <h2>Total Fees(Monthly)</h2>
+            <h2>Remaining Balance</h2>
+          </div>
+
+          <div>
+            <CondoFinanceInfoBox
+              condoName="Condo 1"
+              monthlyFees={2000.0}
+              remainingBalance={1000.0}
+            />
+            <CondoFinanceInfoBox
+              condoName="Condo 2"
+              monthlyFees={4500.0}
+              remainingBalance={3000.0}
+            />
           </div>
         </div>
       </div>

@@ -2,7 +2,7 @@ CREATE TYPE account_type AS ENUM('company','reg_user');
 
 --User table
 CREATE TABLE users (
-    user_id INT PRIMARY KEY,
+    user_id SERIAL PRIMARY KEY,
     username VARCHAR(255) NOT NULL,
     password_ VARCHAR(255) NOT NULL,
     email VARCHAR(255) NOT NULL,
@@ -13,8 +13,8 @@ CREATE TABLE users (
 
 --Property Table
 CREATE TABLE IF NOT EXISTS property(
-	property_id INT,
-	user_id INT,
+	property_id SERIAL,
+	user_id INTEGER,
 	locker_owner VARCHAR(75),
 	occupant_information VARCHAR(200), 
 	condo_fee DECIMAL(6,2),
@@ -25,17 +25,18 @@ CREATE TABLE IF NOT EXISTS property(
 --File table
 CREATE TABLE File_
 (
-    file_id INT PRIMARY KEY,
+    file_id INT,
     file_data VARCHAR(255) NOT NULL, -- Assuming PDF files will be stored as binary data
-    property_id INT,
+    property_id INTEGER,
+	PRIMARY KEY (file_id, property_id),
     FOREIGN KEY (property_id) REFERENCES property(property_id)
 );
 
 --Unit table
 CREATE TABLE  IF NOT EXISTS unit(
 	unit_id INT,
-	property_id INT,
-	owner_id INT,
+	property_id INTEGER,
+	owner_id INTEGER,
 	availability BOOLEAN,
 	registration_info VARCHAR(200), 
 	condo_fee DECIMAL(6,2),
@@ -47,9 +48,8 @@ CREATE TABLE  IF NOT EXISTS unit(
 --locker table
 CREATE TABLE IF NOT EXISTS locker(
 	locker_id INT,
-	property_id INT,
-	locker_owner VARCHAR(75),
-	occupant_information VARCHAR(200), 
+	property_id INTEGER,
+	owner_id INTEGER,
 	condo_fee DECIMAL(6,2),
 	occupied BOOLEAN,
 	PRIMARY KEY(locker_id, property_id),

@@ -15,9 +15,7 @@ CREATE TABLE users (
 CREATE TABLE IF NOT EXISTS property(
 	property_id SERIAL,
 	user_id INTEGER,
-	locker_owner VARCHAR(75),
-	occupant_information VARCHAR(200), 
-	condo_fee DECIMAL(6,2),
+	property_name VARCHAR(10),
 	PRIMARY KEY(property_id),
 	FOREIGN KEY(user_id) references users(user_id) ON DELETE CASCADE
 );
@@ -37,8 +35,8 @@ CREATE TABLE  IF NOT EXISTS unit(
 	unit_id INT,
 	property_id INTEGER,
 	owner_id INTEGER,
-	availability BOOLEAN,
-	registration_info VARCHAR(200), 
+	occupied BOOLEAN,
+	registration_key VARCHAR(40), 
 	condo_fee DECIMAL(6,2),
 	PRIMARY KEY(unit_id, property_id),
 	FOREIGN KEY(property_id) references property(property_id) ON DELETE CASCADE,

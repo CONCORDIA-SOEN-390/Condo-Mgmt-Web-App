@@ -51,5 +51,18 @@ CREATE TABLE IF NOT EXISTS locker(
 	condo_fee DECIMAL(6,2),
 	occupied BOOLEAN,
 	PRIMARY KEY(locker_id, property_id),
-	FOREIGN KEY(property_id) references property(property_id) ON DELETE CASCADE
+	FOREIGN KEY(property_id) references property(property_id) ON DELETE CASCADE,
+	FOREIGN KEY(owner_id) references users(user_id) ON DELETE CASCADE
+);
+
+--parking table
+CREATE TABLE IF NOT EXISTS parking (
+    parking_id INT,
+    property_id INT,
+    owner_id INT,
+    condo_fee DECIMAL(6,2),
+    occupied BOOLEAN NOT NULL DEFAULT FALSE,
+    PRIMARY KEY(parking_id, property_id),
+	FOREIGN KEY(property_id) references property(property_id) ON DELETE CASCADE,
+	FOREIGN KEY(owner_id) references users(user_id) ON DELETE CASCADE
 );

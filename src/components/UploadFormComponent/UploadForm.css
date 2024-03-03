@@ -1,0 +1,60 @@
+.uploadFormContainer {
+  width: 100%;
+  height: rem;
+  padding-left: 1rem;
+  background-color: #7dd3fc;
+  display: flex;
+  flex-direction: row;
+  border: 2px solid darkgray;
+}
+
+.UploadButton {
+  background-color: #7acff7;
+  width: 8rem;
+  height: 2.3rem;
+  border-radius: 30px;
+  color: white;
+  border: darkgrey 2px solid;
+}
+
+input {
+  width: 25rem;
+}
+
+input[type="file"]::file-selector-button {
+  background-color: lightgrey;
+  color: black;
+  padding: 5px 20px;
+  margin-right: 2rem;
+  cursor: pointer;
+  margin-left: 2rem;
+}
+
+input[type="file"]::file-selector-text {
+  padding: 10px;
+  margin-left: 4rem;
+  margin-right: 2rem;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  margin-top: 10px;
+  color: black;
+}
+form{
+    margin-top: 2rem;
+}
+
+@media only screen and (max-width: 1650px) {
+  input {
+    width: 20rem;
+  }
+  .UploadButton {
+    background-color: #7acff7;
+    width: 8rem;
+    height: 2.3rem;
+    border-radius: 30px;
+    color: white;
+    border: darkgrey 2px solid;
+    margin-top: 1rem;
+    margin-left: 2rem;
+  }
+}

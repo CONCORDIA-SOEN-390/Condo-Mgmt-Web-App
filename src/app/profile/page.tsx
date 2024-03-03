@@ -1,5 +1,5 @@
 import React from 'react'
-import {UserBio} from '@/components/ProfilePageComponents//ProfileInfo'
+import {UserBio} from '@/components/ProfilePageComponents/ProfileInfo'
 
 function page() {
     return (

@@ -76,6 +76,11 @@
 </table>
 
 
+<h2>Sprint 2</h2>
+
+The deliverables can be found in the Sprint_2_Deliverables folder in the main branch, or in the following link.
+<br> <a href="https://drive.google.com/drive/folders/1Cpplh3Gj1H90AiULHf7N3c_Z8-lUsYAH">Link to the Sprint 2 Folder Repository</a> <br> <br>
+
 <h2>Sprint 1</h2>
 
  <br> <a href="https://drive.google.com/drive/folders/1Vsr0mZFP2RmtuVDbYk3VzxJ2AIYcYo2o">Link to the Google Drive Repository</a> <br> <br>

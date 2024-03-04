@@ -3,12 +3,12 @@ CREATE TYPE account_type AS ENUM('company','reg_user');
 --User table
 CREATE TABLE users (
     user_id SERIAL PRIMARY KEY,
-    username VARCHAR(255) NOT NULL,
+    username VARCHAR(255),
     password_ VARCHAR(255) NOT NULL,
     email VARCHAR(255) NOT NULL,
     phone_number VARCHAR(20),
     profile_picture_url VARCHAR(255),
-    account_type account_type NOT NULL
+    account_type account_type
 );
 
 --Property Table

@@ -1,12 +1,35 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import { FcGoogle } from "react-icons/fc";
 import { verifyUserSignUp } from "@/actions/SignupAction";
+import { useRouter } from "next/navigation";
 
 import { useFormState } from "react-dom";
 
 export default function SignupForm() {
+  const router = useRouter();
+
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [state, onSubmit] = useFormState(verifyUserSignUp, null);
+
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    const formData = new FormData(event.currentTarget);
+    fetch("/api/signupstepone", {
+      method: "POST",
+      body: JSON.stringify({
+        email: formData.get("email"),
+        password: formData.get("password"),
+      }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    router.push("/signup/complete");
+
+  }
+
 
   return (
     <>
@@ -16,18 +39,18 @@ export default function SignupForm() {
       </div>
 
       <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-        <form action={onSubmit} method="POST">
+        <form onSubmit={handleSubmit} method="POST">
           <label htmlFor="email" className="block text-sm font-medium leading-6 text-gray-900">
             Email address*
           </label>
-          <input id="email" name="email" autoComplete="email" className=" block w-full rounded-md border-0 my-2 py-1.5 px-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" />
+          <input id="email" name="email" autoComplete="email"  onChange={event => setEmail(event.target.value)}className=" block w-full rounded-md border-0 my-2 py-1.5 px-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" />
           {state?.errors?.email && <p className="text-red-500 text-xs italic ">{state?.errors?.email[0]}</p>}
           <div className="flex items-center justify-between mt-3">
             <label htmlFor="password" className="block text-sm font-medium leading-6 text-gray-900">
               Password*
             </label>
           </div>
-          <input id="password" name="password" type="password" autoComplete="current-password" required className="block w-full rounded-md border-0 my-2 py-1.5 px-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" />
+          <input id="password" name="password" type="password" onChange={event => setPassword(event.target.value)} autoComplete="current-password" required className="block w-full rounded-md border-0 my-2 py-1.5 px-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" />
           {state?.errors?.password &&
             state.errors.password.map((error: string, index: number) => (
               <p key={index} className="text-red-500 text-xs italic">

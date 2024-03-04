@@ -20,8 +20,32 @@ export async function verifyUserSignUp(prevState: any, formData: FormData) {
     return {
       errors: validatedFields.error.flatten().fieldErrors,
     };
-  } else {
-    
+  }
+  const email = formData.get('email');
+  const password = formData.get('password');
+
+  try {
+    fetch('/api/signupstepone', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        email: email,
+        password: password
+      }),
+    });
+    // Redirect only if the request was successful
     redirect("/signup/complete");
+  } catch (error) {
+    console.error('Error:', error);
+    // Handle client-side errors or failed fetch request
+    // For example, you can show an error message to the user
+    return {
+      errors: {
+        server: 'Failed to sign up. Please try again later.'
+      }
+    };
   }
 }
+

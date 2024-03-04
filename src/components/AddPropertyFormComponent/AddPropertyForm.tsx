@@ -42,18 +42,45 @@ function AddPropertyForm() {
     }
   };
 
-  const handleConfirm = () => {
+  const handleConfirm = async () => {
     if (propertyName.trim() === "" || address.trim() === "") {
       setErrorMessage("Please fill in all required fields.");
     } else {
-      setErrorMessage("Form Submitted Successfully!");
-      setNumberOfUnits(0);
-      setNumberOfFloors(0);
-      setNumberOfUnitsPerFloor(0);
-      setNumberOfParkingSpaces(0);
-      setNumberOfLockers(0);
-      setPropertyName("");
-      setAddress("");
+      try {
+        const response = await fetch('/api/addproperty', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            propertyName,
+            address,
+            numberOfUnits,
+            numberOfFloors,
+            numberOfUnitsPerFloor,
+            numberOfParkingSpaces,
+            numberOfLockers,
+          }),
+        });
+  
+        const data = await response.json();
+        if (response.ok) {
+          setErrorMessage("Form Submitted Successfully!");
+          // Clear form fields if submission successful
+          setNumberOfUnits(0);
+          setNumberOfFloors(0);
+          setNumberOfUnitsPerFloor(0);
+          setNumberOfParkingSpaces(0);
+          setNumberOfLockers(0);
+          setPropertyName("");
+          setAddress("");
+        } else {
+          setErrorMessage(data.message || 'An error occurred.');
+        }
+      } catch (error) {
+        console.error('Error:', error);
+        setErrorMessage('An error occurred while submitting the form.');
+      }
     }
   };
 

@@ -1,6 +1,6 @@
 // Import necessary modules and dependencies
 import { TextEncoder, TextDecoder } from "util";
-import handler from "../pages/api/getunit";
+import handler from "../src/app/api/getunit/route";
 Object.assign(global, { TextDecoder, TextEncoder });
 
 const pool = require("../utils/db"); // Make sure to adjust the import based on your project structure

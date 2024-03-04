@@ -1,7 +1,8 @@
-import pool from "../../utils/db";
+import pool from "../../../utils/db";
 
-export default async function POST(req, res) {
-  const { propertyName, address, numberOfUnits, numberOfFloors, numberOfUnitsPerFloor, numberOfParkingSpaces, numberOfLockers } = req.body;
+export async function POST(req) {
+  const body = await req.json();
+  const { propertyName, address, numberOfUnits, numberOfFloors, numberOfUnitsPerFloor, numberOfParkingSpaces, numberOfLockers } = body;
   const owner_id = 1;
 
   const client = await pool.connect();
@@ -24,9 +25,15 @@ export default async function POST(req, res) {
     }
 
     await client.query("COMMIT"); // Commit the transaction
+    return new Response('Success',{
+      status:200,
+    });
   } catch (error) {
     await client.query("ROLLBACK"); // Rollback the transaction if an error occurs
     console.error("Error inserting data into tables:", error);
+    return new Response('Internal Server Errror', {
+      status:500,
+    });
   } finally {
     client.release();
   }

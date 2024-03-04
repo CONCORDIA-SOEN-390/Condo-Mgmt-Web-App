@@ -1,14 +1,15 @@
-import pool from "../../utils/db";
+import pool from "../../../../utils/db";
 
-export default async function handler(req, res) {
-  if (req.method === "GET") {
-    const { property_id, unit_id } = req.query;
+export async function GET(req) {
+  const searchParams = req.nextUrl.searchParams;
+  const property_id= searchParams.get('property_id');
+  const unit_id= searchParams.get('unit_id');
+
 
     if (!property_id || !unit_id) {
-      res
-        .status(400)
-        .json({ message: "Missing property_id or unit_id parameter" });
-      return;
+      return Response.json('Missing property_id or unit_id parameter', {
+        status:400,
+      });;
     }
 
     const client = await pool.connect();
@@ -24,19 +25,21 @@ export default async function handler(req, res) {
 
       // Check if the unit was found
       if (!unit) {
-        res.status(404).json({ message: "Unit not found" });
-        return;
+        return Response.json('Unit Not Found', {
+          status:404,
+        });
       }
 
       // You can handle the retrieved unit details as needed (e.g., send them in the response)
-      res.status(200).json({ unit });
+      return Response.json(unit, {
+        status:200,
+      });
     } catch (error) {
       console.error("Error fetching unit details:", error);
-      res.status(500).json({ message: "Internal Server Error" });
+      return Response.json('Internal Server Error', {
+        status: 500,
+      });
     } finally {
       client.release();
     }
-  } else {
-    res.status(405).json({ message: "Method not allowed" });
-  }
 }

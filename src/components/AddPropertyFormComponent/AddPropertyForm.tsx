@@ -96,6 +96,7 @@ function AddPropertyForm() {
               />
               <div className="buttonContainer">
                 <button
+                  aria-label="units+"
                   className="button plus"
                   onClick={() =>
                     incrementValue(setNumberOfUnits, numberOfUnits)
@@ -104,6 +105,7 @@ function AddPropertyForm() {
                   &#x23F6;
                 </button>
                 <button
+                  aria-label="units-"
                   className="button minus"
                   onClick={() =>
                     decrementValue(setNumberOfUnits, numberOfUnits)
@@ -128,6 +130,7 @@ function AddPropertyForm() {
               />
               <div className="buttonContainer">
                 <button
+                  aria-label="floor+"
                   className="button plus"
                   onClick={() =>
                     incrementValue(setNumberOfFloors, numberOfFloors)
@@ -136,6 +139,7 @@ function AddPropertyForm() {
                   &#x23F6;
                 </button>
                 <button
+                  aria-label="floor-"
                   className="button minus"
                   onClick={() =>
                     decrementValue(setNumberOfFloors, numberOfFloors)
@@ -152,12 +156,13 @@ function AddPropertyForm() {
               <input
                 className="input-field"
                 type="text"
-                name="numberOfLockers"
+                name="numberOfUnitsPerFloor"
                 value={numberOfUnitsPerFloor}
                 readOnly
               />
               <div className="buttonContainer">
                 <button
+                  aria-label="upf+"
                   className="button plus"
                   onClick={() =>
                     incrementValue(
@@ -169,6 +174,7 @@ function AddPropertyForm() {
                   &#x23F6;
                 </button>
                 <button
+                  aria-label="upf-"
                   className="button minus"
                   onClick={() =>
                     decrementValue(
@@ -196,6 +202,7 @@ function AddPropertyForm() {
               />
               <div className="buttonContainer">
                 <button
+                  aria-label="parking+"
                   className="button plus"
                   onClick={() =>
                     incrementValue(
@@ -207,6 +214,7 @@ function AddPropertyForm() {
                   &#x23F6;
                 </button>
                 <button
+                  aria-label="parking-"
                   className="button minus"
                   onClick={() =>
                     decrementValue(
@@ -232,6 +240,7 @@ function AddPropertyForm() {
               />
               <div className="buttonContainer">
                 <button
+                  aria-label="locker+"
                   className="button plus"
                   onClick={() =>
                     incrementValue(setNumberOfLockers, numberOfLockers)
@@ -240,6 +249,7 @@ function AddPropertyForm() {
                   &#x23F6;
                 </button>
                 <button
+                  aria-label="locker-"
                   className="button minus"
                   onClick={() =>
                     decrementValue(setNumberOfLockers, numberOfLockers)
@@ -272,10 +282,14 @@ function AddPropertyForm() {
           )}
         </div>
         <div className="row ConfirmationButtonContainer">
-          <button className="ConfirmationButton" onClick={handleConfirm}>
+          <button 
+            aria-label="Confirm"
+            className="ConfirmationButton" onClick={handleConfirm}>
             Confirm
           </button>
-          <button className="ConfirmationButton" onClick={handleCancel}>
+          <button 
+            aria-label="Cancel"
+            className="ConfirmationButton" onClick={handleCancel}>
             Cancel
           </button>
         </div>

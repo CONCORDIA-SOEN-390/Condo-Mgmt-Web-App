@@ -4,19 +4,11 @@ import Image from "next/image";
 import { useFormState } from "react-dom";
 import { CompleteProfileVerification } from "@/actions/SignupCompleteAction";
 import { useState } from "react";
+import { UploadButton } from "@/../utils/uploadthing";
 
 function ProfileCompletionForm() {
   const [state, onSubmit] = useFormState(CompleteProfileVerification, null); //null is the initial state
-  const [fileUrl, setFileUrl] = useState("");
-  const [file, setFile] = useState<File | null>(null);
 
-  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const selectedFile = event.target.files?.[0];
-    if (selectedFile) {
-      setFile(selectedFile);
-      setFileUrl(URL.createObjectURL(selectedFile));
-    }
-  };
   return (
     <form action={onSubmit} className="flex flex-col items-center ">
       <div className="w-5/12  rounded-2xl p-6 ">
@@ -58,18 +50,45 @@ function ProfileCompletionForm() {
         </div>
 
         <div className="relative mb-6 ">
-          <div className="relative -ml-1">
-            <label title="Click to upload" htmlFor="button2" className=" cursor-pointer flex items-center gap-4 px-6 py-4 before:border-gray-400/60 hover:before:border-gray-300 group dark:before:bg-darker dark:hover:before:border-gray-500 before:bg-gray-100 dark:before:border-gray-600 before:absolute before:inset-0 before:rounded-xl before:border before:transition-transform before:duration-300 hover:before:scale-105 active:duration-75 active:before:scale-95">
-              <div className="w-max relative">
-                <Image src={fileUrl} alt="file upload icon" width={48} /* Adjusted width for consistency */ height={48} /* Adjusted height for consistency */ />
-              </div>
-              <div className="relative">
-                <span className="block text-base font-semibold relative text-blue-900 dark:text-white group-hover:text-blue-500">Upload a profile picture</span>
-                <span className="block text-sm text-gray-500 dark:text-gray-400 group-hover:text-gray-600">File type: JPG, PNG, GIF</span>
-              </div>
-            </label>
-            <input required type="file" name="profileUrl" id="button2" hidden onChange={handleFileChange} />
-          </div>
+          <UploadButton
+            appearance={{
+              button({ ready, isUploading }) {
+                return {
+                  fontSize: "1rem",
+                  color: "black",
+                  ...(ready && { color: "#ecfdf5" }),
+                  ...(isUploading && { color: "#d1d5db" }),
+                };
+              },
+              container: {
+                marginTop: "1rem",
+              },
+              allowedContent: {
+                color: "#a1a1aa",
+              },
+            }}
+            content={{
+              button({ ready }) {
+                if (ready) return <div>Profile Picture</div>;
+                return "Loading...";
+              },
+              allowedContent({ ready, fileTypes, isUploading }) {
+                if (!ready) return "Checking what you allow";
+                if (isUploading) return "Seems like stuff is uploading";
+                return `Max 4MB: ${fileTypes.join(", ")}`;
+              },
+            }}
+            endpoint="imageUploader"
+            onClientUploadComplete={(res) => {
+              // Do something with the response
+              console.log("Files: ", res);
+              alert("Upload Completed");
+            }}
+            onUploadError={(error: Error) => {
+              // Do something with the error.
+              alert(`ERROR! ${error.message}`);
+            }}
+          />
           <div className="flex items-center mt-2">
             <p className="inline text-sm text-gray-500">import from google</p>
             <input type="checkbox" className="ml-3 checkbox checkbox-xs border-slate-500" />

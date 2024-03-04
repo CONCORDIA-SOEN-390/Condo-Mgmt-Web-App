@@ -90,6 +90,7 @@ function AddPropertyForm() {
                 className="input-field"
                 type="text"
                 name="numberOfUnits"
+                placeholder="1"
                 value={numberOfUnits}
                 readOnly
               />

@@ -3,6 +3,7 @@ import React from "react";
 import { MdEditSquare } from "react-icons/md";
 import "./CondoFinanceInfoBox.css";
 
+
 interface CondoFinanceInfoBoxProps {
   condoName: string;
   monthlyFees: number;

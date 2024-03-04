@@ -21,6 +21,7 @@ export async function verifyUserSignUp(prevState: any, formData: FormData) {
       errors: validatedFields.error.flatten().fieldErrors,
     };
   } else {
+    
     redirect("/signup/complete");
   }
 }

@@ -1,6 +1,6 @@
 import Image from "next/image";
 import "./styling/style.css";
-import NavBar from "./components/Navigation/NavBar";
+import NavBar from "../components/GeneralComponents/NavBar";
 
 export default function Home() {
   return (
@@ -26,9 +26,9 @@ export default function Home() {
               <div className="card">
                 <h5 className="card-title">Seamless Experience</h5>
                 <p>
-                  {" "}
+                  
                   Lorem Ipsum is simply dummy text of the printing and typesetting industry. 
-                  Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, 
+                  Lorem Ipsum has been the industry&apos;s standard dummy text ever since the 1500s, 
                   when an unknown printer took a galley of type and scrambled it to make a type 
                   specimen book.
                 </p>
@@ -38,7 +38,7 @@ export default function Home() {
                 <h5 className="card-title">Variety of Choice</h5>
                 <p>
                 Lorem Ipsum is simply dummy text of the printing and typesetting industry. 
-                  Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, 
+                  Lorem Ipsum has been the industry&apos;s standard dummy text ever since the 1500s, 
                   when an unknown printer took a galley of type and scrambled it to make a type 
                   specimen book.{" "}
                 </p>
@@ -48,7 +48,7 @@ export default function Home() {
                 <h5 className="card-title">Enhanced Security</h5>
                 <p>
                 Lorem Ipsum is simply dummy text of the printing and typesetting industry. 
-                  Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, 
+                  Lorem Ipsum has been the industry&apos;s standard dummy text ever since the 1500s, 
                   when an unknown printer took a galley of type and scrambled it to make a type 
                   specimen book.{" "}
                 </p>

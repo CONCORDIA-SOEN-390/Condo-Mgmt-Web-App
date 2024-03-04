@@ -27,6 +27,6 @@
     "**/*.tsx",
     ".next/types/**/*.ts",
     "jest.config.js"
-  ],
+, "src/app/api/addproperty/route.js"  ],
   "exclude": ["node_modules"]
 }

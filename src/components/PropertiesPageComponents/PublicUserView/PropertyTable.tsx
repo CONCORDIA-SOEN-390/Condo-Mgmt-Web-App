@@ -2,6 +2,7 @@ const properties = [
   {
     address: "1111 one Street",
     apartment: 604,
+    size: 5.5,
     dimension: 1100,
     parking: "S201",
     locker: 238,
@@ -11,6 +12,7 @@ const properties = [
   {
     address: "2222 two Avenue",
     apartment: 305,
+    size: 3.5,
     dimension: 950,
     parking: "S202",
     locker: 182,
@@ -20,6 +22,7 @@ const properties = [
   {
     address: "3333 three Blvd",
     apartment: 708,
+    size: 4.5,
     dimension: 1200,
     parking: "S203",
     locker: 215,
@@ -29,6 +32,7 @@ const properties = [
   {
     address: "4444 four Drive",
     apartment: 102,
+    size: 3.5,
     dimension: 800,
     parking: "S204",
     locker: 190,
@@ -38,6 +42,7 @@ const properties = [
   {
     address: "5555 five Lane",
     apartment: 501,
+    size: 4.5,
     dimension: 1050,
     parking: "S205",
     locker: 207,
@@ -55,6 +60,7 @@ export default function PropertyTable() {
                     <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">#</th>
                     <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Address</th>
                     <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Appartment</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Size</th>
                     <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Dimension (sqft)</th>
                     <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Parking</th>
                     <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Locker</th>
@@ -69,6 +75,7 @@ export default function PropertyTable() {
                             <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{id + 1}</td>
                             <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{property.address}</td>
                             <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{property.apartment}</td>
+                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{property.size}</td>
                             <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{property.dimension}</td>
                             <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{property.parking}</td>
                             <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{property.locker}</td>

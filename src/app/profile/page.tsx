@@ -1,15 +1,7 @@
 import React from "react";
-import { UserBio } from "@/components/ProfilePageComponents//ProfileInfo";
-import { MdCreditCard, MdDashboard, MdUploadFile } from "react-icons/md";
-import { FaBuilding } from "react-icons/fa6";
-import { FaChartColumn } from "react-icons/fa6";
-import { IoSettingsSharp } from "react-icons/io5";
-import { IoIosHelpCircle } from "react-icons/io";
-import { FiLogOut } from "react-icons/fi";
+import { MdCreditCard, MdUploadFile } from "react-icons/md";
 import { MdEditSquare } from "react-icons/md";
-import { GrDocumentText } from "react-icons/gr";
 import UploadForm from "@/components/ProfilePageComponents/UploadForm";
-import Link from "next/link";
 import SideBar from "@/components/GeneralComponents/PublicUserView/SideBar";
 import CardHeader from "@/components/GeneralComponents/CardHeader";
 

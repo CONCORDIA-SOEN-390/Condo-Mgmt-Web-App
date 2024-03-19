@@ -1,6 +1,7 @@
 import Image from "next/image";
 import "./styling/style.css";
 import NavBar from "../components/GeneralComponents/NavBar";
+import AboutUs from "@/components/HomePageComponents/AboutUs";
 
 export default function Home() {
   return (
@@ -18,44 +19,7 @@ export default function Home() {
           </form> 
         </div>
 
-        <section className="hero-section-2">
-          <div className="about-us-content">
-            <h3 className="aboutush3">Explore what makes us unique.</h3>
-
-            <div className="cards">
-              <div className="card">
-                <h5 className="card-title">Seamless Experience</h5>
-                <p>
-                  
-                  Lorem Ipsum is simply dummy text of the printing and typesetting industry. 
-                  Lorem Ipsum has been the industry&apos;s standard dummy text ever since the 1500s, 
-                  when an unknown printer took a galley of type and scrambled it to make a type 
-                  specimen book.
-                </p>
-              </div>
-
-              <div className="card">
-                <h5 className="card-title">Variety of Choice</h5>
-                <p>
-                Lorem Ipsum is simply dummy text of the printing and typesetting industry. 
-                  Lorem Ipsum has been the industry&apos;s standard dummy text ever since the 1500s, 
-                  when an unknown printer took a galley of type and scrambled it to make a type 
-                  specimen book.{" "}
-                </p>
-              </div>
-
-              <div className="card">
-                <h5 className="card-title">Enhanced Security</h5>
-                <p>
-                Lorem Ipsum is simply dummy text of the printing and typesetting industry. 
-                  Lorem Ipsum has been the industry&apos;s standard dummy text ever since the 1500s, 
-                  when an unknown printer took a galley of type and scrambled it to make a type 
-                  specimen book.{" "}
-                </p>
-              </div>
-            </div>
-          </div>
-        </section>
+        <AboutUs/>
       </div>
 
     </div>

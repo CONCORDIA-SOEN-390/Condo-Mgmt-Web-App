@@ -1,22 +1,11 @@
 "use client";
 import React, { useState } from "react";
-import { UserBio } from "@/components/ProfilePageComponents//ProfileInfo";
-//import AddPropertyForm from "@/components/PropertiesPageComponents/AddPropertyForm";
-import AddPropertyForm from "@/components/PropertiesPageComponents/PublicUserView/AddPropertyForm";
-import { MdDashboard } from "react-icons/md";
-import { FaBuilding } from "react-icons/fa6";
-import { FaChartColumn } from "react-icons/fa6";
-import { IoSettingsSharp } from "react-icons/io5";
-import { IoIosHelpCircle } from "react-icons/io";
-import { FiLogOut } from "react-icons/fi";
-import { MdEditSquare } from "react-icons/md";
+import AddPropertyForm from "@/components/PropertiesPageComponents/CompanyView/AddPropertyForm";
+//import AddPropertyForm from "@/components/PropertiesPageComponents/PublicUserView/AddPropertyForm";
 import { PiPlusSquareFill } from "react-icons/pi";
-import { GrDocumentText } from "react-icons/gr";
-import { MdCancel } from "react-icons/md";
-import Link from "next/link";
 import SideBar from "@/components/GeneralComponents/PublicUserView/SideBar";
 import CardHeader from "@/components/GeneralComponents/CardHeader";
-import PropertyTable from "@/components/PropertiesPageComponents/PropertyTable";
+import PropertyTable from "@/components/PropertiesPageComponents/PublicUserView/PropertyTable";
 
 function page() {
   const [showAddPropertyForm, setshowAddPropertyFormStatus] = useState(false);

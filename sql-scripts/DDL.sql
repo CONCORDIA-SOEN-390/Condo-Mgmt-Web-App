@@ -36,7 +36,7 @@ CREATE TABLE  IF NOT EXISTS unit(
 	property_id INTEGER,
 	owner_id INTEGER,
 	occupied BOOLEAN,
-	registration_key VARCHAR(40), 
+	registration_key VARCHAR(40) UNIQUE, 
 	condo_fee DECIMAL(6,2),
 	PRIMARY KEY(unit_id, property_id),
 	FOREIGN KEY(property_id) references property(property_id) ON DELETE CASCADE,

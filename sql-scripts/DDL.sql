@@ -80,6 +80,8 @@ CREATE TABLE request_status (
 
 CREATE TABLE request (
 	req_id SERIAL PRIMARY KEY,
+	unit_id INT,
+	property_id INT,
 	req_creator INT,
 	req_reviewer INT NULL,
 	type_id INT,
@@ -88,5 +90,6 @@ CREATE TABLE request (
 	FOREIGN KEY(type_id) references request_type(type_id) ON DELETE CASCADE,
 	FOREIGN KEY(status_id) references request_status(status_id) ON DELETE CASCADE,
 	FOREIGN KEY(req_creator) references users(user_id) ON DELETE CASCADE,
-	FOREIGN KEY(req_reviewer) references users(user_id) ON DELETE CASCADE
+	FOREIGN KEY(req_reviewer) references users(user_id) ON DELETE CASCADE,
+	FOREIGN KEY(unit_id, property_id) references unit(unit_id, property_id) ON DELETE CASCADE
 );

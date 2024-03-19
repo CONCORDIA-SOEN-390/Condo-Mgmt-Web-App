@@ -66,3 +66,8 @@ CREATE TABLE IF NOT EXISTS parking (
 	FOREIGN KEY(property_id) references property(property_id) ON DELETE CASCADE,
 	FOREIGN KEY(owner_id) references users(user_id) ON DELETE CASCADE
 );
+
+CREATE TABLE request_type (
+	type_id INT PRIMARY KEY,
+	type_name VARCHAR(30)
+)

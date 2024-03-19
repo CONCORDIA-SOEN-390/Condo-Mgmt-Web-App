@@ -70,4 +70,23 @@ CREATE TABLE IF NOT EXISTS parking (
 CREATE TABLE request_type (
 	type_id INT PRIMARY KEY,
 	type_name VARCHAR(30)
-)
+);
+
+CREATE TABLE request_status (
+	status_id INT PRIMARY KEY,
+	status_name VARCHAR(30)
+);
+
+
+CREATE TABLE request (
+	req_id SERIAL PRIMARY KEY,
+	req_creator INT,
+	req_reviewer INT NULL,
+	type_id INT,
+	status_id INT,
+	details TEXT,
+	FOREIGN KEY(type_id) references request_type(type_id) ON DELETE CASCADE,
+	FOREIGN KEY(status_id) references request_status(status_id) ON DELETE CASCADE,
+	FOREIGN KEY(req_creator) references users(user_id) ON DELETE CASCADE,
+	FOREIGN KEY(req_reviewer) references users(user_id) ON DELETE CASCADE
+);

@@ -1,6 +1,7 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import "./AddPropertyForm.css";
+import { UserContext } from "@/context/userInfoContext";
 
 function AddPropertyForm() {
   const [numberOfUnits, setNumberOfUnits] = useState(0);
@@ -11,6 +12,8 @@ function AddPropertyForm() {
   const [propertyName, setPropertyName] = useState("");
   const [address, setAddress] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
+
+  const { userId } = useContext(UserContext);
 
   const handleConfirm = async () => {
     if (propertyName.trim() === "" || address.trim() === "") {
@@ -23,6 +26,7 @@ function AddPropertyForm() {
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({
+            userId,
             propertyName,
             address,
             numberOfUnits,

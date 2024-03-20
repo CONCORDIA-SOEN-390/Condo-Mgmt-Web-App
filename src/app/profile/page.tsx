@@ -13,7 +13,6 @@ function Page() {
   };
 
   const handleSave = () => {
-    // Save logic here
     setIsEditing(false);
   };
 

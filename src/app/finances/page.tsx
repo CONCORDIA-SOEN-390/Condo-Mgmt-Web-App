@@ -9,7 +9,6 @@ import CompanyFinanceTable from "@/components/FinancePageComponents/CompanyView/
 import {PiPlusSquareFill} from "react-icons/pi";
 import React, {useState} from "react";
 import AddFinanceForm from "@/components/FinancePageComponents/CompanyView/AddFinanceForm";
-import EditFinanceForm from "@/components/FinancePageComponents/CompanyView/EditFinanceForm";
 
 function page() {
   const page = 'company';
@@ -20,12 +19,6 @@ function page() {
     const toggleFormAdd = () => {
       setshowAddFinanceFormFormStatus(!showAddFinanceForm);
     };
-
-  const [showEditFinanceForm, setshowEditFinanceFormFormStatus] = useState(false);
-
-  const toggleFormEdit = () => {
-    setshowEditFinanceFormFormStatus(!showEditFinanceForm);
-  };
 
 
 
@@ -41,7 +34,6 @@ function page() {
         </CardHeader>
 
         {showAddFinanceForm && <AddFinanceForm />}
-        {showEditFinanceForm && <EditFinanceForm />}
         {page === 'company'? <CompanyFinanceTable/>:<PublicUserFinanceTable/>}
         
       </div>

@@ -131,3 +131,18 @@ body {
   }
 
 /* ABOUT US SECTION ENDS */
+
+.content-contact {
+
+  margin-top: 8.4rem;
+  display: flex;
+  flex-direction: column; /* Stacks elements on top of each other */
+  justify-content: center;
+  align-items: center;
+  h3 {
+    font-size: 2.2rem;
+    color: #332d2d;
+    font-weight: 700;
+  }
+        
+}

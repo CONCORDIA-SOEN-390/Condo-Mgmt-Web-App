@@ -4,7 +4,7 @@ import React from "react";
 
 const Navbar = () => {
   return (
-    <div className="flex w-full overflow-hidden fixed top-0 pb-1 bg-gradient-to-b from-sky-50 to-transparent">
+    <div className="flex w-full overflow-hidden fixed top-0 pb-3 bg-gradient-to-b from-sky-50 to-transparent">
       <div className="text-[#332d2d] text-2xl font-bold pt-5 text-center ml-8">
         <a href="/">Condo360</a>
       </div>
@@ -15,7 +15,7 @@ const Navbar = () => {
             <Link href="/" className="block text-[#332d2d] text-center px-10 py-6 font-semibold text-xl hover:font-bold">Home</Link>
           </li>
           <li>
-            <Link href="#" className="block text-[#332d2d] text-center px-10 py-6 font-semibold text-xl hover:font-bold">Contact Us</Link>
+            <Link href="/contact" className="block text-[#332d2d] text-center px-10 py-6 font-semibold text-xl hover:font-bold">Contact Us</Link>
           </li>
           <li>
             <Link href="/login" className="block text-[#332d2d] text-center px-10 py-6 font-semibold text-xl hover:font-bold">Sign In</Link>

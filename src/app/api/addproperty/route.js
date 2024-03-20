@@ -29,7 +29,7 @@ export async function POST(req) {
               unit_id += i + ""+  j;
             }
           }
-
+          //Generation of unique registration key through this call to a library.
           const registrationKey = uuidv4();
 
           await client.query("INSERT INTO unit(unit_id, property_id, owner_id, occupied, registration_key, condo_fee) VALUES ($1, $2, $3, $4, $5, $6)", [unit_id, propertyId, userId, 0, registrationKey, 0]);

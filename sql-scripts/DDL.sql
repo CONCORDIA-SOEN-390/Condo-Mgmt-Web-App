@@ -93,3 +93,4 @@ CREATE TABLE request (
 	FOREIGN KEY(req_reviewer) references users(user_id) ON DELETE CASCADE,
 	FOREIGN KEY(unit_id, property_id) references unit(unit_id, property_id) ON DELETE CASCADE
 );
+

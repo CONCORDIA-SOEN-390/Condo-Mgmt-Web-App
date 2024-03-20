@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 import "./styling/style.css";
 import NavBar from "../components/GeneralComponents/NavBar";
 import AboutUs from "@/components/HomePageComponents/AboutUs";
@@ -12,12 +13,13 @@ export default function Home() {
       <div className="content-hero">
         <div className="hero-section-1">
           <h1>Condo Life Made Simple</h1>
-          <p>2-3 sentences that we can add here fnejrgnwkrtej gnrtngvrwtngvbnf goirtnmrncg.</p>
+          <p>Discover the simplicity of condo management and take control of your time. Get started today and unlock convenience at your fingertips.</p>
 
-          <form className="searchBar" action="">
-            <input type="search" placeholder="Search here..." required/>
-            <button type="submit">Search</button>
-          </form> 
+          <Link href="/signup">
+              <button className="bg-yellow-950 hover:bg-yellow-900 text-white text-2xl font-bold py-5 px-24 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-200">
+                Sign Up
+              </button>
+          </Link>
         </div>
 
         <AboutUs/>

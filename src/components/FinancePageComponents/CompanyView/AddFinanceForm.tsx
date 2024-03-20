@@ -4,6 +4,7 @@ function AddFinanceForm() {
 
     const [address, setAddress] = useState("");
     const [unitNumber, setUnitNumber] = useState("");
+    const [type, setType] = useState("");
     const [transactionDate, setTransactionDate] = useState("");
     const [transactionType, setTransactionType] = useState("");
     const [description, setDescription] = useState("");
@@ -45,6 +46,19 @@ function AddFinanceForm() {
                         value={unitNumber}
                         onChange={(e) => setUnitNumber(e.target.value)}
                     />
+                </div>
+                <div className="mb-4">
+                    <label htmlFor="type" className="block text-sm font-bold text-blue-700 mb-2">Income/Expense</label>
+                    <select
+                        className="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                        name="type"
+                        value={type}
+                        onChange={(e) => setType(e.target.value)}
+                    >
+                        <option value="">Select Income/Expense</option>
+                        <option value="Income">Income</option>
+                        <option value="Expense">Expense</option>
+                    </select>
                 </div>
                 <div className="mb-4">
                     <label htmlFor="transactionDate" className="block text-sm font-bold text-blue-700 mb-2">Transaction Date</label>

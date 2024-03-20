@@ -1,49 +1,97 @@
-import React from "react";
-import { MdCreditCard, MdUploadFile } from "react-icons/md";
-import { MdEditSquare } from "react-icons/md";
-import UploadForm from "@/components/ProfilePageComponents/UploadForm";
+"use client";
+import React, { useState } from "react";
 import SideBar from "@/components/GeneralComponents/PublicUserView/SideBar";
-import CardHeader from "@/components/GeneralComponents/CardHeader";
 
-function page() {
+function Page() {
+  const [isEditing, setIsEditing] = useState(false);
+  const [name, setName] = useState("John Smith");
+  const [email, setEmail] = useState("john_smith@gmail.com");
+  const [phoneNumber, setPhoneNumber] = useState("(514) 123-4567");
+
+  const handleEdit = () => {
+    setIsEditing(true);
+  };
+
+  const handleSave = () => {
+    // Save logic here
+    setIsEditing(false);
+  };
+
   return (
     <div className="flex min-h-screen-nav items-center justify-center h-full bg-white">
-      <SideBar page='profile'/>
-      <div className="absolute grid grid-rows-3 w-5/6 right-5 gap-5">
-        <div className="bg-white shadow-lg rounded-xl ">
-          <CardHeader title="Personal Information">
-            <MdEditSquare className="text-white text-3xl" />
-          </CardHeader>
-          <div className="grid grid-cols-2 grid-rows-3 gap-5 p-5 text-black text-xl">
-            <div>Name:</div>
-            <div className="flex justify-end items-center">John Smith</div>
-            <div className="row-start-2">Email:</div>
-            <div className="row-start-2 flex justify-end items-center">
-              john_smith@gmail.com
-            </div>
-            <div className="row-start-3">Phone Number:</div>
-            <div className="row-start-3 flex justify-end items-center">
-              (514) 123-4567
-            </div>
+      <SideBar page="profile" />
+      <div className="absolute grid grid-rows-4 grid-cols-1 gap-4 p-5 text-black text-xl justify-center items-center">
+        <div className="row-start-2 row-end-2 col-start-1 col-end-2 flex items-center justify-center">
+          <div className="w-40 h-40  ">
+            <img
+              //Remove TemporaryProfilepicture.png from public folder
+              src={"/TemporaryProfilepicture.png"}
+              alt="Profile Picture"
+              className="w-full h-full object-cover full"
+            />
           </div>
         </div>
-        <div className="bg-white shadow-lg rounded-xl ">
-          <CardHeader title="Finances">
-            <MdCreditCard className="text-white text-3xl" />
-          </CardHeader>
-          <div className="p-16 text-black text-xl text-center">
-            SOME INFO ON THE FINANCES
+        <div className="row-start-3 mrow-end-4 col-start-1 col-end-2">
+          <div className="col-start-2 col-end-3 p-2">
+            <strong>Name: </strong>{" "}
+            {!isEditing ? (
+              name
+            ) : (
+              <input
+                type="text"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                className="bg-white border border-gray-300 p-2 rounded"
+              />
+            )}
           </div>
-        </div>
-        <div className="bg-white shadow-lg rounded-xl ">
-          <CardHeader title="Properties">
-            <MdUploadFile className="text-white text-3xl" />
-          </CardHeader>
-          <div className="grid grid-cols-2 p-5 text-black text-xl">
-            <div>Condo 1</div>
-            <div className="flex justify-end items-center">
-              Some info on Condo 1
-            </div><UploadForm/> 
+          <div className="col-start-2 col-end-3 p-2">
+            <strong>Email: </strong>{" "}
+            {!isEditing ? (
+              email
+            ) : (
+              <input
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="bg-white border border-gray-300 p-2 rounded"
+              />
+            )}
+          </div>
+          <div className="col-start-2 col-end-3 p-2">
+            <strong>Phone Number:</strong>{" "}
+            {!isEditing ? (
+              phoneNumber
+            ) : (
+              <input
+                type="tel"
+                value={phoneNumber}
+                onChange={(e) => setPhoneNumber(e.target.value)}
+                className="bg-white border border-gray-300 p-2 rounded"
+              />
+            )}
+          </div>
+          <div className="col-start-2 col-end-3 p-2">
+            {!isEditing ? (
+              <button
+                onClick={handleEdit}
+                className="bg-zinc-500 hover:bg-zinc-600 text-white font-bold py-1.5 px-4 rounded text-base"
+              >
+                Edit
+              </button>
+            ) : (
+              <button
+                onClick={() => {
+                  handleSave();
+                  setName(name);
+                  setEmail(email);
+                  setPhoneNumber(phoneNumber);
+                }}
+                className="bg-zinc-500 hover:bg-zinc-600 text-white font-bold py-1.5 px-4 rounded text-base"
+              >
+                Save
+              </button>
+            )}
           </div>
         </div>
       </div>
@@ -51,4 +99,4 @@ function page() {
   );
 }
 
-export default page;
+export default Page;

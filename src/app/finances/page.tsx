@@ -29,7 +29,7 @@ function page() {
       <div className="absolute w-5/6 right-6 top-5 bottom-5 bg-white shadow-lg rounded-xl">
         <CardHeader title="Finances">
             <button onClick={toggleFormAdd}><PiPlusSquareFill/></button>
-          <button onClick={toggleFormEdit}><MdEditSquare/></button>
+
           <MdCancel className="" />
         </CardHeader>
 

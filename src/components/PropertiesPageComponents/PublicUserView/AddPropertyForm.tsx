@@ -155,7 +155,7 @@ function AddPropertyForm() {
             placeholder="Enter Apartment Number"
             value={apartmentNumber}
             required
-            onChange={(e) => setApartmentNumber(e.target.value)}
+            onChange={(e) => setApartmentNumber(parseInt(e.target.value))}
           />
         </div>
         <div className="mb-4">

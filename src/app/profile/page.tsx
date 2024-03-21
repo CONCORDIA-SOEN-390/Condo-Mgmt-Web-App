@@ -37,4 +37,4 @@ function page() {
   );
 }
 
-export default Page;
+export default page;

@@ -16,7 +16,10 @@ function page() {
           </div>
         </div>
         <div className="bg-white shadow-lg rounded-xl">
-          <CardHeader title="Available Facilities" children={undefined}></CardHeader>
+          <CardHeader
+            title="Available Facilities"
+            children={undefined}
+          ></CardHeader>
           <div className="p-5 text-black text-xl">
             <AvailableFacilityTable />
           </div>
@@ -26,4 +29,4 @@ function page() {
   );
 }
 
-export default Page;
+export default page;

@@ -4,7 +4,7 @@ import CardHeader from "@/components/GeneralComponents/CardHeader";
 import MyReservationTable from "@/components/ReservationPageComponents/MyReservationTable";
 import AvailableFacilityTable from "@/components/ReservationPageComponents/AvailableFacilityTable";
 
-function Page() {
+function page() {
   return (
     <div className="flex min-h-screen-nav items-center ml-40 justify-center h-full bg-white">
       <SideBar page="profile" />

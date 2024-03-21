@@ -36,30 +36,29 @@ export default function SignupForm() {
   return (
     <>
       <div className="sm:mx-auto sm:w-full sm:max-w-sm">
-        <p className="text-center text-2xl">Logo</p>
-        <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">Create an account</h2>
+        <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-yellow-950">Create an account</h2>
       </div>
 
       <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
         <form onSubmit={handleSubmit} method="POST">
-          <label htmlFor="email" className="block text-sm font-medium leading-6 text-gray-900">
+          <label htmlFor="email" className="block text-sl font-medium leading-6 text-gray-900">
             Email address*
           </label>
-          <input id="email" name="email" autoComplete="email"  onChange={event => setEmail(event.target.value)}className=" block w-full rounded-md border-0 my-2 py-1.5 px-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" />
+          <input id="email" name="email" autoComplete="email"  onChange={event => setEmail(event.target.value)}className=" block w-full rounded-md border-0 my-2 py-1.5 px-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 bg-white placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-yellow-700 sm:text-sm sm:leading-6" />
           {state?.errors?.email && <p className="text-red-500 text-xs italic ">{state?.errors?.email[0]}</p>}
           <div className="flex items-center justify-between mt-3">
-            <label htmlFor="password" className="block text-sm font-medium leading-6 text-gray-900">
+            <label htmlFor="password" className="block text-sl font-medium leading-6 text-gray-900 mt-3">
               Password*
             </label>
           </div>
-          <input id="password" name="password" type="password" onChange={event => setPassword(event.target.value)} autoComplete="current-password" required className="block w-full rounded-md border-0 my-2 py-1.5 px-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" />
+          <input id="password" name="password" type="password" onChange={event => setPassword(event.target.value)} autoComplete="current-password" required className="block w-full rounded-md border-0 my-2 py-1.5 px-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 bg-white placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-yellow-700 sm:text-sm sm:leading-6" />
           {state?.errors?.password &&
             state.errors.password.map((error: string, index: number) => (
               <p key={index} className="text-red-500 text-xs italic">
                 {error}
               </p>
             ))}
-          <button type="submit" className="flex w-full justify-center rounded-md bg-indigo-600 mt-5 px-3 py-1.5  text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
+          <button type="submit" className="flex w-full justify-center rounded-md bg-yellow-950 hover:bg-yellow-900 mt-10 mb-10 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-yellow-800">
             Sign Up
           </button>
         </form>

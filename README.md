@@ -72,6 +72,16 @@
 
 </table>
 
+<h2>Sprint 3</h2>
+The deliverables can be found in the Sprint_3_Deliverables folder in the main branch, or in the following link.
+<br> <a href="https://drive.google.com/drive/folders/192LTfJbshmOC6boToq-D-mqfRTRSCNkf">Link to the Sprint 3 Folder Repository</a> <br> <br>
+
+<h2>Sprint 2</h2>
+
+The deliverables can be found in the Sprint_2_Deliverables folder in the main branch, or in the following link.
+<br> <a href="https://drive.google.com/drive/folders/1Cpplh3Gj1H90AiULHf7N3c_Z8-lUsYAH">Link to the Sprint 2 Folder Repository</a> <br> <br>
+SAD document: https://docs.google.com/document/d/1eQVRxt3JX2LYbJ1-B7WSg-BhIpafmLLU/edit (not uploaded in the deliverables folder since we are keeping the same for each sprint, but the the history version can be checked)
+The updated diagrams (drawio file) can be found in the Google Drive repository above.
 
 <h2>Sprint 1</h2>
 

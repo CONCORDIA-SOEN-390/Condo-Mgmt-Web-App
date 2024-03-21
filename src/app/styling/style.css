@@ -21,7 +21,6 @@ body {
 }
 
 .content-hero {
-    height: 1000px;
     position: relative;
 }
 
@@ -42,67 +41,14 @@ body {
     }
 
     p {
-        font-size: 1.7rem;
-        margin-bottom: 0.5rem;
+        font-size: 1.5rem;
+        padding-top: 1rem;
+        margin-bottom: 3.5rem;
         color: #494444;
     }
 }
 
 /* HERO SECTION ENDS */
-
-
-/* SEARCH BAR BEGINS */
-
-.searchBar {
-  width: 550px;
-  height: 60px;
-  margin-top: 80px;
-  background: #444;
-  background: rgba(0,0,0,0);
-  border-radius:  3px;
-  border: 2px solid #332d2d;
-  
-  input {
-    width: 370px;
-    padding-top: 15px;
-    padding-left: 10px;
-    float: left;
-    color: #332d2d;
-    border: 0;
-    font-size: 1.2rem;
-    background: transparent;
-    border-radius: 3px 0 0 3px;
-    &:focus {
-      outline: 0;
-      background:transparent;
-    }
-  }
-  
-  button {
-    position: relative;
-    float: right;
-    border: 0;
-    padding: 0;
-    cursor: pointer;
-    height: 58px;
-    width: 120px;
-    color: #332d2d;
-    font-size: 1.2rem;
-    font-weight: 600;
-    background: transparent;
-    border-left: 2px solid #332d2d;
-    border-radius: 0 3px 3px 0;
-    &:hover {
-      background-color: #332d2d;
-      color:#fff;
-    }
-    &:active {
-      box-shadow: 0px 0px 12px 0px rgb(169, 219, 241);
-    }
-  }  
-}
-
-/* SEARCH BAR ENDS */
 
 /* ABOUT US SECTION BEGINS */
 
@@ -125,7 +71,7 @@ body {
   .aboutush3{
     font-family: Roboto, Arial, Helvetica, sans-serif;
     position: relative;
-    margin-bottom: 3px;
+    margin-bottom: 20px;
     color: #332d2d;
     font-size: 2.5rem;
     font-weight: bold;
@@ -185,3 +131,18 @@ body {
   }
 
 /* ABOUT US SECTION ENDS */
+
+.content-contact {
+
+  margin-top: 8.4rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  h3 {
+    font-size: 2.2rem;
+    color: #332d2d;
+    font-weight: 700;
+  }
+        
+}

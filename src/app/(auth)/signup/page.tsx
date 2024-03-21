@@ -7,7 +7,7 @@ import "@/app/styling/style.css";
 
 function SignUp() {
   return (
-    <div className="container-blurry">
+    <div className="container-hero">
       <div>
         <NavBar/>
         <div className="bg-sky-50/[0.75] my-36 py-10 rounded-lg mx-auto max-w-2xl">

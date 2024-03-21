@@ -9,7 +9,7 @@ import pool from "@/../utils/db";
 const schema = z.object({
   username: z.string().min(3, { message: "Username must be at least 3 characters long" }),
   phone: z.string().refine(value => /^\d{3}-\d{3}-\d{4}$/.test(value), { message: "Phone number must be in the format 222-222-2222" }),
-  userType: z.enum(["individual", "company"]).refine( (value) => ["individual", "company"].includes(value), { message: "User type must be either 'individual' or 'company'" } ),
+  userType: z.enum(["reg_user", "company"]).refine( (value) => ["reg_user", "company"].includes(value), { message: "User type must be either 'reg_user' or 'company'" } ),
 });
 
 export async function CompleteProfileVerification(prevState: any, formData: FormData) {

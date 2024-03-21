@@ -1,14 +1,15 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { FcGoogle } from "react-icons/fc";
 import { verifyUserSignUp } from "@/actions/SignupAction";
 import { useRouter } from "next/navigation";
 
 import { useFormState } from "react-dom";
+import { UserContext } from "@/context/userInfoContext";
 
 export default function SignupForm() {
   const router = useRouter();
-
+  const {changeEmail} = useContext(UserContext);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [state, onSubmit] = useFormState(verifyUserSignUp, null);
@@ -16,6 +17,7 @@ export default function SignupForm() {
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
+    changeEmail(email)
     fetch("/api/signupstepone", {
       method: "POST",
       body: JSON.stringify({

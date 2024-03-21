@@ -136,7 +136,7 @@ body {
 
   margin-top: 8.4rem;
   display: flex;
-  flex-direction: column; /* Stacks elements on top of each other */
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   h3 {

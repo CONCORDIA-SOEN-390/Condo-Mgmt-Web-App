@@ -1,3 +1,4 @@
+// /api/getRequestsByProperty.js
 import pool from "../../../../utils/db";
 
 export async function POST(req) {
@@ -18,8 +19,26 @@ export async function POST(req) {
             });
         }
 
-        // Fetch all rows from the request table for the given propertyId
-        const reqs = await client.query("SELECT * FROM request WHERE property_id = $1", [propertyId]);
+        // Fetch all rows from the request table for the given propertyId along with type_name and status_name
+        const reqs = await client.query(`
+            SELECT 
+                request.req_id,
+                request.unit_id,
+                request.property_id,
+                request.req_creator,
+                request.req_reviewer,
+                request_type.type_name,
+                request_status.status_name, -- selecting status_name from request_status table
+                request.details
+            FROM 
+                request
+            INNER JOIN 
+                request_type ON request.type_id = request_type.type_id
+            INNER JOIN
+                request_status ON request.status_id = request_status.status_id
+            WHERE 
+                request.property_id = $1
+        `, [propertyId]);
 
         // Commit the transaction
         await client.query("COMMIT");

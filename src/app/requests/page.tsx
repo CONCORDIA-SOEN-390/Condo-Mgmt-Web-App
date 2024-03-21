@@ -4,11 +4,8 @@ import { MdCancel } from "react-icons/md";
 import PublicUserSideBar from "@/components/GeneralComponents/PublicUserView/SideBar";
 import CompanySideBar from "@/components/GeneralComponents/CompanyView/SideBar";
 import CardHeader from "@/components/GeneralComponents/CardHeader";
-import PublicUserFinanceTable from "@/components/FinancePageComponents/PublicUserView/FinanceTable";
-import CompanyFinanceTable from "@/components/FinancePageComponents/CompanyView/FinanceTable";
 import {PiPlusSquareFill} from "react-icons/pi";
 import React, {useState} from "react";
-import AddFinanceForm from "@/components/FinancePageComponents/CompanyView/AddFinanceForm";
 import RequestForm from "@/components/RequestPageComponents/CompanyView/RequestForm";
 import RequestTable from "@/components/RequestPageComponents/CompanyView/RequestTable";
 

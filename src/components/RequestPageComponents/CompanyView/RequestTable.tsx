@@ -51,8 +51,8 @@ const RequestTable = () => {
                             <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{request.property_id}</td>
                             <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{request.req_creator}</td>
                             <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{request.req_reviewer}</td>
-                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{request.type_id}</td>
-                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{request.status_id}</td>
+                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{request.type_name}</td>
+                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{request.status_name}</td>
                             <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{request.details}</td>
                         </tr>
                     ))}

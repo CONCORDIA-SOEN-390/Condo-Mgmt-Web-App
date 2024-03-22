@@ -1,3 +1,4 @@
+
 const properties = [
   {
     address: "1111 one Street",
@@ -55,7 +56,7 @@ const properties = [
 export default function PropertyTable() {
     return (
         <table className="min-w-full divide-y divide-gray-200">
-            <thead className="bg-blue-500 text-white">
+            <thead className="min-w-full bg-[#DAECFB] text-black">
                 <tr>
                     <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">#</th>
                     <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Address</th>

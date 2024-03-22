@@ -84,8 +84,7 @@ SAD document: https://docs.google.com/document/d/1eQVRxt3JX2LYbJ1-B7WSg-BhIpafmL
 The updated diagrams (drawio file) can be found in the Google Drive repository above.
 
 <h2>Sprint 1</h2>
-
- <br> <a href="https://drive.google.com/drive/folders/1Vsr0mZFP2RmtuVDbYk3VzxJ2AIYcYo2o">Link to the Google Drive Repository</a> <br> <br>
+<a href="https://drive.google.com/drive/folders/1Vsr0mZFP2RmtuVDbYk3VzxJ2AIYcYo2o">Link to the Google Drive Repository</a> <br> <br>
 
 **1. Product vision statement** <br>
 <a href="https://docs.google.com/document/d/1tS8w4iYZ728Z95waX4_3n9eHt1DvkdJS/edit">Stakeholders and Users</a> <br> <br>

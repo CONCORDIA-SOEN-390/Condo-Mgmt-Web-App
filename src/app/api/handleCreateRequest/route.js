@@ -1,5 +1,6 @@
 import pool from "../../../../utils/db";
 
+// used in request components
 export async function POST(req){
     const body = await req.json();
     const { userId, requestTypeId, details, unitId, propertyId } = body;

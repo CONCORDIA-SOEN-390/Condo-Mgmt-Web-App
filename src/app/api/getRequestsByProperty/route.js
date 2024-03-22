@@ -10,7 +10,7 @@ export async function POST(req) {
     try {
         await client.query("BEGIN");
 
-        // Check if property exists
+        // check if property exists
         const prop = await client.query("SELECT * FROM property WHERE user_id = $1 AND property_id = $2", [userId, propertyId]);
 
         if (prop.rows.length === 0) {
@@ -19,30 +19,36 @@ export async function POST(req) {
             });
         }
 
-        // Fetch all rows from the request table for the given propertyId along with type_name and status_name
+        // get rows from the request table for propertyId  with type_name, status_name, and creator username
         const reqs = await client.query(`
-            SELECT 
+            SELECT
                 request.req_id,
                 request.unit_id,
                 request.property_id,
+                property.property_name,
+                users.username as req_creator_username,
                 request.req_creator,
-                request.req_reviewer,
                 request_type.type_name,
-                request_status.status_name, -- selecting status_name from request_status table
+                request_status.status_name,
                 request.details
-            FROM 
+            FROM
                 request
-            INNER JOIN 
+                    INNER JOIN
                 request_type ON request.type_id = request_type.type_id
-            INNER JOIN
+                    INNER JOIN
                 request_status ON request.status_id = request_status.status_id
-            WHERE 
+                    INNER JOIN
+                users ON request.req_creator = users.user_id
+                    INNER JOIN
+                property ON request.property_id = property.property_id
+            WHERE
                 request.property_id = $1
         `, [propertyId]);
 
-        // Commit the transaction
+        // commit the transaction
         await client.query("COMMIT");
 
+        // return json string to client side
         return new Response(JSON.stringify(reqs.rows), {
             status: 200,
             headers: {

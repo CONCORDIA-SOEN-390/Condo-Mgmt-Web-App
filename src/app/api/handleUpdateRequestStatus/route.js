@@ -11,7 +11,7 @@ export async function POST(req) {
     try {
         await client.query("BEGIN"); // Start the transaction
 
-        // Check if the property exists and belongs to the reviewer
+        // check if the property exists and belongs to the reviewer
         const propertyCheck = await client.query("SELECT * FROM property WHERE user_id = $1 AND property_id = $2", [reviewerId, propertyId]);
 
         if (propertyCheck.rows.length === 0) {
@@ -20,7 +20,7 @@ export async function POST(req) {
             });
         }
 
-        // Check if the request exists
+        // check if the request exists
         const requestCheck = await client.query("SELECT * FROM request WHERE req_id = $1", [requestId]);
 
         if (requestCheck.rows.length === 0) {
@@ -29,16 +29,16 @@ export async function POST(req) {
             });
         }
 
-        // Update the request status
+        // update the request status
         await client.query("UPDATE request SET status_id = $1 WHERE req_id = $2", [statusId, requestId]);
 
-        await client.query("COMMIT"); // Commit the transaction
+        await client.query("COMMIT"); // commit the transaction
         return new Response('Status updated successfully', {
             status: 200
         });
 
     } catch (error) {
-        await client.query("ROLLBACK"); // Rollback the transaction if an error occurs
+        await client.query("ROLLBACK"); // rollback the transaction if an error occurs
         console.error("Error:", error);
         return new Response('Internal Server Error', {
             status: 500,

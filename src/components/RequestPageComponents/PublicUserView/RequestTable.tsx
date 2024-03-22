@@ -1,5 +1,8 @@
 import React, { useState, useEffect } from 'react';
 
+
+// this is the same page as CompanyView
+//  rendering page is confusing
 const RequestTable = () => {
     const [requests, setRequests] = useState([]);
 
@@ -14,16 +17,13 @@ const RequestTable = () => {
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ userId: 1, propertyId: 1 }) // Use userId and property is 1
-                // The request table that is going to appear is associated with userId 1 and propertyId 1. I am not able to fetch the
-                // userId since the login is not working
-                // for now these values are hardcoded, I will refactor later when the login is fixed
+                body: JSON.stringify({ userId: 1, propertyId: 1 }) // Use userId and propertyId equal to 1
             });
             if (!response.ok) {
                 throw new Error('Failed to fetch data');
             }
             const data = await response.json();
-            console.log('Fetched data:', data);
+            console.log('Fetched data:', data); // Logging the data
             setRequests(data);
         } catch (error) {
             console.error('Error fetching data:', error);

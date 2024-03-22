@@ -7,7 +7,7 @@ import { UserContext } from "@/context/userInfoContext";
 import { useRouter } from "next/navigation";
 
 export default function LoginForm() {
-  const { changeId, changeEmail, changeProfileUrl, changeAccountType, changePhoneNumber } = useContext(UserContext);
+  const { changeId, changeEmail, changeProfileUrl, changeAccountType, changePhoneNumber, changeUserName } = useContext(UserContext);
   const router = useRouter();
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
@@ -26,15 +26,17 @@ export default function LoginForm() {
       .then((response) => response.json())
       .then((data) => {
         changeId(data.id);
-        changeEmail(data.email);
+        changeEmail(data['email']);
         changeProfileUrl(data.profileUrl);
         changeAccountType(data.accountType);
         changePhoneNumber(data.phoneNumber);
+        changeUserName(data.userName)
+        router.push("/");
       })
       .catch((error) => {
         console.log(error);
       });
-    router.push("/");
+    
   };
 
   return (

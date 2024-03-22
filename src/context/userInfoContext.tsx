@@ -12,6 +12,8 @@ interface UserContextType {
     changeAccountType: (accountType: string) => void;
     phoneNumber: string;
     changePhoneNumber: (phoneNumber: string) => void;
+    userName: string;
+    changeUserName: (username: string) => void;
 }
 
 export const UserContext = createContext<UserContextType>({
@@ -25,6 +27,8 @@ export const UserContext = createContext<UserContextType>({
     changeAccountType: () => {},
     phoneNumber: "",
     changePhoneNumber: () => {},
+    userName: "",
+    changeUserName: () => {},
 });
 
 export function UserInfoProvider({ children }: { children: React.ReactNode }) {
@@ -33,6 +37,8 @@ export function UserInfoProvider({ children }: { children: React.ReactNode }) {
     const [profileUrl, setProfileUrl] = useState<string>("");
     const [accountType, setAccountType] = useState<string>("");
     const [phoneNumber, setPhoneNumber] = useState<string>("");
+    const [userName, setUserName] = useState<string>("");
+
 
     const changeId = (userId: string) => {
         setUserId(userId);
@@ -54,8 +60,13 @@ export function UserInfoProvider({ children }: { children: React.ReactNode }) {
         setPhoneNumber(phoneNumber);
     };
 
+    const changeUserName = (userName: string) => {
+        setUserName(userName);
+    };
+
+
     return (
-        <UserContext.Provider value={{ userId, changeId, email, changeEmail, profileUrl, changeProfileUrl, accountType, changeAccountType, phoneNumber, changePhoneNumber, }} > {children} </UserContext.Provider>
+        <UserContext.Provider value={{ userId, changeId, email, changeEmail, profileUrl, changeProfileUrl, accountType, changeAccountType, phoneNumber, changePhoneNumber, userName, changeUserName}} > {children} </UserContext.Provider>
     );
 
 }

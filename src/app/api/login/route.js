@@ -21,11 +21,18 @@ export async function POST(req) {
           status:401,
         });
       } else {
-        const response = user.rows[0];
-        console.log(response)
-        return new Response(response,{
-          status:200,
-        });
+        const userData = {
+          id: user.rows[0].id,
+          email: user.rows[0].email,
+          profileUrl: user.rows[0].profile_picture_url,
+          accountType: user.rows[0].account_type,
+          phoneNumber: user.rows[0].phone_number,
+          userName: user.rows[0].username
+        };
+        return new Response(
+          JSON.stringify(userData),
+          { status: 200 }
+        );
       }
 
     } catch (error) {

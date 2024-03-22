@@ -1,50 +1,49 @@
+// /api/handleUpdateRequestStatus.js
+
 import pool from "../../../utils/db";
 
-export async function POST(req){
+export async function POST(req) {
     const body = await req.json();
-    const {reviewerId, requestId, statusId, propertyId} = body;
+    const { reviewerId, requestId, statusId, propertyId } = body;
 
     const client = await pool.connect();
 
     try {
         await client.query("BEGIN"); // Start the transaction
 
-        const prop = await client.query("SELECT * FROM property WHERE user_id = $1 AND property_id = $2", [reviewerId, propertyId]);
-        
-        if (prop.rows.length == 0){
-          return new Response("Error fetching data", {
-            status: 404
-          });
-        }
-        
-        const req = await client.query(
-            "SELECT * FROM request WHERE req_id = $1",
-            [requestId]
-        );
-        
-        if (req.length == 0) {
-            return new Response('Request does not exist', {
-                status:404,
-            });
-        } else {
-            await client.query(
-                "UPDATE request SET status_id = $1 WHERE req_id = $2",
-                [statusId, requestId]
-            );
+        // check if the property exists and belongs to the reviewer
+        const propertyCheck = await client.query("SELECT * FROM property WHERE user_id = $1 AND property_id = $2", [reviewerId, propertyId]);
 
-            await client.query("COMMIT"); // Commit the transaction
-            return new Response('Status updated successfully', {
-                status: 200
+        if (propertyCheck.rows.length === 0) {
+            return new Response("Error: Property not found or doesn't belong to the reviewer", {
+                status: 404
             });
         }
-        
-    } catch (error) {
-        await client.query("ROLLBACK"); // Rollback the transaction if an error occurs
-        console.error("Error:", error);
-        return new Response('Internal Server Errror', {
-          status:500,
+
+        // check if the request exists
+        const requestCheck = await client.query("SELECT * FROM request WHERE req_id = $1", [requestId]);
+
+        if (requestCheck.rows.length === 0) {
+            return new Response('Error: Request not found', {
+                status: 404,
+            });
+        }
+
+        // update the request status
+        await client.query("UPDATE request SET status_id = $1 WHERE req_id = $2", [statusId, requestId]);
+
+        await client.query("COMMIT"); // commit the transaction
+        return new Response('Status updated successfully', {
+            status: 200
         });
-      } finally {
+
+    } catch (error) {
+        await client.query("ROLLBACK"); // rollback the transaction if an error occurs
+        console.error("Error:", error);
+        return new Response('Internal Server Error', {
+            status: 500,
+        });
+    } finally {
         client.release();
-      }
+    }
 }

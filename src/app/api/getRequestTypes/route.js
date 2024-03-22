@@ -1,5 +1,5 @@
 import pool from "../../../utils/db";
-
+// this was not used
 export async function GET(req){
     const client = await pool.connect();
 

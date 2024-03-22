@@ -8,6 +8,7 @@ import {PiPlusSquareFill} from "react-icons/pi";
 import React, {useState} from "react";
 import RequestForm from "@/components/RequestPageComponents/CompanyView/RequestForm";
 import RequestTable from "@/components/RequestPageComponents/CompanyView/RequestTable";
+import EditRequestForm from "@/components/RequestPageComponents/CompanyView/EditRequestForm";
 
 function page() {
     const page = 'company';
@@ -19,6 +20,12 @@ function page() {
         setshowAddRequestFormFormStatus(!showAddRequestForm);
     };
 
+    const [showEditRequestForm, setshowEditRequestFormFormStatus] = useState(false);
+
+    const toggleFormEdit = () => {
+        setshowEditRequestFormFormStatus(!showEditRequestForm);
+    };
+
 
 
     return (
@@ -28,12 +35,15 @@ function page() {
             <div className="absolute w-5/6 right-6 top-5 bottom-5 bg-white shadow-lg rounded-xl">
                 <CardHeader title="Requests">
                     <button onClick={toggleFormAdd}><PiPlusSquareFill/></button>
-
+                    <button onClick={toggleFormEdit}><MdEditSquare/></button>
                     <MdCancel className="" />
+
+
                 </CardHeader>
 
 
                 {showAddRequestForm && <RequestForm />}
+                {showEditRequestForm && <EditRequestForm />}
                 {page === 'company'? <RequestTable/>:<RequestTable/>}
 
             </div>

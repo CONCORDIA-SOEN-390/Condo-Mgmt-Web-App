@@ -84,26 +84,9 @@ SAD document: https://docs.google.com/document/d/1eQVRxt3JX2LYbJ1-B7WSg-BhIpafmL
 The updated diagrams (drawio file) can be found in the Google Drive repository above.
 
 <h2>Sprint 1</h2>
-<a href="https://drive.google.com/drive/folders/1Vsr0mZFP2RmtuVDbYk3VzxJ2AIYcYo2o">Link to the Google Drive Repository</a> <br> <br>
-
-**1. Product vision statement** <br>
-<a href="https://docs.google.com/document/d/1tS8w4iYZ728Z95waX4_3n9eHt1DvkdJS/edit">Stakeholders and Users</a> <br> <br>
-**2. Requirements and User Stories Backlog (USB)** <br>  <a href="https://docs.google.com/document/d/1nUSjszSEiqj2-frMTft6wzstjd057xVLYd28h7r9Xh0/edit"> Implementation User Stories</a><br> <br>
-**3. Software Architecture Document (SAD)** <br><a href="https://docs.google.com/document/d/1eQVRxt3JX2LYbJ1-B7WSg-BhIpafmLLU/edit"> Software Architecture Document </a> <br>
-**4. Risk Assesment and Management Plan** <br>
- <a href="https://docs.google.com/document/d/1kVzTHhXFTLIS2IXmU4jpsxdrNCQ-xKOn/edit?usp=sharing&ouid=117308092083738229587&rtpof=true&sd=true">Risk Assesment and Management Plan </a> <br>
- <a href="https://docs.google.com/spreadsheets/d/1mI_D5lBJim7m-mxVObdMf_5LxiT-qM4l/edit?usp=sharing&ouid=117308092083738229587&rtpof=true&sd=true">Risk Analysis </a> <br> <br>
-**5. Running prototype** <br> <br>
-**6. Testing** <br> <br>
-**7. Short sprint #1 retrospective** <br>
-<a href="https://docs.google.com/document/d/1qvAvFqHRSajobD32D6GlsT5lPsO1yR8X/edit">Sprint #1 Retrospective</a> <br> <br>
-**8. Release Plan (Sprint #2 planning)** <br>
-<a href="https://docs.google.com/document/d/1nwkFhbhMXYxjpyTaXZ21rp9LClPL8FUY/edit">Sprint #2 Release Plan</a> <br> <br>
-**9. UI prototypes for Sprint #2 user stories** <br>
-<a href="https://docs.google.com/document/d/1F6TDlHc062L3lyELrQC-HfE5Fhymkumo/edit">UI Prototypes for Sprint #2 User Stories</a> <br> <br>
-**10. Testing Plan for Sprint #2** <br>
-<a href="https://docs.google.com/document/d/1myRVIsLsitkuvCj1IxaO4D6uLwUdmwQ5xo2TXdCYDuk/edit"> Testing Plan </a> 
-
+<a href="https://drive.google.com/drive/folders/1WH1FCZJig0ZmaP8-ELBxALLg6KYWnAe7">Link to the Sprint 3 Folder Repository</a> <br> <br>
+<br><br>
+<br>
 
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 

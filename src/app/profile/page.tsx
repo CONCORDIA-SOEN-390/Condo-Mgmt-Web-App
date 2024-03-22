@@ -1,13 +1,11 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import SideBar from "@/components/GeneralComponents/PublicUserView/SideBar";
+import { UserContext } from "@/context/userInfoContext";
+import { useContext } from "react";
 
 function page() {
-  const [profilePic] = React.useState("/TemporaryProfilePicture.png"); // Remove TemporaryProfilePicture from profile folder
-  const [name] = React.useState("John Smith");
-  const [email] = React.useState("john_smith@gmail.com");
-  const [phoneNumber] = React.useState("(514) 123-4567");
-
+  const {profileUrl, email, phoneNumber, userName} = useContext(UserContext);
   return (
     <div className="flex min-h-screen-nav items-center justify-center h-full bg-white">
       <SideBar page="profile" />
@@ -15,7 +13,7 @@ function page() {
         <div className="row-start-2 row-end-2 col-start-1 col-end-2 flex items-center justify-center">
           <div className="w-40 h-40">
             <img
-              src= {profilePic}
+              src= {profileUrl}
               alt= "Profile Picture"
               className="w-full h-full object-cover full"
             />
@@ -23,7 +21,7 @@ function page() {
         </div>
         <div className="row-start-3 mrow-end-4 col-start-1 col-end-2">
           <div className="col-start-2 col-end-3 p-2">
-            <strong>Name: </strong> {name}
+            <strong>Name: </strong> {userName}
           </div>
           <div className="col-start-2 col-end-3 p-2">
             <strong>Email: </strong> {email}

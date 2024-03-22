@@ -10,7 +10,7 @@ import {PiPlusSquareFill} from "react-icons/pi";
 import React, {useState} from "react";
 import AddFinanceForm from "@/components/FinancePageComponents/CompanyView/AddFinanceForm";
 
-function page() {
+function FinancesPage() {
   const page = 'company';
 
 
@@ -41,4 +41,4 @@ function page() {
   );
 }
 
-export default page;
+export default FinancesPage;

@@ -3,8 +3,9 @@ import React, { useState } from "react";
 import SideBar from "@/components/GeneralComponents/PublicUserView/SideBar";
 import { UserContext } from "@/context/userInfoContext";
 import { useContext } from "react";
+import Image from "next/image";
 
-function page() {
+function ProfilePage() {
   const {profileUrl, email, phoneNumber, userName} = useContext(UserContext);
   return (
     <div className="flex min-h-screen-nav items-center justify-center h-full bg-white">
@@ -12,7 +13,7 @@ function page() {
       <div className="absolute grid grid-rows-4 grid-cols-1 gap-4 p-5 text-black text-xl justify-center items-center">
         <div className="row-start-2 row-end-2 col-start-1 col-end-2 flex items-center justify-center">
           <div className="w-40 h-40">
-            <img
+            <Image
               src= {profileUrl}
               alt= "Profile Picture"
               className="w-full h-full object-cover full"
@@ -35,4 +36,4 @@ function page() {
   );
 }
 
-export default page;
+export default ProfilePage;

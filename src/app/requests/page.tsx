@@ -12,7 +12,7 @@ import PublicUserRequestTable from "@/components/RequestPageComponents/PublicUse
 
 
 // i don't understand the company and public user rendering. For now, they both see the same content
-function page() {
+function RequestsPage() {
     const page = 'company';
 
     // toggle for add and edit
@@ -44,4 +44,4 @@ function page() {
         </div>
     );
 }
-export default page;
+export default RequestsPage;

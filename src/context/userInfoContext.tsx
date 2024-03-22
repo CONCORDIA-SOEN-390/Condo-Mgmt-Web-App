@@ -2,8 +2,8 @@
 import { createContext, useState } from "react";
 
 interface UserContextType {
-    userId: string;
-    changeId: (userId: string) => void;
+    userId: number;
+    changeId: (userId: number) => void;
     email: string;
     changeEmail: (email: string) => void;
     profileUrl: string;
@@ -17,7 +17,7 @@ interface UserContextType {
 }
 
 export const UserContext = createContext<UserContextType>({
-    userId: "",
+    userId:0 ,
     changeId: () => {},
     email: "",
     changeEmail: () => {},
@@ -32,7 +32,7 @@ export const UserContext = createContext<UserContextType>({
 });
 
 export function UserInfoProvider({ children }: { children: React.ReactNode }) {
-    const [userId, setUserId] = useState<string>("");
+    const [userId, setUserId] = useState<number>(0);
     const [email, setEmail] = useState<string>("");
     const [profileUrl, setProfileUrl] = useState<string>("");
     const [accountType, setAccountType] = useState<string>("");
@@ -40,7 +40,7 @@ export function UserInfoProvider({ children }: { children: React.ReactNode }) {
     const [userName, setUserName] = useState<string>("");
 
 
-    const changeId = (userId: string) => {
+    const changeId = (userId: number) => {
         setUserId(userId);
     };
 

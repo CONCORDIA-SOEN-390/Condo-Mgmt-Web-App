@@ -111,10 +111,11 @@ function AddPropertyForm() {
     }
   };
 
-  function handleSubmit(event){
+  function handleSubmit(event: React.FormEvent<HTMLFormElement>){
     event.preventDefault();
     setIsSubmitted(true);
   }
+
   const handleCancel = () => {
     setAddress("");
     setApartmentNumber(0);

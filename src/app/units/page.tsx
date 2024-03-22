@@ -10,7 +10,7 @@ interface Props{
   propertyName: string;
 }
 
-const page: React.FC<Props> = ({propertyName}) => {
+const UnitsPage: React.FC<Props> = ({propertyName}) => {
   const page = 'company'; // company or anything for user
   const router = useRouter()
 
@@ -27,4 +27,4 @@ const page: React.FC<Props> = ({propertyName}) => {
   );
 }
 
-export default page;
+export default UnitsPage;

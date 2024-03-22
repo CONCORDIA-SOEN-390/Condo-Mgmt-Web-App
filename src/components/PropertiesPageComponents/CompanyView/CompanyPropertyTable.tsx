@@ -2,55 +2,18 @@ import { useRouter } from 'next/navigation'
 import React, { useState } from 'react';
 import UnitsPage from "@/app/units/page";
 
-const properties = [
-  {
-    address: "1000 Example Street",
-    propertyName: "The Grand Residences",
-    dimension: 200000, // Total square footage of the building
-    numberOfUnits: 50,
-    numberOfFloors: 5,
-    parkingCount: 60, // Total number of parking spaces available
-    lockerCount: 50, // Total number of lockers available
-  },
-  {
-    address: "2000 Sample Avenue",
-    propertyName: "Lakeside Condos",
-    dimension: 300000,
-    numberOfUnits: 75,
-    numberOfFloors: 10,
-    parkingCount: 80,
-    lockerCount: 70,
-  },
-  {
-    address: "3000 Placeholder Blvd",
-    propertyName: "Metro Living Towers",
-    dimension: 250000,
-    numberOfUnits: 60,
-    numberOfFloors: 8,
-    parkingCount: 70,
-    lockerCount: 60,
-  },
-  {
-    address: "4000 Demo Lane",
-    propertyName: "Urban Heights",
-    dimension: 150000,
-    numberOfUnits: 40,
-    numberOfFloors: 4,
-    parkingCount: 45,
-    lockerCount: 40,
-  },
-  {
-    address: "5000 Mockup Road",
-    propertyName: "Skyline Estates",
-    dimension: 350000,
-    numberOfUnits: 100,
-    numberOfFloors: 15,
-    parkingCount: 110,
-    lockerCount: 100,
-  }
-];
 
-export default function PropertyTable() {
+interface Property {
+  address: string;
+  propertyName: string;
+  dimension: number;
+  numberOfUnits: number;
+  numberOfFloors: number;
+  parkingCount: number;
+  lockerCount: number;
+}
+
+export default function CompanyPropertyTable(properties:any) {
   const router = useRouter()
   const handleRowClick = (propertyName: string) => {
     <UnitsPage propertyName={propertyName}/>
@@ -72,7 +35,7 @@ export default function PropertyTable() {
         </tr>
       </thead>
       <tbody>
-        {properties.map((property, id) => {
+        {properties.map((property:Property, id: number) => {
           return (
             <tr key={id} onClick={() => handleRowClick(property.propertyName)}>
               <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{id + 1}</td>

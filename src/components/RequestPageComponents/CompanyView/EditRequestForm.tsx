@@ -29,7 +29,7 @@ const EditRequestForm = () => {
         }
     };
 
-    const toggleSelectedRequest = (request) => {
+    const toggleSelectedRequest = (request: any) => {
         setSelectedRequest(selectedRequest === request ? null : request);
         setNewStatus('');
     };

@@ -1,6 +1,6 @@
 // /api/handleUpdateRequestStatus.js
 
-import pool from "../../../utils/db";
+import pool from "../../../../utils/db";
 
 export async function POST(req) {
     const body = await req.json();

@@ -8,7 +8,7 @@ import CardHeader from "@/components/GeneralComponents/CardHeader";
 function page() {
   return (
     <div className="flex min-h-screen-nav items-center justify-center h-full bg-white">
-      <SideBar page="profile" />
+      <SideBar page="reservations" />
       <div className="absolute grid grid-rows-3 w-5/6 right-5 gap-5">
         <div className="bg-white shadow-lg rounded-xl ">
           <CardHeader title="My Reservations">

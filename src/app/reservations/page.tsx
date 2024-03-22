@@ -1,9 +1,8 @@
 import React from "react";
-import { MdCreditCard, MdUploadFile } from "react-icons/md";
-import { MdEditSquare } from "react-icons/md";
-import UploadForm from "@/components/ProfilePageComponents/UploadForm";
 import SideBar from "@/components/GeneralComponents/PublicUserView/SideBar";
 import CardHeader from "@/components/GeneralComponents/CardHeader";
+import MyReservationTable from "@/components/ReservationPageComponents/MyReservationTable";
+import AvailableFacilityTable from "@/components/ReservationPageComponents/AvailableFacilityTable";
 
 function page() {
   return (
@@ -15,22 +14,15 @@ function page() {
             <MdEditSquare className="text-white text-3xl" />
           </CardHeader>
           <div className="grid grid-cols-2 grid-rows-3 gap-5 p-5 text-black text-xl">
-  
           </div>
         </div>
-        <div className="bg-white shadow-lg rounded-xl ">
-          <CardHeader title="Reserve a Facility">
-            <MdCreditCard className="text-white text-3xl" />
-          </CardHeader>
-      
-        </div>
-        <div className="bg-white shadow-lg rounded-xl ">
-          <CardHeader title="Available Facilities">
-            <MdUploadFile className="text-white text-3xl" />
-          </CardHeader>
-          <div className="grid grid-cols-2 p-5 text-black text-xl">
-       
-          
+        <div className="bg-white shadow-lg rounded-xl">
+          <CardHeader
+            title="Available Facilities"
+            children={undefined}
+          ></CardHeader>
+          <div className="p-5 text-black text-xl">
+            <AvailableFacilityTable />
           </div>
         </div>
       </div>

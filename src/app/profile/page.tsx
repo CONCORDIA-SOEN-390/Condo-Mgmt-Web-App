@@ -2,7 +2,7 @@
 import React from "react";
 import SideBar from "@/components/GeneralComponents/PublicUserView/SideBar";
 
-function Page() {
+function page() {
   const [profilePic] = React.useState("/TemporaryProfilePicture.png"); // Remove TemporaryProfilePicture from profile folder
   const [name] = React.useState("John Smith");
   const [email] = React.useState("john_smith@gmail.com");
@@ -37,4 +37,4 @@ function Page() {
   );
 }
 
-export default Page;
+export default page;

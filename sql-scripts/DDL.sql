@@ -39,7 +39,7 @@ CREATE TABLE  IF NOT EXISTS unit(
 	registration_key VARCHAR(40) UNIQUE,
 	square_footage INTEGER NULL,
 	price_per_square_foot DECIMAL(6,2) NULL,
-	condo_fee DECIMAL(6,2) NULL, 
+	condo_fee DECIMAL(8,2) NULL, 
 	PRIMARY KEY(unit_id, property_id),
 	FOREIGN KEY(property_id) references property(property_id) ON DELETE CASCADE,
 	FOREIGN KEY(owner_id) references users(user_id) ON DELETE CASCADE

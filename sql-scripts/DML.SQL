@@ -6,11 +6,11 @@ VALUES
     ('user2', 'password2', 'user2@example.com', NULL, NULL, 'reg_user');
 
 -- Adding default properties
-INSERT INTO property (user_id, property_name) 
+INSERT INTO property (user_id, property_name, property_type, address) 
 VALUES 
-    (1, 'Admin'),
-    (2, 'User1'),
-    (3, 'User2');
+    (1, 'Admin', 'rental', '123 Bernard'),
+    (2, 'User1', 'rental', '456 Ste'),
+    (3, 'User2', 'rental', '789 Tryia');
 
 -- Adding default files
 INSERT INTO File_ (file_id, file_data, property_id) 

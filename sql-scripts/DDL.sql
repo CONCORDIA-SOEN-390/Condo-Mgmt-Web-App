@@ -18,6 +18,7 @@ CREATE TABLE IF NOT EXISTS property(
 	user_id INTEGER,
 	property_name VARCHAR(10),
 	property_type property_type,
+	address VARCHAR(50),
 	PRIMARY KEY(property_id),
 	FOREIGN KEY(user_id) references users(user_id) ON DELETE CASCADE
 );

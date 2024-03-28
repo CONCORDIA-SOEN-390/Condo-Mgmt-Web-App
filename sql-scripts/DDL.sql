@@ -99,3 +99,13 @@ CREATE TABLE request (
 	FOREIGN KEY(unit_id, property_id) references unit(unit_id, property_id) ON DELETE CASCADE
 );
 
+CREATE TABLE IF NOT EXISTS sale (
+    sale_id SERIAL PRIMARY KEY,
+    property_id INT,
+    old_owner_id INT,
+    condo_fee DECIMAL(8,2),
+    sale_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (property_id) REFERENCES property(property_id) ON DELETE CASCADE
+);
+
+

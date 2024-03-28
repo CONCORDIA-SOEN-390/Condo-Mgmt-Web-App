@@ -8,9 +8,35 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
--- Create trigger to call the function on UPDATE of square_footage or price_per_square_foot
 CREATE TRIGGER condo_fee_update_trigger
 BEFORE UPDATE OF square_footage, price_per_square_foot
 ON unit
 FOR EACH ROW
 EXECUTE FUNCTION update_condo_fee();
+
+ --
+ --
+ --
+ --
+
+--Record sale of property
+CREATE OR REPLACE FUNCTION record_sale()
+RETURNS TRIGGER AS $$
+BEGIN
+    -- Check if the property type is 'sale'
+    IF EXISTS (SELECT 1 FROM property WHERE property_id = OLD.property_id AND property_type = 'sale') THEN
+        -- Insert old values into the sale table
+        INSERT INTO sale (property_id, old_owner_id, condo_fee)
+        VALUES (OLD.property_id, OLD.owner_id, OLD.condo_fee);
+    END IF;
+
+    RETURN OLD;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER unit_owner_update_trigger
+AFTER UPDATE OF owner_id ON unit
+FOR EACH ROW
+WHEN (OLD.owner_id IS DISTINCT FROM NEW.owner_id)
+EXECUTE FUNCTION record_sale();
+

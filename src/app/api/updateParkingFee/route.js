@@ -2,7 +2,7 @@ import pool from "../../../../utils/db";
 
 export async function POST(req) {
     const body = await req.json();
-    const { userId, propertyId, unitId, sqft, pricePerSqft } = body;
+    const { userId, propertyId, parkingId, fee } = body;
 
     const client = await pool.connect();
 
@@ -18,23 +18,23 @@ export async function POST(req) {
             });
         }
 
-        // check if the unit exists
-        const unitCheck = await client.query("SELECT * FROM unit WHERE unit_id = $1 AND property_id = $2", [unitId, propertyId]);
-
-        if (unitCheck.rows.length === 0) {
-            return new Response('Error: Unit not found', {
+        // check if the parking exists
+        const parkingCheck = await client.query("SELECT * FROM parking WHERE parking_id = $1 AND property_id = $2", [parkingId, propertyId]);
+        
+        if (parkingCheck.rows.length === 0) {
+            return new Response('Error: parking not found', {
                 status: 404,
             });
         }
-
-        if (sqft > 0 && pricePerSqft > 0){
-            await client.query("UPDATE unit SET square_footage = $1, price_per_square_foot = $2 WHERE unit_id = $3 AND property_id = $4", [sqft, pricePerSqft, unitId, propertyId]);
+        
+        if (fee >= 0){
+            await client.query("UPDATE parking SET condo_fee = $1 WHERE parking_id = $2 AND property_id = $3", [fee, parkingId, propertyId]);
             await client.query("COMMIT"); // commit the transaction
             return new Response('Price updated successfully', {
                 status: 200
             });
         } else {
-            return new Response('Invalid square footage or price', {
+            return new Response('Invalid fee', {
                 status: 400,
             });
         }

@@ -1,4 +1,5 @@
 CREATE TYPE account_type AS ENUM('company','reg_user');
+CREATE TYPE property_type AS ENUM('sale', 'rental');
 
 --User table
 CREATE TABLE users (
@@ -16,6 +17,7 @@ CREATE TABLE IF NOT EXISTS property(
 	property_id SERIAL,
 	user_id INTEGER,
 	property_name VARCHAR(10),
+	property_type property_type,
 	PRIMARY KEY(property_id),
 	FOREIGN KEY(user_id) references users(user_id) ON DELETE CASCADE
 );

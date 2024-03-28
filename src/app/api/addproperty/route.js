@@ -3,7 +3,7 @@ import { v4 as uuidv4 } from 'uuid'; // Import UUID library
 
 export async function POST(req) {
   const body = await req.json();
-  const { userId, propertyName, address, numberOfUnits, numberOfFloors, numberOfUnitsPerFloor, numberOfParkingSpaces, numberOfLockers } = body;
+  const { userId, propertyName, address, numberOfUnits, numberOfFloors, numberOfUnitsPerFloor, numberOfParkingSpaces, numberOfLockers, propertyType } = body;
 
   const client = await pool.connect();
 
@@ -11,7 +11,7 @@ export async function POST(req) {
     await client.query("BEGIN"); // Start the transaction
 
     // Insert data into table1
-    const propertyResult = await client.query("INSERT INTO property(user_id, property_name) VALUES ($1, $2) RETURNING property_id", [1, propertyName]);
+    const propertyResult = await client.query("INSERT INTO property(user_id, property_name, property_type, address) VALUES ($1, $2, $3, $4) RETURNING property_id", [userId, propertyName, propertyType, address]);
 
     //retrieve property id generated for use in future queries
     const propertyId = propertyResult.rows[0].property_id;

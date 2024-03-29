@@ -1,8 +1,8 @@
-CREATE TYPE account_type AS ENUM('company','reg_user');
+CREATE TYPE account_type AS ENUM('company','reg_user', 'finance', 'management', 'operations');
 CREATE TYPE property_type AS ENUM('sale', 'rental');
 
 --User table
-CREATE TABLE users (
+CREATE TABLE IF NOT EXISTS users (
     user_id SERIAL PRIMARY KEY,
     username VARCHAR(255),
     password_ VARCHAR(255) NOT NULL,
@@ -10,6 +10,14 @@ CREATE TABLE users (
     phone_number VARCHAR(20),
     profile_picture_url VARCHAR(255),
     account_type account_type
+);
+
+CREATE TABLE IF NOT EXISTS employee (
+	employee_id INTEGER,
+	company_id INTEGER,
+	PRIMARY KEY (employee_id),
+	FOREIGN KEY (employee_id) REFERENCES users(user_id),
+	FOREIGN KEY (company_id) REFERENCES users(user_id)
 );
 
 --Property Table

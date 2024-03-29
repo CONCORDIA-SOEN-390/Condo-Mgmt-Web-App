@@ -9,8 +9,8 @@ VALUES
 INSERT INTO property (user_id, property_name, property_type, address) 
 VALUES 
     (1, 'Admin', 'rental', '123 Bernard'),
-    (2, 'User1', 'rental', '456 Ste'),
-    (3, 'User2', 'rental', '789 Tryia');
+    (1, 'User1', 'rental', '456 Ste'),
+    (1, 'User2', 'rental', '789 Tryia');
 
 -- Adding default files
 INSERT INTO File_ (file_id, file_data, property_id) 
@@ -21,20 +21,20 @@ VALUES
 -- Adding default units
 INSERT INTO unit (unit_id, property_id, owner_id, occupied, registration_key) 
 VALUES 
-    (1, 2, 2, TRUE, 'unit_reg_key_1'),
-    (2, 2, 2, FALSE, 'unit_reg_key_2');
+    (1, 1, 1, TRUE, 'unit_reg_key_1'),
+    (2, 1, 1, FALSE, 'unit_reg_key_2');
 
 -- Adding default lockers
 INSERT INTO locker (locker_id, property_id, owner_id, condo_fee, occupied) 
 VALUES 
-    (1, 2, 2, 50.00, TRUE),
-    (2, 2, 2, 50.00, FALSE);
+    (1, 1, 1, 50.00, TRUE),
+    (2, 1, 1, 50.00, FALSE);
 
 -- Adding default parking spaces
 INSERT INTO parking (parking_id, property_id, owner_id, condo_fee, occupied) 
 VALUES 
-    (1, 2, 2, 100.00, TRUE),
-    (2, 2, 2, 100.00, FALSE);
+    (1, 1, 1, 100.00, TRUE),
+    (2, 1, 1, 100.00, FALSE);
 
 -- Adding default request types (Already provided in previous DML)
 INSERT INTO request_type(type_id, type_name) 

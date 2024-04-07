@@ -5,7 +5,7 @@ import CardHeader from "@/components/GeneralComponents/CardHeader";
 import MyReservationTable from "@/components/ReservationPageComponents/MyReservationTable";
 import AvailableFacilityTable from "@/components/ReservationPageComponents/AvailableFacilityTable";
 import { MdEditSquare } from "react-icons/md";
-import { PiPlusSquareFill } from "react-icons/pi"; // Importing the plus icon
+import { PiPlusSquareFill } from "react-icons/pi";
 import AddFacilityForm from "@/components/ReservationPageComponents/AddFacilityForm";
 
 function ReservationsPage() {
@@ -40,16 +40,14 @@ function ReservationsPage() {
             <SideBar page="reservations" />
             <div className="flex flex-col flex-grow w-full">
                 <div className="w-full md:w-3/4 ml-auto mr-5">
-                    <div className="bg-white shadow-lg rounded-xl mb-5">
-                        <CardHeader title="My Reservations">
-                            <MdEditSquare className="text-white text-3xl" />
-                        </CardHeader>
-                        <div className="p-5 text-black text-xl">
-                            <MyReservationTable />
-                        </div>
-                    </div>
                     {properties.map((property) => (
                         <div key={property.property_id} className="bg-white shadow-lg rounded-xl mb-5">
+                            <CardHeader title={`Reservations for Property ${property.property_name}`}>
+                                <MdEditSquare className="text-white text-3xl" />
+                            </CardHeader>
+                            <div className="p-5 text-black text-xl">
+                                <MyReservationTable propertyId={property.property_id} />
+                            </div>
                             <CardHeader title={`Available Facilities for Property ${property.property_name}`}>
                                 <button onClick={() => togglePopup(property.property_id)} className="plus-button">
                                     <PiPlusSquareFill size={30} />

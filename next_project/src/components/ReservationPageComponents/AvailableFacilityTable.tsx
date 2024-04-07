@@ -31,7 +31,7 @@ const AvailableFacilityTable: React.FC<{ propertyId: number }> = ({ propertyId }
         }
         const data = await response.json();
         setFacilities(data);
-        console.log('Fetched facilities:', data);
+       // console.log('Fetched facilities:', data);
         setLoading(false);
       } catch (error) {
         console.error('Error fetching facilities:', error);

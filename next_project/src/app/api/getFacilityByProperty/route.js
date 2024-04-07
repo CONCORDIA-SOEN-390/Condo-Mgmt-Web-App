@@ -1,15 +1,16 @@
 import pool from "../../../../utils/db";
 
 export async function POST(req) {
-    const body = await req.json();
-    const { propertyId } = body;
-
-    const client = await pool.connect();
-
     try {
-        const reqs = await client.query(`
-        SELECT * FROM facility WHERE property_id = $1
-        `, [propertyId]);
+        const body = await req.json();
+        const { propertyId } = body;
+
+        const client = await pool.connect();
+        const reqs = await client.query('SELECT * FROM facility WHERE property_id = $1', [propertyId]);
+
+        console.log('Fetched data:', reqs.rows);
+
+        client.release();
 
         return new Response(JSON.stringify(reqs.rows), {
             status: 200,
@@ -17,12 +18,10 @@ export async function POST(req) {
                 'Content-Type': 'application/json'
             }
         });
-
     } catch (error) {
+        console.error('Error fetching data:', error);
         return new Response('Internal Server Error', {
             status: 500
         });
-    } finally {
-        client.release();
     }
 }

@@ -34,7 +34,8 @@ export default function CompanyPropertyTable(properties:any) {
           <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Locker Count</th>
         </tr>
       </thead>
-      <tbody>
+      {/*<tbody>
+
         {properties.map((property:Property, id: number) => {
           return (
             <tr key={id} onClick={() => handleRowClick(property.propertyName)}>
@@ -49,7 +50,7 @@ export default function CompanyPropertyTable(properties:any) {
             </tr>
           );
         })}
-      </tbody>
+      </tbody>*/}
     </table>
   );
 }

@@ -54,5 +54,17 @@ VALUES
 -- Adding default requests
 INSERT INTO request (unit_id, property_id, req_creator, type_id, status_id, details) 
 VALUES 
-    (1, 2, 2, 1, 1, 'Move in request for User1 Property'),
-    (2, 2, 2, 4, 1, 'Violation report for User1 Property');
+    (1, 1, 2, 1, 1, 'Move in request for User1 Property'),
+    (2, 1, 2, 4, 1, 'Violation report for User1 Property');
+
+-- Adding default facilities
+INSERT INTO facility (property_id, name, description) VALUES
+    (1, 'Swimming Pool', 'A large swimming pool for recreational activities'),
+    (1, 'Tennis Court', 'An outdoor tennis court for sports enthusiasts'),
+    (1, 'Gym', 'A fully-equipped gym with cardio and strength training equipment');
+
+-- Adding default reservations
+INSERT INTO reservation (facility_id, property_id, user_id, start_time, end_time) VALUES
+    (1, 1, 2, '2024-04-06 09:00:00', '2024-04-06 10:30:00'),
+    (2, 1, 2, '2024-04-07 15:00:00', '2024-04-07 16:30:00'),
+    (3, 1, 3, '2024-04-08 17:00:00', '2024-04-08 18:00:00');

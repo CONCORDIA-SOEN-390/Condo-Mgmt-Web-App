@@ -116,4 +116,25 @@ CREATE TABLE IF NOT EXISTS sale (
     FOREIGN KEY (property_id) REFERENCES property(property_id) ON DELETE CASCADE
 );
 
+CREATE TABLE IF NOT EXISTS facility(
+	property_id INTEGER,
+	facility_id SERIAL,
+	name VARCHAR(30),
+	description TEXT,
+	PRIMARY KEY(property_id, facility_id),
+	FOREIGN KEY (property_id) REFERENCES property(property_id) ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS reservation (
+    reservation_id SERIAL PRIMARY KEY,
+    facility_id INTEGER,
+	property_id INTEGER,
+    user_id INTEGER,
+    start_time TIMESTAMP,
+    end_time TIMESTAMP,
+    FOREIGN KEY (facility_id, property_id) REFERENCES facility(facility_id, property_id) ON DELETE CASCADE,
+    FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE
+);
+
+
 

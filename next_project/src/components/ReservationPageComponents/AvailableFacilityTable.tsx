@@ -1,14 +1,12 @@
 import React, { useState, useEffect } from "react";
-import ReserveFacilityPopup from "./ReserveFacilityPopup";
-
+import ReserveFacilityPopup from "@/components/ReservationPageComponents/ReserveFacilityPopup";
 interface Facility {
   facility_id: number;
   name: string;
   description: string;
 }
 
-const AvailableFacilityTable: React.FC<{ propertyId: number }> = ({ propertyId }) => {
-  console.log('Property ID:', propertyId);
+const AvailableFacilityTable: React.FC<{ propertyId: number; userId: number }> = ({ propertyId, userId }) => {
 
   const [facilities, setFacilities] = useState<Facility[]>([]);
   const [showPopup, setShowPopup] = useState(false);
@@ -87,9 +85,13 @@ const AvailableFacilityTable: React.FC<{ propertyId: number }> = ({ propertyId }
         {showPopup && (
             <div className="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50">
               <ReserveFacilityPopup
-                  facility={selectedFacility}
-                  onReservationSubmit={handleReservationSubmit}
-                  onCancel={handleCancel}
+                    facility={selectedFacility}
+                    userId={userId}
+                    propertyId={propertyId}
+                    onReservationSubmit={handleReservationSubmit}
+                    onCancel={handleCancel}
+                    />
+
               />
             </div>
         )}

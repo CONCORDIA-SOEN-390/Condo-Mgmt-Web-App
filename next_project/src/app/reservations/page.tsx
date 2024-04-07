@@ -11,11 +11,13 @@ import AddFacilityForm from "@/components/ReservationPageComponents/AddFacilityF
 function ReservationsPage() {
     const [openPopupForProperty, setOpenPopupForProperty] = useState(null);
     const [properties, setProperties] = useState([]);
+    const [userId, setUserId] = useState(1); // Set the default userId here
+
 
     useEffect(() => {
         const fetchProperties = async () => {
             try {
-                const userId = 1; // Hardcoded user ID for now
+                //const userId = 1; // Hardcoded user ID for now
 
                 const response = await fetch(`/api/getProperties?userId=${userId}`);
                 if (!response.ok) {
@@ -31,6 +33,10 @@ function ReservationsPage() {
         fetchProperties();
     }, []);
 
+
+    console.log('userId++++:', userId);
+
+
     const togglePopup = (propertyId) => {
         setOpenPopupForProperty(propertyId === openPopupForProperty ? null : propertyId);
     };
@@ -43,7 +49,6 @@ function ReservationsPage() {
                     {properties.map((property) => (
                         <div key={property.property_id} className="bg-white shadow-lg rounded-xl mb-5">
                             <CardHeader title={`Reservations for Property ${property.property_name}`}>
-                                <MdEditSquare className="text-white text-3xl" />
                             </CardHeader>
                             <div className="p-5 text-black text-xl">
                                 <MyReservationTable propertyId={property.property_id} />
@@ -59,7 +64,7 @@ function ReservationsPage() {
                                 </div>
                             )}
                             <div className="p-5 text-black text-xl">
-                                <AvailableFacilityTable propertyId={property.property_id} />
+                                <AvailableFacilityTable propertyId={property.property_id} userId={userId} />
                             </div>
                         </div>
                     ))}

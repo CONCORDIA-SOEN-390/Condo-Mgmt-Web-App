@@ -24,8 +24,8 @@ export async function POST(req) {
         `, [propertyId]);
 
         client.release();
-        console.log("---------------------")
-        console.log(reqs.rows); // Output the result in the console
+        //console.log("---------------------")
+        //console.log(reqs.rows); // Output the result in the console
 
         return new Response(JSON.stringify(reqs.rows), {
             status: 200,

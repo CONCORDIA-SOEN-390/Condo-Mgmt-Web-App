@@ -5,8 +5,11 @@ import CardHeader from "@/components/GeneralComponents/CardHeader";
 import MyReservationTable from "@/components/ReservationPageComponents/MyReservationTable";
 import AvailableFacilityTable from "@/components/ReservationPageComponents/AvailableFacilityTable";
 import { MdEditSquare } from "react-icons/md";
+import { PiPlusSquareFill } from "react-icons/pi"; // Importing the plus icon
+import AddFacilityForm from "@/components/ReservationPageComponents/AddFacilityForm";
 
 function ReservationsPage() {
+    const [openPopupForProperty, setOpenPopupForProperty] = useState(null);
     const [properties, setProperties] = useState([]);
 
     useEffect(() => {
@@ -28,6 +31,10 @@ function ReservationsPage() {
         fetchProperties();
     }, []);
 
+    const togglePopup = (propertyId) => {
+        setOpenPopupForProperty(propertyId === openPopupForProperty ? null : propertyId);
+    };
+
     return (
         <div className="flex min-h-screen bg-gray-100">
             <SideBar page="reservations" />
@@ -44,8 +51,15 @@ function ReservationsPage() {
                     {properties.map((property) => (
                         <div key={property.property_id} className="bg-white shadow-lg rounded-xl mb-5">
                             <CardHeader title={`Available Facilities for Property ${property.property_name}`}>
-                                {/* You can place any content here */}
+                                <button onClick={() => togglePopup(property.property_id)} className="plus-button">
+                                    <PiPlusSquareFill size={30} />
+                                </button>
                             </CardHeader>
+                            {openPopupForProperty === property.property_id && (
+                                <div className="p-5">
+                                    <AddFacilityForm onClose={() => togglePopup(property.property_id)} propertyId={property.property_id} />
+                                </div>
+                            )}
                             <div className="p-5 text-black text-xl">
                                 <AvailableFacilityTable propertyId={property.property_id} />
                             </div>

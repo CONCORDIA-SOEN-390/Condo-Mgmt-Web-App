@@ -136,5 +136,11 @@ CREATE TABLE IF NOT EXISTS reservation (
     FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE
 );
 
-
+CREATE TABLE IF NOT EXISTS req_update(
+	update_id SERIAL PRIMARY KEY,
+	req_id INT,
+	update_new_status INT,
+	FOREIGN KEY (req_id) REFERENCES request(req_id),
+	FOREIGN KEY (update_new_status) REFERENCES request_status(status_id)
+);
 

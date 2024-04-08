@@ -28,7 +28,7 @@
     ".next/types/**/*.ts",
     "jest.config.js"
 , "src/app/api/addproperty/route.js",
-    "src/components/ReservationPageComponents/ReserveFacilityPopup"
+    "src/components/ReservationPageComponents/CompanyView/ReserveFacilityPopup"
   ],
   "exclude": ["node_modules"]
 }

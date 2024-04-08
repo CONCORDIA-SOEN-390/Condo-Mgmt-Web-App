@@ -43,11 +43,10 @@ function ReserveFacilityPopup({ facility, userId, propertyId, onReservationSubmi
         throw new Error("Failed to add reservation");
       }
 
-      // If the response is successful, call the onReservationSubmit callback
+
       onReservationSubmit();
     } catch (error) {
       console.error("Error adding reservation:", error);
-      // Handle error
     }
   };
 

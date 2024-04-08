@@ -1,76 +1,45 @@
 "use client"
-import React, { useEffect, useState } from "react";
+import React, {useContext, useEffect, useState} from "react";
 import SideBar from "@/components/GeneralComponents/PublicUserView/SideBar";
-import CardHeader from "@/components/GeneralComponents/CardHeader";
-import MyReservationTable from "@/components/ReservationPageComponents/MyReservationTable";
-import AvailableFacilityTable from "@/components/ReservationPageComponents/AvailableFacilityTable";
-import { MdEditSquare } from "react-icons/md";
-import { PiPlusSquareFill } from "react-icons/pi";
-import AddFacilityForm from "@/components/ReservationPageComponents/AddFacilityForm";
+
+import CondoOwnerAndRentalPage from "@/components/ReservationPageComponents/CondoOwnerAndRentalView/CondoOwnerAndRentalPage";
+import CompanyViewPage from "@/components/ReservationPageComponents/CompanyView/CompanyViewPage"
+import {UserContext} from "@/context/userInfoContext";
 
 function ReservationsPage() {
-    const [openPopupForProperty, setOpenPopupForProperty] = useState(null);
-    const [properties, setProperties] = useState([]);
-    const [userId, setUserId] = useState(1); // Set the default userId here
+    // FIX PAGE RENDERING HERE DEPENDING ON THE accountType
+    // also fetch user_id since its being passed
 
+    //const {userId, accountType} = useContext(UserContext);
 
-    useEffect(() => {
-        const fetchProperties = async () => {
-            try {
-                //const userId = 1; // Hardcoded user ID for now
-
-                const response = await fetch(`/api/getProperties?userId=${userId}`);
-                if (!response.ok) {
-                    throw new Error('Failed to fetch properties');
-                }
-                const data = await response.json();
-                setProperties(data);
-            } catch (error) {
-                console.error('Error fetching properties:', error);
-            }
-        };
-
-        fetchProperties();
-    }, []);
-
-
-    console.log('userId++++:', userId);
-
-
-    const togglePopup = (propertyId) => {
-        setOpenPopupForProperty(propertyId === openPopupForProperty ? null : propertyId);
-    };
+    //--------------------------HARDCODED VALUES--------------------------------------
+    const userId = 1;
+    const accountType = "company";
+    //const userId = 2;
+    //const accountType = "reg_user";
+    //--------------------------------------------------------------------------------
 
     return (
         <div className="flex min-h-screen bg-gray-100">
-            <SideBar page="reservations" />
-            <div className="flex flex-col flex-grow w-full">
-                <div className="w-full md:w-3/4 ml-auto mr-5">
-                    {properties.map((property) => (
-                        <div key={property.property_id} className="bg-white shadow-lg rounded-xl mb-5">
-                            <CardHeader title={`Reservations for Property ${property.property_name}`}>
-                            </CardHeader>
-                            <div className="p-5 text-black text-xl">
-                                <MyReservationTable propertyId={property.property_id} />
-                            </div>
-                            <CardHeader title={`Available Facilities for Property ${property.property_name}`}>
-                                <button onClick={() => togglePopup(property.property_id)} className="plus-button">
-                                    <PiPlusSquareFill size={30} />
-                                </button>
-                            </CardHeader>
-                            {openPopupForProperty === property.property_id && (
-                                <div className="p-5">
-                                    <AddFacilityForm onClose={() => togglePopup(property.property_id)} propertyId={property.property_id} />
-                                </div>
-                            )}
-                            <div className="p-5 text-black text-xl">
-                                <AvailableFacilityTable propertyId={property.property_id} userId={userId} />
-                            </div>
-                        </div>
-                    ))}
+            <div className="w-64 bg-gray-200">
+                <SideBar page="reservations" />
+            </div>
+            <div className="flex flex-grow lg:pl-40"> {/* Add lg:pl-64 to push content right on large screens */}
+                <div className="flex-grow"></div>
+                <div className="flex justify-end lg:justify-center xl:justify-end">
+                    {accountType === "reg_user" && (
+                        <CondoOwnerAndRentalPage userId={userId} />
+                    )}
+                    {accountType === "company" && (
+                        <CompanyViewPage userId={userId} />
+                    )}
                 </div>
             </div>
         </div>
+
+
+
+
     );
 }
 

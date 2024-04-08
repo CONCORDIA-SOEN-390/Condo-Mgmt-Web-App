@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import ReserveFacilityPopup from "@/components/ReservationPageComponents/ReserveFacilityPopup";
+import ReserveFacilityPopup from "@/components/ReservationPageComponents/CompanyView/ReserveFacilityPopup";
 interface Facility {
   facility_id: number;
   name: string;
@@ -92,7 +92,6 @@ const AvailableFacilityTable: React.FC<{ propertyId: number; userId: number }> =
                     onCancel={handleCancel}
                     />
 
-              />
             </div>
         )}
       </div>

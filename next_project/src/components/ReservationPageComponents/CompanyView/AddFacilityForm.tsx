@@ -31,12 +31,12 @@ function AddFacilityForm({ onClose, propertyId }) {
                 throw new Error("Failed to add facility");
             }
 
-            // Reset form data and close the form
+
             setFormData({
                 facilityName: "",
                 facilityDescription: ""
             });
-            onClose(); // Close the form
+            onClose();
         } catch (error) {
             console.error('Error:', error);
             setErrorMessage('An error occurred while submitting the request.');

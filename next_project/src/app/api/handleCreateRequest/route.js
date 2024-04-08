@@ -3,9 +3,11 @@ import pool from "../../../../utils/db";
 // used in request components
 export async function POST(req){
     const body = await req.json();
-    const { userId, requestTypeId, details, unitId, propertyId } = body;
+    const { userId, requestTypeId, details, unitId } = body; // Remove propertyId from here
 
     const defaultStatusId = 1;
+    const propertyId = body.propertyId; // Retrieve propertyId from the request body
+
     const client = await pool.connect();
 
     try {
@@ -19,9 +21,9 @@ export async function POST(req){
         await client.query("ROLLBACK"); // Rollback the transaction if an error occurs
         console.error("Error inserting data into tables:", error);
         return new Response('Internal Server Errror', {
-          status:500,
+            status:500,
         });
-      } finally {
+    } finally {
         client.release();
-      }
+    }
 }

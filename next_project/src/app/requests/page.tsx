@@ -9,12 +9,14 @@ import AddRequestForm from "@/components/RequestPageComponents/CompanyView/AddRe
 import CompanyRequestTable from "@/components/RequestPageComponents/CompanyView/RequestTable";
 import EditRequestForm from "@/components/RequestPageComponents/CompanyView/EditRequestForm";
 import PublicUserRequestTable from "@/components/RequestPageComponents/PublicUserView/RequestTable"
+import Request from "@/components/RequestPageComponents/PublicUserView/Request"
 
 
 // i don't understand the company and public user rendering. For now, they both see the same content
 function RequestsPage() {
     const page = 'company';
 
+    const userId = 1;
     // toggle for add and edit
     const [showAddRequestForm, setshowAddRequestFormFormStatus] = useState(false);
     const toggleFormAdd = () => {
@@ -32,13 +34,14 @@ function RequestsPage() {
 
             <div className="absolute w-5/6 right-6 top-5 bottom-5 bg-white shadow-lg rounded-xl">
                 <CardHeader title="Requests">
-                    <button onClick={toggleFormAdd}><PiPlusSquareFill/></button>
-                    <button onClick={toggleFormEdit}><MdEditSquare/></button>
+
+
                 </CardHeader>
                 {showAddRequestForm && <AddRequestForm />}
                 {showEditRequestForm && <EditRequestForm />}
                 {/*fix rendering here*/}
-                {page === 'company'? <CompanyRequestTable/>:<PublicUserRequestTable/>}
+                {/*page === 'company'? <CompanyRequestTable/>:<PublicUserRequestTable/>*/}
+                <Request userId={userId} />
 
             </div>
         </div>

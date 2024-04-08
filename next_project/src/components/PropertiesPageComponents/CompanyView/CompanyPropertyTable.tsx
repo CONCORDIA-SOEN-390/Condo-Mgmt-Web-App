@@ -1,73 +1,8 @@
 import { useRouter } from 'next/navigation'
 import React, {useContext, useEffect, useState} from 'react';
 import UnitsPage from "@/app/units/page";
-import {UserContext} from "@/context/userInfoContext";
 
 
-/*
-interface Property {
-  address: string;
-  propertyName: string;
-  dimension: number;
-  numberOfUnits: number;
-  numberOfFloors: number;
-  parkingCount: number;
-  lockerCount: number;
-}
-*/
-
-/*
-const properties = [
-  {
-    address: "1000 Example Street",
-    propertyName: "The Grand Residences",
-    dimension: 200000, // Total square footage of the building
-    numberOfUnits: 50,
-    numberOfFloors: 5,
-    parkingCount: 60, // Total number of parking spaces available
-    lockerCount: 50, // Total number of lockers available
-  },
-  {
-    address: "2000 Sample Avenue",
-    propertyName: "Lakeside Condos",
-    dimension: 300000,
-    numberOfUnits: 75,
-    numberOfFloors: 10,
-    parkingCount: 80,
-    lockerCount: 70,
-  },
-  {
-    address: "3000 Placeholder Blvd",
-    propertyName: "Metro Living Towers",
-    dimension: 250000,
-    numberOfUnits: 60,
-    numberOfFloors: 8,
-    parkingCount: 70,
-    lockerCount: 60,
-  },
-  {
-    address: "4000 Demo Lane",
-    propertyName: "Urban Heights",
-    dimension: 150000,
-    numberOfUnits: 40,
-    numberOfFloors: 4,
-    parkingCount: 45,
-    lockerCount: 40,
-  },
-  {
-    address: "5000 Mockup Road",
-    propertyName: "Skyline Estates",
-    dimension: 350000,
-    numberOfUnits: 100,
-    numberOfFloors: 15,
-    parkingCount: 110,
-    lockerCount: 100,
-  }
-];
-
-*/
-
-//export default function CompanyPropertyTable(properties:any) {
 export default function CompanyPropertyTable({userId}) {
 
   //const {userId ,profileUrl, email, phoneNumber, userName} = useContext(UserContext);
@@ -92,13 +27,6 @@ export default function CompanyPropertyTable({userId}) {
         });
   }, []);
 
-
-
-
-
-
-
-
   const handleRowClick = (propertyName: string) => {
     <UnitsPage propertyName={propertyName}/>
     router.push('/units')
@@ -119,7 +47,6 @@ export default function CompanyPropertyTable({userId}) {
         </tr>
         </thead>
         <tbody>
-        {/*properties.map((property:Property, id: number) => {*/}
         {properties.map((property, id) => {
           return (
               <tr key={id} onClick={() => handleRowClick(property.propertyName)}>

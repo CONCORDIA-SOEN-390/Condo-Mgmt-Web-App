@@ -1,5 +1,6 @@
 CREATE TYPE account_type AS ENUM('company','reg_user', 'finance', 'management', 'operations');
 CREATE TYPE property_type AS ENUM('sale', 'rental');
+CREATE TYPE expense_occurence AS enum('one-time', 'daily','weekly', 'monthly', 'yearly');
 
 --User table
 CREATE TABLE IF NOT EXISTS users (
@@ -151,6 +152,7 @@ CREATE TABLE IF NOT EXISTS expense(
 	expense_id SERIAL PRIMARY KEY,
 	company_id INTEGER,
 	expense_value DECIMAL(6,2),
+	occurence expense_occurence,
 	description TEXT,
 	FOREIGN KEY (company_id) REFERENCES users(user_id)
 );

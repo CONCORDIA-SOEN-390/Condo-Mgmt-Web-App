@@ -12,14 +12,6 @@ CREATE TABLE IF NOT EXISTS users (
     account_type account_type
 );
 
-CREATE TABLE IF NOT EXISTS employee (
-	employee_id INTEGER,
-	company_id INTEGER,
-	PRIMARY KEY (employee_id),
-	FOREIGN KEY (employee_id) REFERENCES users(user_id),
-	FOREIGN KEY (company_id) REFERENCES users(user_id)
-);
-
 --Property Table
 CREATE TABLE IF NOT EXISTS property(
 	property_id SERIAL,
@@ -29,6 +21,17 @@ CREATE TABLE IF NOT EXISTS property(
 	address VARCHAR(50),
 	PRIMARY KEY(property_id),
 	FOREIGN KEY(user_id) references users(user_id) ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS employee (
+	employee_id INTEGER,
+	company_id INTEGER,
+	property_id INTEGER,
+	num_of_assigned_req INTEGER DEFAULT 0,
+	PRIMARY KEY (employee_id),
+	FOREIGN KEY (employee_id) REFERENCES users(user_id),
+	FOREIGN KEY (company_id) REFERENCES users(user_id),
+	FOREIGN KEY (property_id) REFERENCES property(property_id)
 );
 
 --File table
@@ -103,7 +106,7 @@ CREATE TABLE request (
 	FOREIGN KEY(type_id) references request_type(type_id) ON DELETE CASCADE,
 	FOREIGN KEY(status_id) references request_status(status_id) ON DELETE CASCADE,
 	FOREIGN KEY(req_creator) references users(user_id) ON DELETE CASCADE,
-	FOREIGN KEY(req_reviewer) references users(user_id) ON DELETE CASCADE,
+	FOREIGN KEY(req_reviewer) references employee(employee_id) ON DELETE CASCADE,
 	FOREIGN KEY(unit_id, property_id) references unit(unit_id, property_id) ON DELETE CASCADE
 );
 

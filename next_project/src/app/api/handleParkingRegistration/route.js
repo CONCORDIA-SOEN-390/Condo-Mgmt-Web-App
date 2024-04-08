@@ -7,7 +7,7 @@ export async function POST(req) {
     const client = await pool.connect();
 
     try {
-        //await client.query("BEGIN"); // Start the transaction
+        await client.query("BEGIN"); // Start the transaction
 
         const p = await client.query("SELECT * FROM parking WHERE occupied = false AND property_id = $1 LIMIT 1", [propertyId])
 
@@ -21,8 +21,9 @@ export async function POST(req) {
         await client.query("UPDATE parking SET owner_id = $1, occupied = true WHERE parking_id = $2", [parkingOwnerId, parking_id]);
 
         await client.query("COMMIT"); // commit the transaction
-        return new Response('Status updated successfully', {
-            status: 200
+        return new Response('Parking updated succcessfully', {
+            status: 200,
+            parking_id: parking_id
         });
 
     } catch (error) {

@@ -147,3 +147,10 @@ CREATE TABLE IF NOT EXISTS req_update(
 	FOREIGN KEY (update_new_status) REFERENCES request_status(status_id)
 );
 
+CREATE TABLE IF NOT EXISTS expense(
+	expense_id SERIAL PRIMARY KEY,
+	company_id INTEGER,
+	expense_value DECIMAL(6,2),
+	description TEXT,
+	FOREIGN KEY (company_id) REFERENCES users(user_id)
+);

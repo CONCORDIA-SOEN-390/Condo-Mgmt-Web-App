@@ -30,7 +30,7 @@ const requests = [
   { type: 'Intercom Change', status: 'Completed' },
 ];
 
-const DashboardScreen = ({ navigation }) => {
+const DashboardScreen = () => {
   return (
     <ScrollView contentContainerStyle={styles.container}>
       <View style={styles.section}>

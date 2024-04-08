@@ -6,6 +6,7 @@ import DocumentScreen from '../../app/Home/DocumentScreen';
 import ReservationScreen from '../../app/Home/ReservationScreen';
 import SignUpLoginScreen from '../../app/Home/SignUpLoginScreen';
 import DashboardScreen from '../../app/Home/DashboardScreen';
+import FinancialManagementScreen from '../../app/Home/FinancialManagementScreen';
 
 const Drawer = createDrawerNavigator();
 
@@ -22,6 +23,7 @@ export default function DrawerNavigator() {
       }}>
       <Drawer.Screen name="Login/SignUp" component={SignUpLoginScreen} />
       <Drawer.Screen name="Dashboard" component={DashboardScreen} />
+      <Drawer.Screen name="FinancialManagement" component={FinancialManagementScreen} />
       <Drawer.Screen name="Home" component={HomeScreen} />
       <Drawer.Screen name="Profile" component={ProfileScreen} />
       <Drawer.Screen name="Property" component={PropertyScreen} />

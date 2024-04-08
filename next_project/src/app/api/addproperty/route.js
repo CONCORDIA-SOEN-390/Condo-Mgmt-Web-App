@@ -1,9 +1,9 @@
-import pool from "../../../utils/db";
+import pool from "../../../../utils/db";
 import { v4 as uuidv4 } from 'uuid'; // Import UUID library
 
 export async function POST(req) {
   const body = await req.json();
-  const { userId, propertyName, address, numberOfUnits, numberOfFloors, numberOfUnitsPerFloor, numberOfParkingSpaces, numberOfLockers, propertyType } = body;
+  const { userId, propertyName, address, dimension, numberOfUnits, numberOfFloors, numberOfUnitsPerFloor, numberOfParkingSpaces, numberOfLockers, propertyType } = body; // Include dimension in the destructuring
 
   const client = await pool.connect();
 
@@ -11,7 +11,9 @@ export async function POST(req) {
     await client.query("BEGIN"); // Start the transaction
 
     // Insert data into table1
-    const propertyResult = await client.query("INSERT INTO property(user_id, property_name, property_type, address) VALUES ($1, $2, $3, $4) RETURNING property_id", [userId, propertyName, propertyType, address]);
+    //const propertyResult = await client.query("INSERT INTO property(user_id, property_name, property_type, address) VALUES ($1, $2, $3, $4) RETURNING property_id", [userId, propertyName, propertyType, address]);
+    const propertyResult = await client.query("INSERT INTO property(user_id, property_name, property_type, address, dimension, number_units, number_floors, parking_count, locker_count) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING property_id", [userId, propertyName, propertyType, address, dimension, numberOfUnits,numberOfFloors, numberOfParkingSpaces, numberOfLockers]);
+
 
     //retrieve property id generated for use in future queries
     const propertyId = propertyResult.rows[0].property_id;

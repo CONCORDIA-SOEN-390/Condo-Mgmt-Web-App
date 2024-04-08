@@ -27,6 +27,11 @@ CREATE TABLE IF NOT EXISTS property(
 	property_name VARCHAR(10),
 	property_type property_type,
 	address VARCHAR(50),
+	dimension INTEGER,
+	number_units INTEGER,
+	number_floors INTEGER,
+	parking_count INTEGER,
+	locker_count INTEGER,
 	PRIMARY KEY(property_id),
 	FOREIGN KEY(user_id) references users(user_id) ON DELETE CASCADE
 );

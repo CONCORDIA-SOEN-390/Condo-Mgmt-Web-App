@@ -10,6 +10,7 @@ import CompanyRequestTable from "@/components/RequestPageComponents/CompanyView/
 import EditRequestForm from "@/components/RequestPageComponents/CompanyView/EditRequestForm";
 import PublicUserRequestTable from "@/components/RequestPageComponents/PublicUserView/RequestTable"
 import Request from "@/components/RequestPageComponents/PublicUserView/Request"
+import RequestCompany from "@/components/RequestPageComponents/CompanyView/Request";
 
 
 // i don't understand the company and public user rendering. For now, they both see the same content
@@ -40,8 +41,9 @@ function RequestsPage() {
                 {showAddRequestForm && <AddRequestForm />}
                 {showEditRequestForm && <EditRequestForm />}
                 {/*fix rendering here*/}
-                {/*page === 'company'? <CompanyRequestTable/>:<PublicUserRequestTable/>*/}
-                <Request userId={userId} />
+                {/*page === 'company'? <CompanyRequestTable/>:<PublicUserRequestTable/>
+                <Request userId={userId} />*/}
+                <RequestCompany userId={userId}/>
 
             </div>
         </div>

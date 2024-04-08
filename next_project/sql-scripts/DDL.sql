@@ -11,14 +11,24 @@ CREATE TABLE IF NOT EXISTS users (
     profile_picture_url VARCHAR(255),
     account_type account_type
 );
+CREATE TABLE IF NOT EXISTS jobs(
+								   job_id INTEGER,
+								   job_description VARCHAR(255),
+								   PRIMARY KEY (job_id)
+);
 
 CREATE TABLE IF NOT EXISTS employee (
 	employee_id INTEGER,
-	company_id INTEGER,
+	property_id INTEGER,
+	user_id INTEGER,
+	job_id INTEGER,
 	PRIMARY KEY (employee_id),
-	FOREIGN KEY (employee_id) REFERENCES users(user_id),
-	FOREIGN KEY (company_id) REFERENCES users(user_id)
+	FOREIGN KEY (property_id) references property(property_id),
+	FOREIGN KEY (user_id) REFERENCES users(user_id),
+	FOREIGN KEY (job_id) REFERENCES jobs(job_id)
 );
+
+
 
 --Property Table
 CREATE TABLE IF NOT EXISTS property(

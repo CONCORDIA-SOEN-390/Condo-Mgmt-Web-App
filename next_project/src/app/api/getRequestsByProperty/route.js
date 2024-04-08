@@ -30,19 +30,21 @@ export async function POST(req) {
                 request.req_creator,
                 request_type.type_name,
                 request_status.status_name,
-                request.details
+                request.details,
+                users_req_reviewer.username as req_reviewer_username,
+                jobs_req_reviewer.job_description as req_reviewer_job_description
             FROM
                 request
-                    INNER JOIN
-                request_type ON request.type_id = request_type.type_id
-                    INNER JOIN
-                request_status ON request.status_id = request_status.status_id
-                    INNER JOIN
-                users ON request.req_creator = users.user_id
-                    INNER JOIN
-                property ON request.property_id = property.property_id
+                    INNER JOIN request_type ON request.type_id = request_type.type_id
+                    INNER JOIN request_status ON request.status_id = request_status.status_id
+                    INNER JOIN users ON request.req_creator = users.user_id
+                    INNER JOIN property ON request.property_id = property.property_id
+                    LEFT JOIN employee AS emp_req_reviewer ON request.req_reviewer = emp_req_reviewer.employee_id
+                    LEFT JOIN users AS users_req_reviewer ON emp_req_reviewer.user_id = users_req_reviewer.user_id
+                    LEFT JOIN jobs AS jobs_req_reviewer ON emp_req_reviewer.job_id = jobs_req_reviewer.job_id
             WHERE
                 request.property_id = $1
+
         `, [propertyId]);
 
         // commit the transaction

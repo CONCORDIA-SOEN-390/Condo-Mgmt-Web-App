@@ -12,9 +12,9 @@ CREATE TABLE IF NOT EXISTS users (
     account_type account_type
 );
 CREATE TABLE IF NOT EXISTS jobs(
-								   job_id INTEGER,
-								   job_description VARCHAR(255),
-								   PRIMARY KEY (job_id)
+	job_id INTEGER,
+	job_description VARCHAR(255),
+	PRIMARY KEY (job_id)
 );
 
 CREATE TABLE IF NOT EXISTS employee (
@@ -26,7 +26,6 @@ CREATE TABLE IF NOT EXISTS employee (
 	FOREIGN KEY (user_id) REFERENCES users(user_id),
 	FOREIGN KEY (job_id) REFERENCES jobs(job_id)
 );
-
 
 
 --Property Table
@@ -149,6 +148,3 @@ CREATE TABLE IF NOT EXISTS reservation (
     FOREIGN KEY (facility_id, property_id) REFERENCES facility(facility_id, property_id) ON DELETE CASCADE,
     FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE
 );
-
-
-

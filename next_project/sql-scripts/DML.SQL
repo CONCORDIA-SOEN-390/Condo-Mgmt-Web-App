@@ -68,3 +68,18 @@ INSERT INTO reservation (facility_id, property_id, user_id, start_time, end_time
     (1, 1, 2, '2024-04-06 09:00:00', '2024-04-06 10:30:00'),
     (2, 1, 2, '2024-04-07 15:00:00', '2024-04-07 16:30:00'),
     (3, 1, 3, '2024-04-08 17:00:00', '2024-04-08 18:00:00');
+
+
+-- Adding jobs
+INSERT INTO jobs (job_id, job_description) VALUES
+    (1, 'Moving'),
+    (2, 'Operations'),
+    (3, 'Finance'),
+    (4, 'Technician');
+
+-- Adding employees
+INSERT INTO employee (employee_id, property_id, user_id, job_id) VALUES
+    (1, 1, 4, 1),
+    (2, 1, 5, 2),
+    (3, 2, 6, 3);
+

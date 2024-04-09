@@ -2,6 +2,7 @@ import {useEffect, useState} from 'react';
 import React from 'react';
 import UnitsTable from "@/components/UnitsPageComponents/UnitsTable";
 import LockerTable from "@/components/PropertiesPageComponents/CompanyView/LockerTable";
+import ParkingTable from "@/components/PropertiesPageComponents/CompanyView/ParkingTable";
 
 
 export default function CompanyPropertyTable({ userId }) {
@@ -68,6 +69,7 @@ export default function CompanyPropertyTable({ userId }) {
                                     <div>Additional details here
 
                                         <LockerTable propertyId={property.property_id} />
+                                        <ParkingTable propertyId={property.property_id} />
 
                                         {/*<UnitsTable />*/}
 

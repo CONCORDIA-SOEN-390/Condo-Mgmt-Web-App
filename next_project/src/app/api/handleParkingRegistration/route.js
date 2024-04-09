@@ -2,7 +2,7 @@ import pool from "../../../../utils/db";
 
 export async function POST(req) {
     const body = await req.json();
-    const { propertyId, parkingOwnerId } = body;
+    const { propertyId, parkingOwnerId, parkingId, parkingFee } = body;
 
     const client = await pool.connect();
 
@@ -18,7 +18,7 @@ export async function POST(req) {
         }
         const parking_id = p.rows[0]['parking_id'];
         // update the request status
-        await client.query("UPDATE parking SET owner_id = $1, occupied = true WHERE parking_id = $2", [parkingOwnerId, parking_id]);
+        await client.query("UPDATE parking SET owner_id = $1, occupied = true, condo_fee = $2 WHERE parking_id = $3", [parkingOwnerId, parkingFee, parking_id]);
 
         await client.query("COMMIT"); // commit the transaction
         return new Response('Parking updated succcessfully', {

@@ -16,6 +16,7 @@ function PropertiesPage() {
   const [showAddPropertyForm, setshowAddPropertyFormStatus] = useState(false);
   const [properties, setProperties] = useState([]);
 
+  const userId = 1;
 
 
   const toggleForm = () => {
@@ -40,7 +41,7 @@ function PropertiesPage() {
         </CardHeader>
 
         {showAddPropertyForm && <AddPropertyForm />}
-        {page === 'company'? <CompanyPropertyTable properties={properties} />: <PublicUserPropertyTable/>}
+        {page === 'company'? <CompanyPropertyTable userId={userId} />: <PublicUserPropertyTable/>}
       </div>
     </div>
   );

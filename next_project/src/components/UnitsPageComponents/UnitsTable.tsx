@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import UnitDetails from './UnitDetails';
+import LockerTable from "@/components/PropertiesPageComponents/CompanyView/LockerTable";
 
 interface Unit {
   unitNumber: number,
@@ -122,6 +123,8 @@ const UnitsTable: React.FC = () => {
       {selectedUnit && (
         <UnitDetails unit={selectedUnit} onClose={handleCloseDetails} />
       )}
+
+
       </div>
     );
   }

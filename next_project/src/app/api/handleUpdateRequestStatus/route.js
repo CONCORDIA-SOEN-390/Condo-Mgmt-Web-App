@@ -4,24 +4,15 @@ import pool from "../../../../utils/db";
 
 export async function POST(req) {
     const body = await req.json();
-    const { reviewerId, requestId, statusId, propertyId } = body;
+    const { reviewerId, requestId, statusId } = body;
 
     const client = await pool.connect();
 
     try {
         await client.query("BEGIN"); // Start the transaction
 
-        // check if the property exists and belongs to the reviewer
-        const propertyCheck = await client.query("SELECT * FROM property WHERE user_id = $1 AND property_id = $2", [reviewerId, propertyId]);
-
-        if (propertyCheck.rows.length === 0) {
-            return new Response("Error: Property not found or doesn't belong to the reviewer", {
-                status: 404
-            });
-        }
-
         // check if the request exists
-        const requestCheck = await client.query("SELECT * FROM request WHERE req_id = $1", [requestId]);
+        const requestCheck = await client.query("SELECT * FROM request WHERE req_id = $1 AND req_reviewer = $2", [requestId, reviewerId]);
 
         if (requestCheck.rows.length === 0) {
             return new Response('Error: Request not found', {
@@ -30,7 +21,10 @@ export async function POST(req) {
         }
 
         // update the request status
-        await client.query("UPDATE request SET status_id = $1 WHERE req_id = $2", [statusId, requestId]);
+        await client.query("UPDATE request SET status_id = $1, req_reviewer = $2 WHERE req_id = $3", [statusId, null, requestId]);
+
+        // update the employee to decrease their assigned req count
+        await client.query("UPDATE employee SET num_of_assigned_req = num_of_assigned_req - 1 WHERE employee_id = $1", [reviewerId]);
 
         await client.query("COMMIT"); // commit the transaction
         return new Response('Status updated successfully', {

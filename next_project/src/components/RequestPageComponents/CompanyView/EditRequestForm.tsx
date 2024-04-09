@@ -6,12 +6,12 @@ const EditRequestForm = ({ request, userId, propertyId, onClose }) => {
     const [newStatus, setNewStatus] = useState('');
     const [employees, setEmployees] = useState([]);
     const [newReviewer, setNewReviewer] = useState('');
-
-
+    const [statusOptions, setStatusOptions] = useState([]);
 
     useEffect(() => {
         fetchRequests();
         fetchEmployees();
+        fetchStatusOptions();
     }, [propertyId]);
 
     const fetchEmployees = async () => {
@@ -33,8 +33,6 @@ const EditRequestForm = ({ request, userId, propertyId, onClose }) => {
         }
     };
 
-
-    // same code as the RequestTable component
     const fetchRequests = async () => {
         try {
             const response = await fetch('/api/getRequestsByProperty', {
@@ -54,10 +52,27 @@ const EditRequestForm = ({ request, userId, propertyId, onClose }) => {
         }
     };
 
+    const fetchStatusOptions = async () => {
+        try {
+            const response = await fetch('/api/getRequestStatuses');
+            if (!response.ok) {
+                throw new Error('Failed to fetch status options');
+            }
+            const data = await response.json();
+            setStatusOptions(data);
+        } catch (error) {
+            console.error('Error fetching status options:', error);
+        }
+    };
 
 
     const handleUpdateReviewer = async () => {
         try {
+            const reviewerId = newReviewer;
+            if (!reviewerId) {
+                console.error('Error: No reviewer selected');
+                return;
+            }
             const response = await fetch('/api/handleUpdateRequestReviewer', {
                 method: 'POST',
                 headers: {
@@ -65,7 +80,7 @@ const EditRequestForm = ({ request, userId, propertyId, onClose }) => {
                 },
                 body: JSON.stringify({
                     requestId: selectedRequest.req_id,
-                    newReviewerId: newReviewer
+                    newReviewerId: reviewerId
                 })
             });
             if (!response.ok) {
@@ -78,17 +93,6 @@ const EditRequestForm = ({ request, userId, propertyId, onClose }) => {
         }
     };
 
-    
-    const toggleSelectedRequest = (request: any) => {
-        setSelectedRequest(selectedRequest === request ? null : request);
-        setNewStatus('');
-    };
-
-
-
-
-
-
     const handleStatusChange = async () => {
         try {
             const response = await fetch('/api/handleUpdateRequestStatus', {
@@ -97,7 +101,6 @@ const EditRequestForm = ({ request, userId, propertyId, onClose }) => {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
-                    //reviewerId: 1,
                     requestId: selectedRequest.req_id,
                     statusId: newStatus,
                     propertyId: selectedRequest.property_id
@@ -114,35 +117,29 @@ const EditRequestForm = ({ request, userId, propertyId, onClose }) => {
 
     return (
         <div className="overflow-x-auto bg-blue-100 p-4">
-
-            <div className="overflow-x-auto bg-blue-100 p-4">
-                <h1 className="text-2xl mb-4">Update Request</h1>
-                <div>
-                    <h1 className="text-xl font-bold mb-4 text-blue-500">Employees:</h1>
-                    <table className="min-w-full divide-y divide-gray-200">
-                        <thead className="bg-blue-400 text-white">
-                        <tr>
-                            <th scope="col" className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Employee ID</th>
-                            <th scope="col" className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Username</th>
-                            <th scope="col" className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Job Description</th>
+            <h1 className="text-2xl mb-4">Update Request</h1>
+            <div>
+                <h1 className="text-xl font-bold mb-4 text-blue-500">Employees:</h1>
+                <table className="min-w-full divide-y divide-gray-200">
+                    <thead className="bg-blue-400 text-white">
+                    <tr>
+                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Employee ID</th>
+                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Username</th>
+                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Job Description</th>
+                    </tr>
+                    </thead>
+                    <tbody className="bg-white divide-y divide-gray-200">
+                    {employees.map(employee => (
+                        <tr key={employee.employee_id}>
+                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{employee.employee_id}</td>
+                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{employee.username}</td>
+                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{employee.job_description}</td>
                         </tr>
-                        </thead>
-                        <tbody className="bg-white divide-y divide-gray-200">
-                        {employees.map(employee => (
-                            <tr key={employee.employee_id}>
-                                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{employee.employee_id}</td>
-                                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{employee.username}</td>
-                                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{employee.job_description}</td>
-                            </tr>
-                        ))}
-                        </tbody>
-                    </table>
-                </div>
+                    ))}
+                    </tbody>
+                </table>
             </div>
-
-
             <div className="my-8"></div>
-
             {requests.length > 0 && (
                 <table className="min-w-full divide-y divide-gray-200">
                     <thead className="bg-blue-400 text-white">
@@ -159,7 +156,7 @@ const EditRequestForm = ({ request, userId, propertyId, onClose }) => {
                     </thead>
                     <tbody className="bg-white divide-y divide-gray-200">
                     {requests.map(request => (
-                        <tr key={request.req_id} className={`bg-gray-50 cursor-pointer hover:bg-gray-100`} onClick={() => toggleSelectedRequest(request)}>
+                        <tr key={request.req_id} className={`bg-gray-50 cursor-pointer hover:bg-gray-100`} onClick={() => setSelectedRequest(selectedRequest === request ? null : request)}>
                             <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{request.req_id}</td>
                             <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{request.unit_id}</td>
                             <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{request.property_id}</td>
@@ -176,17 +173,16 @@ const EditRequestForm = ({ request, userId, propertyId, onClose }) => {
             {requests.length === 0 && (
                 <div>No requests found</div>
             )}
-
             {/* Update Reviewer section */}
             {selectedRequest && (
-                <div className="mt-4"> {/* Added margin top */}
+                <div className="mt-4">
                     <h3 className="mb-2">Update Reviewer</h3>
                     <select
                         className="border border-gray-300 rounded px-3 py-2 mr-2"
                         value={newReviewer}
                         onChange={(e) => setNewReviewer(e.target.value)}
                     >
-                        {/* Dropdown options */}
+                        <option value="">Select Employee</option>
                         {employees.map(employee => (
                             <option key={employee.employee_id} value={employee.employee_id}>
                                 {employee.employee_id} - {employee.username} - {employee.job_description}
@@ -201,7 +197,6 @@ const EditRequestForm = ({ request, userId, propertyId, onClose }) => {
                     </button>
                 </div>
             )}
-
             {/* Update Status section */}
             {selectedRequest && (
                 <div className="mt-4">
@@ -212,9 +207,9 @@ const EditRequestForm = ({ request, userId, propertyId, onClose }) => {
                         onChange={(e) => setNewStatus(e.target.value)}
                     >
                         <option value="">Select Status</option>
-                        <option value="1">In Review</option>
-                        <option value="2">Denied</option>
-                        <option value="3">Accepted</option>
+                        {statusOptions.map(status => (
+                            <option key={status.status_id} value={status.status_id}>{status.status_name}</option>
+                        ))}
                     </select>
                     <button
                         className="bg-blue-500 text-white px-4 py-2 rounded"

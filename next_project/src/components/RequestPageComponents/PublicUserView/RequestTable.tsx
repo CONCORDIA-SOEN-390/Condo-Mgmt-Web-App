@@ -5,7 +5,7 @@ const RequestTable = ({ propertyId, userId }) => {
 
     useEffect(() => {
         fetchRequests();
-    }, [propertyId, userId]); // Add propertyId and userId as dependencies
+    }, [propertyId, userId]);
 
     const fetchRequests = async () => {
         try {
@@ -20,7 +20,7 @@ const RequestTable = ({ propertyId, userId }) => {
                 throw new Error('Failed to fetch data');
             }
             const data = await response.json();
-            console.log('Fetched data:', data); // Logging the data
+            console.log('Fetched data:', data);
             setRequests(data);
         } catch (error) {
             console.error('Error fetching data:', error);
@@ -39,7 +39,7 @@ const RequestTable = ({ propertyId, userId }) => {
                         <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Request Creator</th>
 
                         <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Request Reviewer</th>
-                        <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Type Name</th> {/* Display type_name instead of type_id */}
+                        <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Type Name</th>
                         <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Status ID</th>
                         <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Details</th>
                     </tr>
@@ -53,7 +53,7 @@ const RequestTable = ({ propertyId, userId }) => {
                             <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{request.req_creator_username}</td>
 
                             <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{request.req_reviewer}</td>
-                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{request.type_name}</td> {/* Display type_name instead of type_id */}
+                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{request.type_name}</td>
                             <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{request.status_name}</td>
                             <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{request.details}</td>
                         </tr>

@@ -1,19 +1,26 @@
-import pool from "../../../utils/db";
-// this was not used
-export async function GET(req){
+import pool from "../../../../utils/db";
+
+export async function GET(req) {
     const client = await pool.connect();
 
     try {
-        const statuses = await client.query("SELECT * FROM request_status");
-        return new Response(statuses.rows, {
-            status:200
-        })
-    } catch (error) {
-        console.error("Error getrting data from tables:", error);
-        return new Response('Internal Server Errror', {
-          status:500,
+        const statuses = await client.query("SELECT status_id, status_name FROM request_status");
+        const data = statuses.rows.map(row => ({
+            status_id: row.status_id,
+            status_name: row.status_name
+        }));
+        return new Response(JSON.stringify(data), {
+            status: 200,
+            headers: {
+                'Content-Type': 'application/json'
+            }
         });
-      } finally {
+    } catch (error) {
+        console.error("Error getting data from tables:", error);
+        return new Response('Internal Server Error', {
+            status: 500,
+        });
+    } finally {
         client.release();
-      }
+    }
 }

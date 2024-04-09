@@ -26,6 +26,7 @@ export async function POST(req) {
             }
         });
     } catch (error) {
+        console.error('Error updating reviewer:', error);
         return new Response('Internal Server Error', {
             status: 500
         });

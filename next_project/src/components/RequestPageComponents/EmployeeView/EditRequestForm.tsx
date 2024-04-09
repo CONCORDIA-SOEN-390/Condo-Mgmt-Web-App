@@ -1,44 +1,76 @@
 import React, { useState, useEffect } from 'react';
-import EditRequestForm from './EditRequestForm';
 
-const RequestTable = ({ userId, propertyId }) => {
+const EditRequestForm = ({ request, userId, propertyId, onClose }) => {
     const [requests, setRequests] = useState([]);
     const [selectedRequest, setSelectedRequest] = useState(null);
+    const [newStatus, setNewStatus] = useState('');
+    const [statusOptions, setStatusOptions] = useState([]);
 
     useEffect(() => {
         fetchRequests();
-    }, []);
+
+        fetchStatusOptions();
+    }, [propertyId]);
 
     const fetchRequests = async () => {
         try {
-            const response = await fetch('/api/getRequestsByProperty', {
+            const response = await fetch('/api/getAssignedRequests', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ userId: userId, propertyId: propertyId })
+                body: JSON.stringify({ userId: userId })
             });
             if (!response.ok) {
-                throw new Error('Failed to fetch data');
+                throw new Error('Failed to fetch requests');
             }
             const data = await response.json();
-            console.log('Fetched data:', data);
             setRequests(data);
         } catch (error) {
-            console.error('Error fetching data:', error);
+            console.error('Error fetching requests:', error);
         }
     };
 
-    const handleRowClick = (request) => {
-        setSelectedRequest(request);
+    const fetchStatusOptions = async () => {
+        try {
+            const response = await fetch('/api/getRequestStatuses');
+            if (!response.ok) {
+                throw new Error('Failed to fetch status options');
+            }
+            const data = await response.json();
+            setStatusOptions(data);
+        } catch (error) {
+            console.error('Error fetching status options:', error);
+        }
     };
 
-    const handleCloseForm = () => {
-        setSelectedRequest(null);
+    const handleStatusChange = async () => {
+        try {
+            const response = await fetch('/api/handleUpdateRequestStatus', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    requestId: selectedRequest.req_id,
+                    statusId: newStatus,
+                    propertyId: selectedRequest.property_id
+                })
+            });
+            if (!response.ok) {
+                throw new Error('Failed to update status');
+            }
+            console.log('Status updated successfully');
+        } catch (error) {
+            console.error('Error updating status:', error);
+        }
     };
 
     return (
-        <div className="overflow-x-auto">
+        <div className="overflow-x-auto bg-blue-100 p-4">
+            <h1 className="text-2xl mb-4">Update Request</h1>
+
+            <div className="my-8"></div>
             {requests.length > 0 && (
                 <table className="min-w-full divide-y divide-gray-200">
                     <thead className="bg-blue-400 text-white">
@@ -46,7 +78,6 @@ const RequestTable = ({ userId, propertyId }) => {
                         <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Request ID</th>
                         <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Unit ID</th>
                         <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Property ID</th>
-                        <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Property Name</th>
                         <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Request Creator</th>
                         <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Request Reviewer</th>
                         <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Type ID</th>
@@ -56,11 +87,10 @@ const RequestTable = ({ userId, propertyId }) => {
                     </thead>
                     <tbody className="bg-white divide-y divide-gray-200">
                     {requests.map(request => (
-                        <tr key={request.req_id} className="bg-gray-50" onClick={() => handleRowClick(request)}>
+                        <tr key={request.req_id} className={`bg-gray-50 cursor-pointer hover:bg-gray-100`} onClick={() => setSelectedRequest(selectedRequest === request ? null : request)}>
                             <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{request.req_id}</td>
                             <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{request.unit_id}</td>
                             <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{request.property_id}</td>
-                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{request.property_name}</td>
                             <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{request.req_creator_username}</td>
                             <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{request.req_reviewer_username} - {request.req_reviewer_job_description}</td>
                             <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{request.type_name}</td>
@@ -71,14 +101,34 @@ const RequestTable = ({ userId, propertyId }) => {
                     </tbody>
                 </table>
             )}
-            {selectedRequest && (
-                <EditRequestForm userId={userId} propertyId={propertyId} request={selectedRequest} onClose={handleCloseForm} />
-            )}
             {requests.length === 0 && (
                 <div>No requests found</div>
+            )}
+
+            {/* Update Status section */}
+            {selectedRequest && (
+                <div className="mt-4">
+                    <h3 className="mb-2">Update Status</h3>
+                    <select
+                        className="border border-gray-300 rounded px-3 py-2 mr-2"
+                        value={newStatus}
+                        onChange={(e) => setNewStatus(e.target.value)}
+                    >
+                        <option value="">Select Status</option>
+                        {statusOptions.map(status => (
+                            <option key={status.status_id} value={status.status_id}>{status.status_name}</option>
+                        ))}
+                    </select>
+                    <button
+                        className="bg-blue-500 text-white px-4 py-2 rounded"
+                        onClick={handleStatusChange}
+                    >
+                        Update Status
+                    </button>
+                </div>
             )}
         </div>
     );
 };
 
-export default RequestTable;
+export default EditRequestForm;

@@ -18,11 +18,10 @@ CREATE TABLE IF NOT EXISTS jobs(
 );
 
 CREATE TABLE IF NOT EXISTS employee (
-	employee_id INTEGER,
+	employee_id SERIAL PRIMARY KEY,
 	property_id INTEGER,
 	user_id INTEGER,
 	job_id INTEGER,
-	PRIMARY KEY (employee_id),
 	FOREIGN KEY (property_id) references property(property_id),
 	FOREIGN KEY (user_id) REFERENCES users(user_id),
 	FOREIGN KEY (job_id) REFERENCES jobs(job_id)

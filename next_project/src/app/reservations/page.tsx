@@ -24,9 +24,9 @@ function ReservationsPage() {
             <div className="w-64 bg-gray-200">
                 <SideBar page="reservations" />
             </div>
-            <div className="flex flex-grow lg:pl-40"> {/* Add lg:pl-64 to push content right on large screens */}
+            <div className="flex flex-grow">
                 <div className="flex-grow"></div>
-                <div className="flex justify-end lg:justify-center xl:justify-end">
+                <div className="flex flex-grow">
                     {accountType === "reg_user" && (
                         <CondoOwnerAndRentalPage userId={userId} />
                     )}
@@ -36,6 +36,7 @@ function ReservationsPage() {
                 </div>
             </div>
         </div>
+
 
 
 

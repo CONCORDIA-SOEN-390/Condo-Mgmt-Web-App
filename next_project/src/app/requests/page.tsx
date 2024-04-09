@@ -4,6 +4,8 @@ import CompanySideBar from "@/components/GeneralComponents/CompanyView/SideBar";
 import CardHeader from "@/components/GeneralComponents/CardHeader";
 import React, {useState} from "react";
 import RequestCompanyView from "@/components/RequestPageComponents/CompanyView/Request";
+import RequestPublicView from "@/components/RequestPageComponents/PublicUserView/Request"
+import RequestEmployeeView from "@/components/RequestPageComponents/EmployeeView/RequestTable"
 
 function RequestsPage() {
     //------------------------------------FIX PAGE RENDERING HERE------------------------------------
@@ -44,8 +46,8 @@ function RequestsPage() {
 
                 {/*page === 'company'? <CompanyRequestTable/>:<PublicUserRequestTable/>
 
-                <RequestEmployeeView userId={userId}/>
-                <RequestPublicView userId={userId} />
+<RequestEmployeeView userId={userId}/>
+<RequestPublicView userId={userId} />
                 */}
                 <RequestCompanyView userId={userId}/>
             </div>

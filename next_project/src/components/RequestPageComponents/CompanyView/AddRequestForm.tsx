@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 function AddRequestForm({ userId, propertyId }) {
     const [formData, setFormData] = useState({
@@ -6,7 +6,26 @@ function AddRequestForm({ userId, propertyId }) {
         details: '',
         unitId: '',
     });
+    const [requestTypes, setRequestTypes] = useState([]);
     const [errorMessage, setErrorMessage] = useState("");
+
+    useEffect(() => {
+        async function fetchRequestTypes() {
+            try {
+                const response = await fetch('/api/getRequestTypes');
+                if (!response.ok) {
+                    throw new Error('Failed to fetch request types');
+                }
+                const data = await response.json();
+                setRequestTypes(data);
+            } catch (error) {
+                console.error('Error:', error);
+                setErrorMessage('An error occurred while fetching request types.');
+            }
+        }
+        fetchRequestTypes();
+    }, []);
+
 
     const handleChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -31,6 +50,8 @@ function AddRequestForm({ userId, propertyId }) {
                     requestTypeId: '',
                     details: '',
                     unitId: '',
+                    propertyId: propertyId,
+                    userId: userId
                 });
             } else {
                 setErrorMessage(data.message || 'An error occurred.');
@@ -56,10 +77,9 @@ function AddRequestForm({ userId, propertyId }) {
                             onChange={handleChange}
                         >
                             <option value="">Select Request Type</option>
-                            <option value="1">Move In</option>
-                            <option value="2">Move Out</option>
-                            <option value="3">Change Intercom Number</option>
-                            <option value="4">Report Violation</option>
+                            {requestTypes.map(requestType => (
+                                <option key={requestType.type_id} value={requestType.type_id}>{requestType.type_name}</option>
+                            ))}
                         </select>
                     </div>
                     {/* Details */}

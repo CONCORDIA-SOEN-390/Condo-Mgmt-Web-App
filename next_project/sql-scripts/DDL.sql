@@ -18,15 +18,24 @@ CREATE TABLE IF NOT EXISTS jobs(
 );
 
 CREATE TABLE IF NOT EXISTS employee (
-	employee_id SERIAL PRIMARY KEY,
+	employee_id INTEGER,
+	company_id INTEGER,
 	property_id INTEGER,
-	user_id INTEGER,
-	job_id INTEGER,
-	FOREIGN KEY (property_id) references property(property_id),
-	FOREIGN KEY (user_id) REFERENCES users(user_id),
-	FOREIGN KEY (job_id) REFERENCES jobs(job_id)
+	num_of_assigned_req INTEGER DEFAULT 0,
+	PRIMARY KEY (employee_id),
+	FOREIGN KEY (employee_id) REFERENCES users(user_id),
+	FOREIGN KEY (company_id) REFERENCES users(user_id),
+	FOREIGN KEY (property_id) REFERENCES property(property_id)
 );
 
+
+CREATE TABLE IF NOT EXISTS req_update(
+	update_id SERIAL PRIMARY KEY,
+	req_id INT,
+	update_new_status INT,
+	FOREIGN KEY (req_id) REFERENCES request(req_id),
+	FOREIGN KEY (update_new_status) REFERENCES request_status(status_id)
+);
 
 --Property Table
 CREATE TABLE IF NOT EXISTS property(

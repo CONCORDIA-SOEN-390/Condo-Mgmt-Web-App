@@ -3,13 +3,14 @@ import { FaEye } from "react-icons/fa";
 import { FaEyeSlash } from "react-icons/fa";
 
 interface Unit {
-    unitNumber: number;
-    parkingLocker: number;
-    size: number;
-    occupied: string;
-    owner: string;
-    email: string;
-    fee: number;
+    unit_id: number;
+    property_id: number;
+    owner_id: number;
+    occupied: boolean;
+    square_footage: number;
+    condo_fee: number;
+    ownerName?: string;
+    ownerEmail?: string;
 }
 
 interface Props {
@@ -20,16 +21,23 @@ interface Props {
 const UnitDetails: React.FC<Props> = ({ unit, onClose }) => {
     const [key, setKey] = useState('sdfhjd9o3h1-wq837');
     const [showKey, setShowKey] = useState(false);
+    const [units, setUnits] = useState<Unit[]>([]);
+    const [selectedUnit, setSelectedUnit] = useState<Unit | null>(null);
+    const [isLoading, setIsLoading] = useState<boolean>(true);
 
     const handleToggleKeyVisibility = () => {
         setShowKey(!showKey);
+
     };
+
+
+    console.log('Selected Unit:', unit);
 
     return (
         <div className="fixed inset-0 flex justify-center items-center bg-black bg-opacity-50" onClick={onClose}>
             <div className="bg-white w-5/6 text-black rounded-lg shadow-md" onClick={(e) => e.stopPropagation()}>
                 <div className="flex justify-between bg-[#CDCDCD] rounded-t-lg">
-                    <h2 className="mt-2 ml-2 text-2xl font-bold mb-4">Unit {unit.unitNumber} Details</h2>
+                    <h2 className="mt-2 ml-2 text-2xl font-bold mb-4">Unit {unit.unit_id} Details</h2>
                     <span className="text-4xl mr-2 cursor-pointer" onClick={onClose}>&times;</span>
                 </div>
                 <div>
@@ -40,6 +48,7 @@ const UnitDetails: React.FC<Props> = ({ unit, onClose }) => {
                                 <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Parking Spot</th>
                                 <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Locker Number</th>
                                 <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Unit Size (sqft)</th>
+                                <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Fee For Unit Size (sqft)</th>
                                 <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Occupied</th>
                                 <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Owner</th>
                                 <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Email</th>
@@ -52,6 +61,7 @@ const UnitDetails: React.FC<Props> = ({ unit, onClose }) => {
                                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{unit.parkingLocker}</td>
                                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{unit.parkingLocker}</td>
                                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{unit.size}</td>
+                                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{/*fee per square foot*/}</td>
                                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{unit.occupied}</td>
                                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{unit.owner}</td>
                                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{unit.email}</td>

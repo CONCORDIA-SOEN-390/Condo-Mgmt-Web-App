@@ -151,12 +151,10 @@ export default function CompanyPropertyTable({ userId }) {
                         {expandedPropertyId === property.property_id && (
                             <tr>
                                 <td colSpan="9" className="py-10">
-                                    <div>Additional details here
-
-                                    <LockerTable propertyId={property.property_id} />
-                                    <ParkingTable propertyId={property.property_id} />
-                                    <UnitsTable propertyId={property.property_id}/>
-
+                                    <div className="space-y-8">
+                                        <UnitsTable propertyId={property.property_id}/>
+                                        <LockerTable propertyId={property.property_id} />
+                                        <ParkingTable propertyId={property.property_id} />
                                     </div>
                                 </td>
                             </tr>

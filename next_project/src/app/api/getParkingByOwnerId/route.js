@@ -7,20 +7,23 @@ const supabase = createClient(
 
 export async function POST(req) {
     try {
-        const { propertyId } = await req.json();
+        const { ownerId, propertyId } = await req.json();
 
-        const { data: units, error: unitError } = await supabase
-            .from('unit')
+        const { data: parkings, error: parkingError } = await supabase
+            .from('parking')
             .select('*')
-            .eq('property_id', propertyId);
+            .eq('property_id', propertyId)
+            .eq('owner_id', ownerId);
 
-        if (unitError) {
-            return new Response(JSON.stringify(unitError), {
+        console.log(parkings);
+
+        if (parkingError) {
+            return new Response(JSON.stringify(parkingError), {
                 status: 500,
             });
         }
 
-        return new Response(JSON.stringify(units), {
+        return new Response(JSON.stringify(parkings), {
             status: 200,
             headers: {
                 'Content-Type': 'application/json',

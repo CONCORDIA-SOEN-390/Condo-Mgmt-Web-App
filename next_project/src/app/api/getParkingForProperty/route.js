@@ -22,7 +22,7 @@ export async function POST(req) {
             });
         }
 
-        console.log('Fetched data:', parking);
+       // console.log('Fetched data:', parking);
 
         return new Response(JSON.stringify(parking), {
             status: 200,

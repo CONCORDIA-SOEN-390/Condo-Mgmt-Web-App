@@ -26,7 +26,7 @@ export async function POST(req) {
             });
         }
 
-        console.log('Fetched data:', lockers);
+        //console.log('Fetched data:', lockers);
 
         return new Response(JSON.stringify(lockers), {
             status: 200,

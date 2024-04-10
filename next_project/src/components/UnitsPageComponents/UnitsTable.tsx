@@ -1,84 +1,47 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import UnitDetails from './UnitDetails';
 
 interface Unit {
-  unitNumber: number,
-  parkingLocker: number,
-  size: number;
-  occupied: string;
-  owner: string;
-  email: string;
-  fee: number;
+  unit_id: number;
+  property_id: number;
+  owner_id: number;
+  occupied: boolean;
+  square_footage: number;
+  condo_fee: number;
+  ownerName?: string;
+  ownerEmail?: string;
 }
 
-const UnitsTable: React.FC = () => {
-  const units = [
-    {
-      unitNumber: 101,
-      parkingLocker: 1,
-      size: 770,
-      occupied: "Yes",
-      owner: "John Doe",
-      email: "john.doe@gmail.com",
-      fee: 340.68
-    },
-    {
-      unitNumber: 102,
-      parkingLocker: 2,
-      size: 780,
-      occupied: "Yes",
-      owner: "Joe Smith",
-      email: "joe.smith@gmail.com",
-      fee: 350.09
-    },
-    {
-      unitNumber: 103,
-      parkingLocker: 3,
-      size: 750,
-      occupied: "Yes",
-      owner: "Phil Sanders",
-      email: "phil.s@hotmail.com",
-      fee: 320.34
-    },
-    {
-      unitNumber: 104,
-      parkingLocker: 4,
-      size: 796,
-      occupied: "Yes",
-      owner: "Billy Bob",
-      email: "bob-b@gmail.com",
-      fee: 380.87
-    },
-    {
-      unitNumber: 105,
-      parkingLocker: 5,
-      size: 773,
-      occupied: "Yes",
-      owner: "Daisy Jones",
-      email: "daisyj@hotmail.com",
-      fee: 345.35
-    },
-    {
-      unitNumber: 106,
-      parkingLocker: 6,
-      size: 733,
-      occupied: "No",
-      owner: "N/A",
-      email: "N/A",
-      fee: 305.35
-    },
-    {
-      unitNumber: 107,
-      parkingLocker: 7,
-      size: 740,
-      occupied: "Yes",
-      owner: "Karen Kim",
-      email: "k.kim@hotmail.com",
-      fee: 310.35
-    }
-  ];
-
+export default function UnitsTable({ propertyId }: { propertyId: number }) {
+  const [units, setUnits] = useState<Unit[]>([]);
   const [selectedUnit, setSelectedUnit] = useState<Unit | null>(null);
+
+  useEffect(() => {
+    const fetchUnits = async () => {
+      try {
+        const response = await fetch('/api/getUnitsFromProperty', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ propertyId: propertyId }),
+        });
+        if (!response.ok) {
+          throw new Error('Failed to fetch units');
+        }
+        const data = await response.json();
+        setUnits(data);
+      } catch (error) {
+        console.error('Error fetching units:', error);
+      }
+    };
+
+    fetchUnits();
+  }, [propertyId]);
+
+
+
+
   const handleRowClick = (unit: Unit) => {
     setSelectedUnit(unit);
   };
@@ -87,42 +50,42 @@ const UnitsTable: React.FC = () => {
     setSelectedUnit(null);
   };
 
-    return (
+  return (
       <div>
+        <div className="bg-gray-50 rounded-lg shadow-md p-6">
+          <h2 className="text-xl font-bold mb-4">Unit Information</h2>
           <table className="min-w-full divide-y divide-gray-200">
-        <thead className="min-w-full bg-[#DAECFB] text-black">
-          <tr>
-            <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">#</th>
-            <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Parking Spot</th>
-            <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Locker Number</th>
-            <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Unit Size (sqft)</th>
-            <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Occupied</th>
-            <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Owner</th>
-            <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Email</th>
-            <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Condo Fee ($)</th>
-          </tr>
-        </thead>
-        <tbody>
-          {units.map((unit, id) => {
-            return (
-              <tr onClick={() => handleRowClick(unit)}>
-                <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{unit.unitNumber}</td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{unit.parkingLocker}</td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{unit.parkingLocker}</td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{unit.size}</td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{unit.occupied}</td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{unit.owner}</td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{unit.email}</td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{unit.fee}</td>
-              </tr>
-            );
-          })}
-        </tbody>
-      </table>
-      {selectedUnit && (
-        <UnitDetails unit={selectedUnit} onClose={handleCloseDetails} />
-      )}
+            <thead className="min-w-full bg-[#DAECFB] text-black">
+            <tr>
+              <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Unit ID</th>
+              <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Property ID</th>
+              <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Square Footage</th>
+              <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Occupied</th>
+              <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Owner ID</th>
+              <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Owner Name</th>
+              <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Owner Email</th>
+              <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Owner Status</th>
+              <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Condo Fee ($)</th>
+            </tr>
+            </thead>
+            <tbody>
+            {units.map((unit) => (
+                <tr key={unit.unit_id} onClick={() => handleRowClick(unit)}>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{unit.unit_id}</td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{unit.property_id}</td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{unit.square_footage}</td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{unit.occupied ? 'Yes' : 'No'}</td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{unit.owner_id}</td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{unit.ownerName}</td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{unit.ownerEmail}</td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{/*owner status rental or owner*/}</td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{unit.condo_fee}</td>
+                </tr>
+            ))}
+            </tbody>
+          </table>
+          {selectedUnit && <UnitDetails unit={selectedUnit} onClose={handleCloseDetails} />}
+        </div>
       </div>
-    );
-  }
-  export default UnitsTable;
+  );
+}

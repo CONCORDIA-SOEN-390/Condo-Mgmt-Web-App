@@ -1,54 +1,102 @@
 import { createClient } from '@supabase/supabase-js';
 
-// Initialize Supabase client
 const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL,
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+    process.env.NEXT_PUBLIC_SUPABASE_URL,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
 );
 
+// added adding new locker logic in same api -> if parkingId does not exist -> can create one by submitting parkingId -> oppupied false by default
+// update fee too
+// assigning user to a parkingId
 export async function POST(req) {
     const body = await req.json();
-    const { propertyId, parkingOwnerId } = body;
-
+    const { parkingOwnerId, parkingId, parkingFee, propertyId } = body;
 
     try {
+        await supabase.rpc('begin');
 
-        let { data : parking, error } = await supabase
-        .from('parking')
-        .select('*')
-        .eq('property_id', propertyId)
-        .eq('occupied', false);
+        let { data: existingParking, errorExisting } = await supabase
+            .from('parking')
+            .select('*')
+            .eq('parking_id', parkingId)
+            .eq('property_id', propertyId)
+            .limit(1);
 
-        if (error != null){
-            return new Response(error, {
-              status:500,
+        if (errorExisting) {
+            return new Response(JSON.stringify(errorExisting), {
+                status: 500,
             });
         }
 
-        if (parking.length === 0){
-            return new Response('All spaces filled', {
-                status: 400
-            });
-        }
-        const parking_id = parking[0]['parking_id'];
-        // update the request status
-        let { data : res, errorUpdate } = await supabase
-        .from('parking')
-        .update({owner_id: parkingOwnerId, occupied: true})
-        .eq('parking_id', parking_id)
-        .eq('property_id', parking[0]['property_id'])
-        .select();
+        if (!existingParking || existingParking.length === 0) {
+            let { data: newParking, errorCreate } = await supabase
+                .from('parking')
+                .insert([
+                    {
+                        parking_id: parkingId,
+                        property_id: propertyId,
+                        occupied: false,
+                        condo_fee: parkingFee || null,
+                    },
+                ]);
 
-        if (errorUpdate != null){
-            return new Response(JSON.stringify(error), {
-              status:500,
+            if (errorCreate) {
+                return new Response(JSON.stringify(errorCreate), {
+                    status: 500,
+                });
+            }
+
+            await supabase.rpc('commit');
+
+            return new Response(JSON.stringify({
+                message: 'New parking spot created successfully',
+                status: 200,
+                parking_id: parkingId,
+            }), {
+                status: 200,
+                headers: {
+                    'Content-Type': 'application/json',
+                },
             });
         }
-        return new Response('parking updated succcessfully', {
+
+        const parking_id = existingParking[0]['parking_id'];
+
+        let { data: updatedParking, errorUpdate } = await supabase
+            .from('parking')
+            .update({
+                owner_id: parkingOwnerId,
+                occupied: true,
+                condo_fee: parkingFee || null,
+            })
+            .eq('parking_id', parking_id)
+            .single();
+
+        if (errorUpdate) {
+            return new Response(JSON.stringify(errorUpdate), {
+                status: 500,
+            });
+        }
+
+        await supabase.rpc('commit');
+
+        return new Response(JSON.stringify({
+            message: 'Parking updated successfully',
             status: 200,
+            parking_id: parking_id,
+        }), {
+            status: 200,
+            headers: {
+                'Content-Type': 'application/json',
+            },
         });
 
     } catch (error) {
+
+        await supabase.rpc('rollback');
+
+        console.error('Error:', error);
+
         return new Response('Internal Server Error', {
             status: 500,
         });

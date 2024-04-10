@@ -15,21 +15,14 @@ function PropertiesPage() {
   const page = 'company'; // company or anything for user
   const [showAddPropertyForm, setshowAddPropertyFormStatus] = useState(false);
   const [properties, setProperties] = useState([]);
-
+  const userId = 1
 
 
   const toggleForm = () => {
     setshowAddPropertyFormStatus(!showAddPropertyForm);
   };
 
-  useEffect(() => {
-    fetch("api/getProperties")
-      .then(response => response.json())
-      .then(data => {
-        setProperties(data);
-        console.log(data);
-      });
-  }, []);
+
 
   return (
     <div className="flex min-h-screen-nav items-center justify-center h-full bg-white">
@@ -40,7 +33,7 @@ function PropertiesPage() {
         </CardHeader>
 
         {showAddPropertyForm && <AddPropertyForm />}
-        {page === 'company'? <CompanyPropertyTable properties={properties} />: <PublicUserPropertyTable/>}
+        {page === 'company'? <CompanyPropertyTable userId={userId} />: <PublicUserPropertyTable/>}
       </div>
     </div>
   );

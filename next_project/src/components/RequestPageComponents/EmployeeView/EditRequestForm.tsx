@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
-const EditRequestForm = ({ request, userId, propertyId, onClose }) => {
+const EditRequestForm = ({ userId, onClose }) => {
     const [requests, setRequests] = useState([]);
     const [selectedRequest, setSelectedRequest] = useState(null);
     const [newStatus, setNewStatus] = useState('');
@@ -8,9 +8,8 @@ const EditRequestForm = ({ request, userId, propertyId, onClose }) => {
 
     useEffect(() => {
         fetchRequests();
-
         fetchStatusOptions();
-    }, [propertyId]);
+    }, []);
 
     const fetchRequests = async () => {
         try {
@@ -44,6 +43,10 @@ const EditRequestForm = ({ request, userId, propertyId, onClose }) => {
         }
     };
 
+    const handleRowClick = (request) => {
+        setSelectedRequest(request);
+    };
+
     const handleStatusChange = async () => {
         try {
             const response = await fetch('/api/handleUpdateRequestStatus', {
@@ -53,8 +56,7 @@ const EditRequestForm = ({ request, userId, propertyId, onClose }) => {
                 },
                 body: JSON.stringify({
                     requestId: selectedRequest.req_id,
-                    statusId: newStatus,
-                    propertyId: selectedRequest.property_id
+                    statusId: newStatus
                 })
             });
             if (!response.ok) {
@@ -67,10 +69,7 @@ const EditRequestForm = ({ request, userId, propertyId, onClose }) => {
     };
 
     return (
-        <div className="overflow-x-auto bg-blue-100 p-4">
-            <h1 className="text-2xl mb-4">Update Request</h1>
-
-            <div className="my-8"></div>
+        <div className="overflow-x-auto">
             {requests.length > 0 && (
                 <table className="min-w-full divide-y divide-gray-200">
                     <thead className="bg-blue-400 text-white">
@@ -78,6 +77,7 @@ const EditRequestForm = ({ request, userId, propertyId, onClose }) => {
                         <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Request ID</th>
                         <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Unit ID</th>
                         <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Property ID</th>
+                        <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Request Creator ID</th>
                         <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Request Creator</th>
                         <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Request Reviewer</th>
                         <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Type ID</th>
@@ -87,12 +87,13 @@ const EditRequestForm = ({ request, userId, propertyId, onClose }) => {
                     </thead>
                     <tbody className="bg-white divide-y divide-gray-200">
                     {requests.map(request => (
-                        <tr key={request.req_id} className={`bg-gray-50 cursor-pointer hover:bg-gray-100`} onClick={() => setSelectedRequest(selectedRequest === request ? null : request)}>
+                        <tr key={request.req_id} className="bg-gray-50" onClick={() => handleRowClick(request)}>
                             <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{request.req_id}</td>
                             <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{request.unit_id}</td>
                             <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{request.property_id}</td>
-                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{request.req_creator_username}</td>
-                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{request.req_reviewer_username} - {request.req_reviewer_job_description}</td>
+                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{request.req_creator}</td>
+                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{request.creator_username}</td>
+                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{request.reviewer_username}</td>
                             <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{request.type_name}</td>
                             <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{request.status_name}</td>
                             <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{request.details}</td>

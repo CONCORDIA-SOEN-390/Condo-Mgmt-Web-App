@@ -16,7 +16,7 @@ function RequestsPage() {
     // or create another type called employee
 
     // harcoded userId
-    const userId = 2;
+    const userId = 18;
 
     //-----------------------------------------------------------------------------------------------
 
@@ -46,10 +46,10 @@ function RequestsPage() {
 
                 {/*page === 'company'? <CompanyRequestTable/>:<PublicUserRequestTable/>
  <RequestCompanyView userId={userId}/>
-<RequestEmployeeView userId={userId}/>
 
-                */}
-                <RequestPublicView userId={userId} />
+<RequestPublicView userId={userId} />
+                */}<RequestEmployeeView userId={userId}/>
+
             </div>
         </div>
     );

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import EditRequestForm from './EditRequestForm';
 
-const RequestTable = ({ userId, propertyId }) => {
+const RequestTable = ({userId}) => {
     const [requests, setRequests] = useState([]);
     const [selectedRequest, setSelectedRequest] = useState(null);
 
@@ -16,7 +16,7 @@ const RequestTable = ({ userId, propertyId }) => {
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ userId: userId })
+                body: JSON.stringify({ userId: userId})
             });
             if (!response.ok) {
                 throw new Error('Failed to fetch requests');
@@ -45,6 +45,7 @@ const RequestTable = ({ userId, propertyId }) => {
                         <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Request ID</th>
                         <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Unit ID</th>
                         <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Property ID</th>
+                        <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Request Creator ID</th>
                         <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Request Creator</th>
                         <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Request Reviewer</th>
                         <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Type ID</th>
@@ -58,8 +59,9 @@ const RequestTable = ({ userId, propertyId }) => {
                             <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{request.req_id}</td>
                             <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{request.unit_id}</td>
                             <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{request.property_id}</td>
-                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{request.req_creator_username}</td>
-                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{request.req_reviewer_username}</td>
+                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{request.req_creator}</td>
+                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{request.creator_username}</td>
+                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{request.reviewer_username}</td>
                             <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{request.type_name}</td>
                             <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{request.status_name}</td>
                             <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{request.details}</td>
@@ -69,7 +71,7 @@ const RequestTable = ({ userId, propertyId }) => {
                 </table>
             )}
             {selectedRequest && (
-                <EditRequestForm userId={userId} propertyId={propertyId} request={selectedRequest} onClose={handleCloseForm} />
+                <EditRequestForm userId={userId} request={selectedRequest} onClose={handleCloseForm} />
             )}
             {requests.length === 0 && (
                 <div>No requests found</div>

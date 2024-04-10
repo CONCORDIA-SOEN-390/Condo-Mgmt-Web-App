@@ -1,3 +1,5 @@
+// /api/getAssignedRequests
+
 import pool from "../../../../utils/db";
 
 export async function POST(req) {
@@ -6,52 +8,22 @@ export async function POST(req) {
 
     const client = await pool.connect();
 
+    // i didnt want to make multiple api calls for table information
     try {
-        const employeeQuery = await client.query(
-            "SELECT employee_id FROM employee WHERE user_id = $1",
-            [userId]
-        );
+        const requests= await client.query(`
+        SELECT request.*, request_type.type_name, request_status.status_name,
+        users_creator.username AS creator_username, users_reviewer.username AS reviewer_username
+        FROM request
+            JOIN request_type ON request.type_id = request_type.type_id
+            JOIN request_status ON request.status_id = request_status.status_id
+            JOIN users AS users_creator ON request.req_creator = users_creator.user_id
+            JOIN users AS users_reviewer ON request.req_reviewer = users_reviewer.user_id
+        WHERE request.req_reviewer = $1;
 
-        const employeeId = employeeQuery.rows[0]?.employee_id;
+        `, [userId]);
+        //console.log('Fetched data:', requests.rows);
 
-        if (!employeeId) {
-            return new Response('Employee not found', { status: 404 });
-        }
-
-        const requestsQuery = await client.query(
-            `SELECT
-                 req.req_id,
-                 req.unit_id,
-                 req.property_id,
-                 req.details,
-                 creator.username AS req_creator_username,
-                 reviewer.username AS req_reviewer_username,
-                 type.type_name,
-                 status.status_name
-             FROM
-                 request req
-                     JOIN
-                 users creator ON req.req_creator = creator.user_id
-                     JOIN
-                 employee emp ON req.req_reviewer = emp.employee_id
-                     JOIN
-                 users reviewer ON emp.user_id = reviewer.user_id
-                     JOIN
-                 request_type type ON req.type_id = type.type_id
-                     JOIN
-                 request_status status ON req.status_id = status.status_id
-             WHERE
-                 req.req_reviewer = $1
-
-
-            `,
-            [employeeId]
-        );
-
-        const requestData = requestsQuery.rows;
-        console.log('Fetched data:', requestData);
-
-        return new Response(JSON.stringify(requestData), {
+        return new Response(JSON.stringify(requests.rows), {
             status: 200
         });
 

@@ -1,13 +1,28 @@
-import pool from "../../../utils/db";
+import { createClient } from '@supabase/supabase-js';
+
+// Initialize Supabase client
+const supabase = createClient(
+  process.env.NEXT_PUBLIC_SUPABASE_URL,
+  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+);
 
 export async function POST(req) {
   const body = await req.json();
   const { companyId, value, description, occurence } = body;
 
-  const client = await pool.connect();
-
   try {
-    await client.query("INSERT INTO expense(company_id, expense_value, description, occurence) VALUES ($1, $2, $3, $4)", [companyId, value, description, occurence]);
+    const { data, error } = await supabase
+  .from('expense')
+  .insert([
+    { company_id: companyId, expense_value: value, occurence: occurence, description: description },
+  ])
+  .select();
+
+  if (error != null){
+    return new Response(JSON.stringify(error), {
+      status:500,
+    });
+  }
 
     return new Response('Success',{
       status:200,
@@ -17,7 +32,5 @@ export async function POST(req) {
     return new Response('Internal Server Errror', {
       status:500,
     });
-  } finally {
-    client.release();
   }
 }

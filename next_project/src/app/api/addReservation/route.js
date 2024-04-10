@@ -1,10 +1,13 @@
-import pool from "../../../utils/db";
+import { createClient } from '@supabase/supabase-js';
 
+// Initialize Supabase client
+const supabase = createClient(
+  process.env.NEXT_PUBLIC_SUPABASE_URL,
+  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+);
 export async function POST(req) {
   const body = await req.json();
-  const { facilityId, propertyId, startTime, endTime} = body;
-
-  const client = await pool.connect();
+  const { facilityId, propertyId, userId, startTime, endTime} = body;
 
   try {
 
@@ -13,8 +16,20 @@ export async function POST(req) {
             status:400,
         });
     }
-    await client.query("INSERT INTO reservation (facility_id, property_id, start_time, end_time) VALUES ($1, $2, $3, $4)", [facilityId, propertyId, startTime, endTime]);
 
+    const { data, error } = await supabase
+    .from('reservation')
+    .insert([
+      { facility_id: facilityId, property_id: propertyId, user_id: userId, start_time: startTime, end_time: endTime },
+    ])
+    .select();
+
+    if (error != null){
+      return new Response(JSON.stringify(error), {
+        status:500,
+      });
+    }
+  
     return new Response('Success',{
       status:200,
     });
@@ -23,7 +38,5 @@ export async function POST(req) {
     return new Response('Internal Server Errror', {
       status:500,
     });
-  } finally {
-    client.release();
   }
 }

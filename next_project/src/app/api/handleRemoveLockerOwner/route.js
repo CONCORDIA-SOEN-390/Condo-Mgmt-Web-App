@@ -1,15 +1,30 @@
-import pool from "../../../../utils/db";
+import { createClient } from '@supabase/supabase-js';
+
+// Initialize Supabase client
+const supabase = createClient(
+  process.env.NEXT_PUBLIC_SUPABASE_URL,
+  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+);
 
 export async function POST(req) {
     const body = await req.json();
     const { lockerId, propertyId } = body;
 
-    const client = await pool.connect();
 
     try {
-        await client.query(`
-        UPDATE locker SET owner_id = null, occupied = false WHERE locker_id = $1 AND property_id = $2
-        `, [lockerId, propertyId]);
+
+        let { data : res, error } = await supabase
+        .from('locker')
+        .update({owner_id: null, occupied: false})
+        .eq('locker_id', lockerId)
+        .eq('property_id', propertyId)
+        .select();
+
+        if (error != null){
+            return new Response(error, {
+              status:500,
+            });
+        }
 
         return new Response('Success', {
             status: 200,
@@ -22,7 +37,5 @@ export async function POST(req) {
         return new Response('Internal Server Error', {
             status: 500
         });
-    } finally {
-        client.release();
     }
 }

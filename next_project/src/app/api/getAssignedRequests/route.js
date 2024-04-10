@@ -1,17 +1,29 @@
-// /api/handleUpdateRequestStatus.js
+import { createClient } from '@supabase/supabase-js';
 
-import pool from "../../../../utils/db";
+// Initialize Supabase client
+const supabase = createClient(
+  process.env.NEXT_PUBLIC_SUPABASE_URL,
+  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+);
 
 export async function POST(req) {
     const body = await req.json();
     const { reviewerId } = body;
 
-    const client = await pool.connect();
-
     try {
-        const requests= await client.query("SELECT * FROM request WHERE req_reviewer = $1", [reviewerId]);
+        
+        let { data: requests, error } = await supabase
+        .from('request')
+        .select('*')
+        .eq('req_reviewer', reviewerId)
 
-        return new Response(JSON.stringify(requests.rows), {
+        if (error != null){
+            return new Response(JSON.stringify(error), {
+              status:500,
+            });
+        }
+
+        return new Response(JSON.stringify(requests), {
             status: 200
         });
 
@@ -20,7 +32,5 @@ export async function POST(req) {
         return new Response('Internal Server Error', {
             status: 500,
         });
-    } finally {
-        client.release();
     }
 }

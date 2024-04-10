@@ -10,8 +10,8 @@ export async function POST(req) {
         const body = await req.json();
         const { propertyId } = body;
 
-        const { data: lockers, error } = await supabase
-            .from('locker')
+        const { data: units, error } = await supabase
+            .from('unit')
             .select('*')
             .eq('property_id', propertyId);
 
@@ -23,10 +23,10 @@ export async function POST(req) {
             };
         }
 
-        const lockerCount = lockers ? lockers.length : 0;
+        const unitCount = units ? units.length : 0;
 
-        console.log(lockerCount);
-        return new Response(JSON.stringify(lockerCount), {
+        console.log("------ " + unitCount);
+        return new Response(JSON.stringify(unitCount), {
             status: 200,
             headers: {
                 'Content-Type': 'application/json'

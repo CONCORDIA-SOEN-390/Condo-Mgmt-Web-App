@@ -1,12 +1,13 @@
-import {useEffect, useState} from 'react';
-import React from 'react';
-//import UnitsTable from "@/components/UnitsPageComponents/UnitsTable";
+import { useEffect, useState } from 'react';
+import React from "react";
 import LockerTable from "@/components/PropertiesPageComponents/CompanyView/LockerTable";
 import ParkingTable from "@/components/PropertiesPageComponents/CompanyView/ParkingTable";
 
-
 export default function CompanyPropertyTable({ userId }) {
     const [properties, setProperties] = useState([]);
+    const [lockerCounts, setLockerCounts] = useState({});
+    const [parkingCounts, setParkingCounts] = useState({});
+    const [unitCounts, setUnitCounts] = useState({});
     const [expandedPropertyId, setExpandedPropertyId] = useState(null);
 
     useEffect(() => {
@@ -31,8 +32,93 @@ export default function CompanyPropertyTable({ userId }) {
         fetchProperties();
     }, [userId]);
 
-    const handleRowClick = propertyId => {
-        setExpandedPropertyId(prevId => (prevId === propertyId ? null : propertyId));
+    useEffect(() => {
+        const fetchLockerCount = async (propertyId) => {
+            try {
+                const response = await fetch('/api/getLockerCount', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ propertyId }),
+                });
+                if (!response.ok) {
+                    throw new Error('Failed to fetch locker count');
+                }
+                const count = await response.json();
+                setLockerCounts((prevCounts) => ({
+                    ...prevCounts,
+                    [propertyId]: count,
+                }));
+            } catch (error) {
+                console.error('Error fetching locker count:', error);
+            }
+        };
+
+        properties.forEach((property) => {
+            fetchLockerCount(property.property_id);
+        });
+    }, [properties]);
+
+    useEffect(() => {
+        const fetchParkingCount = async (propertyId) => {
+            try {
+                const response = await fetch('/api/getParkingCount', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ propertyId }),
+                });
+                if (!response.ok) {
+                    throw new Error('Failed to fetch parking count');
+                }
+                const count = await response.json();
+                setParkingCounts((prevCounts) => ({
+                    ...prevCounts,
+                    [propertyId]: count,
+                }));
+            } catch (error) {
+                console.error('Error fetching parking count:', error);
+            }
+        };
+
+        properties.forEach((property) => {
+            fetchParkingCount(property.property_id);
+        });
+    }, [properties]);
+
+
+    useEffect(() => {
+        const fetchUnitCount = async (propertyId) => {
+            try {
+                const response = await fetch('/api/getUnitCount', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ propertyId }),
+                });
+                if (!response.ok) {
+                    throw new Error('Failed to fetch parking count');
+                }
+                const count = await response.json();
+                setUnitCounts((prevCounts) => ({
+                    ...prevCounts,
+                    [propertyId]: count,
+                }));
+            } catch (error) {
+                console.error('Error fetching parking count:', error);
+            }
+        };
+
+        properties.forEach((property) => {
+            fetchUnitCount(property.property_id);
+        });
+    }, [properties]);
+
+    const handleRowClick = (propertyId) => {
+        setExpandedPropertyId((prevId) => (prevId === propertyId ? null : propertyId));
     };
 
     return (
@@ -57,27 +143,25 @@ export default function CompanyPropertyTable({ userId }) {
                             <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{property.property_name}</td>
                             <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{property.address}</td>
                             <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{property.property_type}</td>
-                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{/*unit count*/}</td>
-                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{/*parking count*/}</td>
-                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{/*locker count*/}</td>
+                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{unitCounts[property.property_id]}</td>
+                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{parkingCounts[property.property_id]}</td>
+                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{lockerCounts[property.property_id]}</td>
                         </tr>
-                        {/* Render additional details if property's ID matches expandedPropertyId */}
                         {expandedPropertyId === property.property_id && (
                             <tr>
-                                <td colSpan="9" className="py-10"> {/* Add padding to create space */}
+                                <td colSpan="9" className="py-10">
                                     <div>Additional details here
 
-                                        <LockerTable propertyId={property.property_id} />
-                                        <ParkingTable propertyId={property.property_id} />
+                                    <LockerTable propertyId={property.property_id} />
+                                    <ParkingTable propertyId={property.property_id} />
 
-                                       {/* <UnitsTable />*/}
-
+                                    {/*<UnitsTable />*/}
 
                                     </div>
                                 </td>
                             </tr>
                         )}
-                    </React.Fragment>
+                    </ React.Fragment>
                 ))}
                 </tbody>
             </table>

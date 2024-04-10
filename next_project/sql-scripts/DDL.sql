@@ -156,3 +156,17 @@ CREATE TABLE IF NOT EXISTS expense(
 	description TEXT,
 	FOREIGN KEY (company_id) REFERENCES users(user_id)
 );
+
+CREATE OR REPLACE VIEW notifications AS
+SELECT ru.update_id,
+       ru.req_id,
+       ru.update_new_status,
+       r.unit_id,
+       r.property_id,
+       r.req_creator,
+       r.req_reviewer,
+       r.type_id,
+       r.status_id,
+       r.details
+FROM req_update ru
+INNER JOIN request r ON ru.req_id = r.req_id;

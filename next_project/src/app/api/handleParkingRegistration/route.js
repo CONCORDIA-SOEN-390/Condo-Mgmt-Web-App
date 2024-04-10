@@ -1,37 +1,56 @@
-import pool from "../../../../utils/db";
+import { createClient } from '@supabase/supabase-js';
+
+// Initialize Supabase client
+const supabase = createClient(
+  process.env.NEXT_PUBLIC_SUPABASE_URL,
+  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+);
 
 export async function POST(req) {
     const body = await req.json();
     const { propertyId, parkingOwnerId } = body;
 
-    const client = await pool.connect();
 
     try {
-        await client.query("BEGIN"); // Start the transaction
 
-        const p = await client.query("SELECT * FROM parking WHERE occupied = false AND property_id = $1 LIMIT 1", [propertyId])
+        let { data : parking, error } = await supabase
+        .from('parking')
+        .select('*')
+        .eq('property_id', propertyId)
+        .eq('occupied', false);
 
-        if (p.rows.length === 0){
+        if (error != null){
+            return new Response(error, {
+              status:500,
+            });
+        }
+
+        if (parking.length === 0){
             return new Response('All spaces filled', {
                 status: 400
             });
         }
-        const parking_id = p.rows[0]['parking_id'];
+        const parking_id = parking[0]['parking_id'];
         // update the request status
-        await client.query("UPDATE parking SET owner_id = $1, occupied = true WHERE parking_id = $2", [parkingOwnerId, parking_id]);
+        let { data : res, errorUpdate } = await supabase
+        .from('parking')
+        .update({owner_id: parkingOwnerId, occupied: true})
+        .eq('parking_id', parking_id)
+        .eq('property_id', parking[0]['property_id'])
+        .select();
 
-        await client.query("COMMIT"); // commit the transaction
-        return new Response('Parking updated succcessfully', {
+        if (errorUpdate != null){
+            return new Response(JSON.stringify(error), {
+              status:500,
+            });
+        }
+        return new Response('parking updated succcessfully', {
             status: 200,
-            parking_id: parking_id
         });
 
     } catch (error) {
-        await client.query("ROLLBACK"); // rollback the transaction if an error occurs
         return new Response('Internal Server Error', {
             status: 500,
         });
-    } finally {
-        client.release();
     }
 }

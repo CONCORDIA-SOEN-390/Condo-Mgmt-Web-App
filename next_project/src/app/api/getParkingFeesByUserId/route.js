@@ -1,17 +1,29 @@
-import pool from "../../../../utils/db";
+import { createClient } from '@supabase/supabase-js';
+
+// Initialize Supabase client
+const supabase = createClient(
+  process.env.NEXT_PUBLIC_SUPABASE_URL,
+  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+);
 
 export async function POST(req) {
     const body = await req.json();
     const { ownerId } = body;
 
-    const client = await pool.connect();
-
     try {
-        const reqs = await client.query(`
-        SELECT property_id, parking_id, condo_fee FROM parking WHERE owner_id = $1 AND occupied = true
-        `, [ownerId]);
+        let { data: fees, error } = await supabase
+        .from('parking')
+        .select('property_id, parking_id, condo_fee')
+        .eq('owner_id', ownerId)
+        .eq('occupied', true);
 
-        return new Response(JSON.stringify(reqs.rows), {
+        if (error != null){
+            return new Response(JSON.stringify(error), {
+              status:500,
+            });
+        }
+
+        return new Response(JSON.stringify(fees), {
             status: 200,
             headers: {
                 'Content-Type': 'application/json'
@@ -22,7 +34,5 @@ export async function POST(req) {
         return new Response('Internal Server Error', {
             status: 500
         });
-    } finally {
-        client.release();
     }
 }

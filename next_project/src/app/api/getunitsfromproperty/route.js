@@ -1,4 +1,10 @@
-import pool from "../../../../utils/db";
+import { createClient } from '@supabase/supabase-js';
+
+// Initialize Supabase client
+const supabase = createClient(
+  process.env.NEXT_PUBLIC_SUPABASE_URL,
+  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+);
 
 export async function GET(req) {
     const searchParams = req.nextUrl.searchParams;
@@ -13,24 +19,26 @@ export async function GET(req) {
     const client = await pool.connect();
 
     try {
-      // Fetch all units for the given property_id
-      const unitsResult = await client.query(
-        "SELECT * FROM unit WHERE property_id = $1",
-        [property_id]
-      );
+      let { data: units, error } = await supabase
+        .from('unit')
+        .select('*')
+        .eq('property_id', property_id);
 
-      const units = unitsResult.rows;
+        if (error != null){
+            return new Response(JSON.stringify(error), {
+              status:500,
+            });
+        }
 
-      // You can handle the retrieved units as needed (e.g., send them in the response)
-      return Response.json(units, {
-        status:200}
-        );
+        return new Response(JSON.stringify(units), {
+            status: 200,
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
     } catch (error) {
-      console.error("Error fetching units:", error);
       return Response.json('Internal Server Error', {
         status: 500,
       });
-    } finally {
-      client.release();
     }
 }

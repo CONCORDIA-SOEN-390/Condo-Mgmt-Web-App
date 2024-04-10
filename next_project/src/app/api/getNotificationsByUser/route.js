@@ -1,20 +1,28 @@
-import pool from "../../../../utils/db";
+import { createClient } from '@supabase/supabase-js';
+
+// Initialize Supabase client
+const supabase = createClient(
+  process.env.NEXT_PUBLIC_SUPABASE_URL,
+  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+);
 
 export async function POST(req) {
     const body = await req.json();
     const { userId } = body;
 
-    const client = await pool.connect();
-
     try {
-        const reqs = await client.query(`
-        SELECT ru.*
-        FROM req_update ru
-        JOIN request r ON ru.req_id = r.req_id
-        WHERE r.req_creator = $1;
-        `, [userId]);
+        let { data: notifications, error } = await supabase
+        .from('notifications')
+        .select('*')
+        .eq('req_creator', userId)
 
-        return new Response(JSON.stringify(reqs.rows), {
+        if (error != null){
+            return new Response(JSON.stringify(error), {
+              status:500,
+            });
+        }
+
+        return new Response(JSON.stringify(notifications), {
             status: 200,
             headers: {
                 'Content-Type': 'application/json'
@@ -25,7 +33,5 @@ export async function POST(req) {
         return new Response('Internal Server Error', {
             status: 500
         });
-    } finally {
-        client.release();
     }
 }

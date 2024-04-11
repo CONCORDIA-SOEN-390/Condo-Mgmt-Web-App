@@ -1,29 +1,51 @@
-import React from "react";
+"use client"
+import React, {useContext, useEffect, useState} from "react";
 import SideBar from "@/components/GeneralComponents/PublicUserView/SideBar";
-import CardHeader from "@/components/GeneralComponents/CardHeader";
-import MyReservationTable from "@/components/ReservationPageComponents/MyReservationTable";
-import AvailableFacilityTable from "@/components/ReservationPageComponents/AvailableFacilityTable";
-import { MdEditSquare } from "react-icons/md";
+
+import CondoOwnerAndRentalPage from "@/components/ReservationPageComponents/CondoOwnerAndRentalView/CondoOwnerAndRentalPage";
+import CompanyViewPage from "@/components/ReservationPageComponents/CompanyView/CompanyViewPage"
+import {UserContext} from "@/context/userInfoContext";
 
 function ReservationsPage() {
+  // FIX PAGE RENDERING HERE DEPENDING ON THE accountType
+  // also fetch user_id since its being passed
+
+  //const {userId, accountType} = useContext(UserContext);
+
+  //--------------------------HARDCODED VALUES--------------------------------------
+  const userId = 1;
+  const accountType = "company";
+  //const userId = 2;
+  //const accountType = "reg_user";
+  //--------------------------------------------------------------------------------
+
   return (
-    <div className="flex min-h-screen-nav items-center justify-center h-full bg-white">
-      <SideBar page="reservations" />
-      <div className="absolute grid grid-rows-3 w-5/6 right-5 gap-5">
-        <div className="bg-white shadow-lg rounded-xl ">
-          <CardHeader title="My Reservations">
-            <MdEditSquare className="text-white text-3xl" />
-          </CardHeader>
-          <div className="grid grid-cols-2 grid-rows-3 gap-5 p-5 text-black text-xl"></div>
-        </div>
-        <div className="bg-white shadow-lg rounded-xl">
-          <CardHeader title="Available Facilities">hello</CardHeader>
-          <div className="p-5 text-black text-xl">
-            <AvailableFacilityTable />
+      <div className="flex min-h-screen bg-gray-100">
+          <div className="w-64 bg-gray-200">
+              <SideBar page="reservations" />
           </div>
-        </div>
+          <div className="flex flex-grow flex-col">
+              <div className="flex-grow"></div>
+              <div className="flex justify-center lg:justify-end"> {/* Adjusted to justify-end for right alignment on larger screens */}
+                  {
+                      /*accountType === "reg_user" && (
+                      <CondoOwnerAndRentalPage userId={userId} />
+                      )*/
+                  }
+                  {accountType === "company" && (
+                      <CompanyViewPage userId={userId} />
+                  )}
+              </div>
+          </div>
       </div>
-    </div>
+
+
+
+
+
+
+
+
   );
 }
 

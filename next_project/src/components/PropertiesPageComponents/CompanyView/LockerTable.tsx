@@ -6,6 +6,7 @@ const LockerTable = ({ propertyId }) => {
     const [lockerIdInput, setLockerIdInput] = useState('');
     const [lockerFeeInput, setLockerFeeInput] = useState('');
     const [showRegisterForm, setShowRegisterForm] = useState(false);
+    const [showUpdateFeeForm, setShowUpdateFeeForm] = useState(false);
 
     useEffect(() => {
         const fetchLockers = async () => {
@@ -31,6 +32,29 @@ const LockerTable = ({ propertyId }) => {
     }, [propertyId]);
 
 
+    const handleUpdateFee = async () => {
+        try {
+            const response = await fetch('/api/updateLockerFee', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ propertyId: propertyId, lockerId: lockerIdInput, fee: lockerFeeInput}),
+            });
+
+            if (!response.ok) {
+                throw new Error('Failed to register owner to locker');
+            }
+
+            const data = await response.json();
+            console.log('Registration successful:', data);
+
+        } catch (error) {
+            console.error('Error registering owner to locker:', error);
+        }
+    };
+
+
     const handleLockerOwnerIdChange = (e) => {
         setLockerOwnerIdInput(e.target.value);
     };
@@ -45,6 +69,12 @@ const LockerTable = ({ propertyId }) => {
 
     const handleToggleRegisterForm = () => {
         setShowRegisterForm(!showRegisterForm);
+        setShowUpdateFeeForm(false);
+    };
+
+    const handleToggleUpdateFeeForm = () => {
+        setShowUpdateFeeForm(!showUpdateFeeForm);
+        setShowRegisterForm(false);
     };
 
     const handleRegistration = async () => {
@@ -54,7 +84,8 @@ const LockerTable = ({ propertyId }) => {
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ lockerOwnerId: lockerOwnerIdInput, lockerId: lockerIdInput, lockerFee: lockerFeeInput, propertyId: propertyId }),
+                //body: JSON.stringify({ lockerOwnerId: lockerOwnerIdInput, lockerId: lockerIdInput, lockerFee: lockerFeeInput, propertyId: propertyId }),
+                body: JSON.stringify({ propertyId: propertyId, lockerOwnerId: lockerOwnerIdInput, lockerId: lockerIdInput  }),
             });
 
             if (!response.ok) {
@@ -79,6 +110,12 @@ const LockerTable = ({ propertyId }) => {
             >
                 Register Locker
             </button>
+            <button
+                onClick={handleToggleUpdateFeeForm}
+                className="bg-blue-300 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded ml-2 focus:outline-none focus:shadow-outline"
+            >
+                Update Fee
+            </button>
             {showRegisterForm && (
                 <div className="mt-4">
                     <label className="block mb-2">
@@ -90,6 +127,26 @@ const LockerTable = ({ propertyId }) => {
                             className="block w-full mt-1 border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
                         />
                     </label>
+
+                    <label className="block mb-2">
+                        Locker ID:
+                        <input
+                            type="text"
+                            value={lockerIdInput}
+                            onChange={handleLockerIdChange}
+                            className="block w-full mt-1 border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+                        />
+                    </label>
+                    <button
+                        onClick={handleRegistration}
+                        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                    >
+                        Register Locker
+                    </button>
+                </div>
+            )}
+            {showUpdateFeeForm && (
+                <div className="mt-4">
                     <label className="block mb-2">
                         Locker ID:
                         <input
@@ -100,7 +157,7 @@ const LockerTable = ({ propertyId }) => {
                         />
                     </label>
                     <label className="block mb-2">
-                        Locker Fee:
+                        New Locker Fee:
                         <input
                             type="text"
                             value={lockerFeeInput}
@@ -109,10 +166,10 @@ const LockerTable = ({ propertyId }) => {
                         />
                     </label>
                     <button
-                        onClick={handleRegistration}
+                        onClick={handleUpdateFee}
                         className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
                     >
-                        Update Locker
+                        Update Fee
                     </button>
                 </div>
             )}

@@ -1,102 +1,52 @@
 import { createClient } from '@supabase/supabase-js';
 
+// Initialize Supabase client
 const supabase = createClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL,
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
 );
 
-// added adding new locker logic in same api -> if lockerId does not exist -> can create one by submitting lockerId -> oppupied false by default
-// update fee too
-// assigning user to a lockerId
 export async function POST(req) {
     const body = await req.json();
-    const { lockerOwnerId, lockerId, lockerFee, propertyId } = body;
+    const { propertyId, lockerOwnerId, lockerId } = body;
 
     try {
-        await supabase.rpc('begin');
-
-        let { data: existingLocker, errorExisting } = await supabase
+        let { data: locker, error: lockerError } = await supabase
             .from('locker')
             .select('*')
-            .eq('locker_id', lockerId)
             .eq('property_id', propertyId)
+            .eq('locker_id', lockerId)
+            .eq('occupied', false)
             .limit(1);
 
-        if (errorExisting) {
-            return new Response(JSON.stringify(errorExisting), {
+        if (lockerError) {
+            return new Response(JSON.stringify(lockerError), {
                 status: 500,
             });
         }
 
-        if (!existingLocker || existingLocker.length === 0) {
-            let { data: newLocker, errorCreate } = await supabase
-                .from('locker')
-                .insert([
-                    {
-                        locker_id: lockerId,
-                        property_id: propertyId,
-                        occupied: false,
-                        condo_fee: lockerFee || null,
-                    },
-                ]);
-
-            if (errorCreate) {
-                return new Response(JSON.stringify(errorCreate), {
-                    status: 500,
-                });
-            }
-
-            await supabase.rpc('commit');
-
-            return new Response(JSON.stringify({
-                message: 'New locker created successfully',
-                status: 200,
-                locker_id: lockerId,
-            }), {
-                status: 200,
-                headers: {
-                    'Content-Type': 'application/json',
-                },
+        if (locker.length === 0) {
+            return new Response('Locker not found or already occupied', {
+                status: 404,
             });
         }
 
-        const locker_id = existingLocker[0]['locker_id'];
-
-        let { data: updatedLocker, errorUpdate } = await supabase
+        let { data: updateResult, error: updateError } = await supabase
             .from('locker')
-            .update({
-                owner_id: lockerOwnerId,
-                occupied: true,
-                condo_fee: lockerFee || null,
-            })
-            .eq('locker_id', locker_id)
-            .single();
+            .update({ owner_id: lockerOwnerId, occupied: true })
+            .eq('locker_id', lockerId)
+            .eq('property_id', propertyId);
 
-        if (errorUpdate) {
-            return new Response(JSON.stringify(errorUpdate), {
+        if (updateError) {
+            return new Response(JSON.stringify(updateError), {
                 status: 500,
             });
         }
 
-        await supabase.rpc('commit');
-
-        return new Response(JSON.stringify({
-            message: 'Locker updated successfully',
+        return new Response('Locker registered successfully', {
             status: 200,
-            locker_id: locker_id,
-        }), {
-            status: 200,
-            headers: {
-                'Content-Type': 'application/json',
-            },
         });
-
     } catch (error) {
-
-        await supabase.rpc('rollback');
-
-        console.error('Error:', error);
-
         return new Response('Internal Server Error', {
             status: 500,
         });

@@ -6,6 +6,8 @@ const ParkingTable = ({ propertyId }) => {
     const [parkingIdInput, setParkingIdInput] = useState('');
     const [parkingFeeInput, setParkingFeeInput] = useState('');
     const [showRegisterForm, setShowRegisterForm] = useState(false);
+    const [showUpdateFeeForm, setShowUpdateFeeForm] = useState(false);
+
 
     useEffect(() => {
         const fetchParkings = async () => {
@@ -42,9 +44,34 @@ const ParkingTable = ({ propertyId }) => {
         setParkingFeeInput(e.target.value);
     };
 
-    const handleToggleRegisterForm = () => {
-        setShowRegisterForm(!showRegisterForm);
+    const handleToggleUpdateFeeForm = () => {
+        setShowUpdateFeeForm(!showUpdateFeeForm);
+        setShowRegisterForm(false);
     };
+
+
+    const handleUpdateFee = async () => {
+        try {
+            const response = await fetch('/api/updateParkingFee', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ propertyId: propertyId, parkingId: parkingIdInput, fee: parkingFeeInput}),
+            });
+
+            if (!response.ok) {
+                throw new Error('Failed to register owner to locker');
+            }
+
+            const data = await response.json();
+            console.log('Registration successful:', data);
+
+        } catch (error) {
+            console.error('Error registering owner to locker:', error);
+        }
+    };
+
 
     const handleRegistration = async () => {
         try {
@@ -53,7 +80,7 @@ const ParkingTable = ({ propertyId }) => {
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ parkingOwnerId: parkingOwnerIdInput, parkingId: parkingIdInput, parkingFee: parkingFeeInput, propertyId: propertyId }),
+                body: JSON.stringify({  propertyId: propertyId, parkingOwnerId: parkingOwnerIdInput, parkingId: parkingIdInput}),
             });
 
             if (!response.ok) {
@@ -71,6 +98,10 @@ const ParkingTable = ({ propertyId }) => {
         }
     };
 
+    const handleToggleRegisterForm = () => {
+        setShowRegisterForm(!showRegisterForm);
+        setShowUpdateFeeForm(false);
+    };
 
     return (
         <div className="bg-gray-50 rounded-lg shadow-md p-6">
@@ -80,6 +111,12 @@ const ParkingTable = ({ propertyId }) => {
                 className="bg-blue-300 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
             >
                 Register Parking
+            </button>
+            <button
+                onClick={handleToggleUpdateFeeForm}
+                className="bg-blue-300 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded ml-2 focus:outline-none focus:shadow-outline"
+            >
+                Update Fee
             </button>
             {showRegisterForm && (
                 <div className="mt-4">
@@ -101,8 +138,27 @@ const ParkingTable = ({ propertyId }) => {
                             className="block w-full mt-1 border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
                         />
                     </label>
+                    <button
+                        onClick={handleRegistration}
+                        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                    >
+                        Register Parking
+                    </button>
+                </div>
+            )}
+            {showUpdateFeeForm && (
+                <div className="mt-4">
                     <label className="block mb-2">
-                        Parking Fee:
+                        Parking ID:
+                        <input
+                            type="text"
+                            value={parkingIdInput}
+                            onChange={handleParkingIdChange}
+                            className="block w-full mt-1 border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+                        />
+                    </label>
+                    <label className="block mb-2">
+                        New Parking Fee:
                         <input
                             type="text"
                             value={parkingFeeInput}
@@ -111,10 +167,10 @@ const ParkingTable = ({ propertyId }) => {
                         />
                     </label>
                     <button
-                        onClick={handleRegistration}
+                        onClick={handleUpdateFee}
                         className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
                     >
-                        Update Parking
+                        Update Fee
                     </button>
                 </div>
             )}

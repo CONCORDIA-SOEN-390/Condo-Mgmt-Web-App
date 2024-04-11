@@ -32,7 +32,7 @@ function PropertiesPage() {
           <button onClick={toggleForm}><PiPlusSquareFill/></button>
         </CardHeader>
 
-        {showAddPropertyForm && <AddPropertyForm />}
+        {showAddPropertyForm && <AddPropertyForm userId={userId} />}
         {page === 'company'? <CompanyPropertyTable userId={userId} />: <PublicUserPropertyTable/>}
       </div>
     </div>

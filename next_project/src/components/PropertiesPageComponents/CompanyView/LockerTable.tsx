@@ -7,6 +7,11 @@ const LockerTable = ({ propertyId }) => {
     const [lockerFeeInput, setLockerFeeInput] = useState('');
     const [showRegisterForm, setShowRegisterForm] = useState(false);
     const [showUpdateFeeForm, setShowUpdateFeeForm] = useState(false);
+    const [showRemoveForm, setShowRemoveForm] = useState(false);
+
+    const handleToggleRemoveForm = () => {
+        setShowRemoveForm(!showRemoveForm);
+    };
 
     useEffect(() => {
         const fetchLockers = async () => {
@@ -54,6 +59,37 @@ const LockerTable = ({ propertyId }) => {
         }
     };
 
+    const handleRemoveLocker = async () => {
+        try {
+            if (lockerIdInput === '') {
+                console.error('Please enter unit ID');
+                return;
+            }
+            const lockerId = parseInt(lockerIdInput);
+
+            const requestBody = {
+                lockerId,
+                propertyId
+            };
+            const response = await fetch('/api/handleRemoveLockerOwner', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(requestBody)
+            });
+
+            if (response.ok) {
+                console.log('locker removed successfully');
+            } else {
+                console.error('Failed to remove locker:', response.statusText);
+            }
+        } catch (error) {
+            console.error('Error removing locker:', error);
+        }
+    };
+
+
 
     const handleLockerOwnerIdChange = (e) => {
         setLockerOwnerIdInput(e.target.value);
@@ -84,7 +120,6 @@ const LockerTable = ({ propertyId }) => {
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                //body: JSON.stringify({ lockerOwnerId: lockerOwnerIdInput, lockerId: lockerIdInput, lockerFee: lockerFeeInput, propertyId: propertyId }),
                 body: JSON.stringify({ propertyId: propertyId, lockerOwnerId: lockerOwnerIdInput, lockerId: lockerIdInput  }),
             });
 
@@ -106,10 +141,17 @@ const LockerTable = ({ propertyId }) => {
             <h2 className="text-xl font-bold mb-4">Locker Information</h2>
             <button
                 onClick={handleToggleRegisterForm}
-                className="bg-blue-300 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                className="bg-blue-300 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline mr-2"
             >
                 Register Locker
             </button>
+            <button
+                onClick={handleToggleRemoveForm}
+                className="bg-blue-300 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline ml-2"
+            >
+                Remove Locker Owner
+            </button>
+
             <button
                 onClick={handleToggleUpdateFeeForm}
                 className="bg-blue-300 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded ml-2 focus:outline-none focus:shadow-outline"
@@ -170,6 +212,25 @@ const LockerTable = ({ propertyId }) => {
                         className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
                     >
                         Update Fee
+                    </button>
+                </div>
+            )}
+            {showRemoveForm && (
+                <div className="mt-4">
+                    <label className="block mb-2">
+                        Locker ID:
+                        <input
+                            type="text"
+                            value={lockerIdInput}
+                            onChange={handleLockerIdChange}
+                            className="block w-full mt-1 border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+                        />
+                    </label>
+                    <button
+                        onClick={handleRemoveLocker}
+                        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                    >
+                        Remove Locker Owner
                     </button>
                 </div>
             )}

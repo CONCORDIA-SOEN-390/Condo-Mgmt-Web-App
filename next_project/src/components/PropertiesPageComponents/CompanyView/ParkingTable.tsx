@@ -7,6 +7,43 @@ const ParkingTable = ({ propertyId }) => {
     const [parkingFeeInput, setParkingFeeInput] = useState('');
     const [showRegisterForm, setShowRegisterForm] = useState(false);
     const [showUpdateFeeForm, setShowUpdateFeeForm] = useState(false);
+    const [showRemoveForm, setShowRemoveForm] = useState(false);
+
+    const handleToggleRemoveForm = () => {
+        setShowRemoveForm(!showRemoveForm);
+    };
+
+
+    const handleRemoveParking = async () => {
+        try {
+            if (parkingIdInput === '') {
+                console.error('Please enter unit ID');
+                return;
+            }
+            const parkingId = parseInt(parkingIdInput);
+
+            const requestBody = {
+                parkingId,
+                propertyId
+            };
+            const response = await fetch('/api/handleRemoveParkingOwner', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(requestBody)
+            });
+
+            if (response.ok) {
+                console.log('parking removed successfully');
+            } else {
+                console.error('Failed to remove parking:', response.statusText);
+            }
+        } catch (error) {
+            console.error('Error removing parking:', error);
+        }
+    };
+
 
 
     useEffect(() => {
@@ -108,9 +145,15 @@ const ParkingTable = ({ propertyId }) => {
             <h2 className="text-xl font-bold mb-4">Parking Information</h2>
             <button
                 onClick={handleToggleRegisterForm}
-                className="bg-blue-300 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                className="bg-blue-300 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline mr-2"
             >
                 Register Parking
+            </button>
+            <button
+                onClick={handleToggleRemoveForm}
+                className="bg-blue-300 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+            >
+                Remove Parking Owner
             </button>
             <button
                 onClick={handleToggleUpdateFeeForm}
@@ -171,6 +214,25 @@ const ParkingTable = ({ propertyId }) => {
                         className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
                     >
                         Update Fee
+                    </button>
+                </div>
+            )}
+            {showRemoveForm && (
+                <div className="mt-4">
+                    <label className="block mb-2">
+                        Parking ID:
+                        <input
+                            type="text"
+                            value={parkingIdInput}
+                            onChange={handleParkingIdChange}
+                            className="block w-full mt-1 border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+                        />
+                    </label>
+                    <button
+                        onClick={handleRemoveParking}
+                        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                    >
+                        Remove Parking Owner
                     </button>
                 </div>
             )}

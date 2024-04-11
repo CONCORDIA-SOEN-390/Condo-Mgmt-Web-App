@@ -39,6 +39,8 @@ export default function UnitsTable({ propertyId }: { propertyId: number }) {
   const [sqftInput, setSqftInput] = useState('');
   const [priceFeeInput, setPriceFeeInput] = useState('');
   const [showRegisterForm, setShowRegisterForm] = useState(false);
+  const [showRemoveForm, setShowRemoveForm] = useState(false);
+
 
   const handleUnitIdChange = (e) => {
     setUnitIdInput(e.target.value);
@@ -54,6 +56,10 @@ export default function UnitsTable({ propertyId }: { propertyId: number }) {
 
   const handleToggleRegisterForm = () => {
     setShowRegisterForm(!showRegisterForm);
+  };
+
+  const handleToggleRemoveForm = () => {
+    setShowRemoveForm(!showRemoveForm);
   };
 
   useEffect(() => {
@@ -84,18 +90,16 @@ export default function UnitsTable({ propertyId }: { propertyId: number }) {
 
   const handleRegistration = async () => {
     try {
-      // Validate inputs
+
       if (unitIdInput === '' || sqftInput === '' || priceFeeInput === '') {
         console.error('Please fill out all fields');
         return;
       }
 
-      // Convert inputs to numbers
       const unitId = parseInt(unitIdInput);
       const sqft = parseFloat(sqftInput);
       const pricePerSqft = parseFloat(priceFeeInput);
 
-      // Prepare request body
       const requestBody = {
         propertyId,
         unitId,
@@ -103,7 +107,7 @@ export default function UnitsTable({ propertyId }: { propertyId: number }) {
         pricePerSqft
       };
 
-      // Send POST request to updateSqftPrice API
+
       const response = await fetch('/api/updateSqftPrice', {
         method: 'POST',
         headers: {
@@ -112,7 +116,6 @@ export default function UnitsTable({ propertyId }: { propertyId: number }) {
         body: JSON.stringify(requestBody)
       });
 
-      // Check if request was successful
       if (response.ok) {
         console.log('Price updated successfully');
       } else {
@@ -123,13 +126,44 @@ export default function UnitsTable({ propertyId }: { propertyId: number }) {
     }
   };
 
+  const handleRemoveOwner = async () => {
+    try {
+      if (unitIdInput === '') {
+        console.error('Please enter unit ID');
+        return;
+      }
+      const unitId = parseInt(unitIdInput);
+
+      const requestBody = {
+        unitId,
+        propertyId
+      };
+      const response = await fetch('/api/handleRemoveUnitOwner', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(requestBody)
+      });
+
+      if (response.ok) {
+        console.log('Owner removed successfully');
+      } else {
+        console.error('Failed to remove owner:', response.statusText);
+      }
+    } catch (error) {
+      console.error('Error removing owner:', error);
+    }
+  };
 
 
 
 
 
 
-    useEffect(() => {
+
+
+  useEffect(() => {
     const fetchLockers = async (ownerId: number) => {
       try {
         const response = await fetch('/api/getLockerByOwnerId', {
@@ -216,10 +250,17 @@ export default function UnitsTable({ propertyId }: { propertyId: number }) {
 
           <button
               onClick={handleToggleRegisterForm}
-              className="bg-blue-300 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+              className="bg-blue-300 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline mr-2"
           >
             Update Fee
           </button>
+          <button
+              onClick={handleToggleRemoveForm}
+              className="bg-blue-300 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+          >
+            Remove Owner
+          </button>
+
           {showRegisterForm && (
               <div className="mt-4">
                 <label className="block mb-2">
@@ -255,6 +296,29 @@ export default function UnitsTable({ propertyId }: { propertyId: number }) {
                 >
                   Update Condo Sqft Fee
                 </button>
+
+              </div>
+          )}
+          {showRemoveForm && (
+              <div className="mt-4">
+                <label className="block mb-2">
+                  Unit ID:
+                  <input
+                      type="text"
+                      value={unitIdInput}
+                      onChange={handleUnitIdChange}
+                      className="block w-full mt-1 border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+                  />
+                </label>
+
+
+                <button
+                    onClick={handleRemoveOwner}
+                    className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                >
+                  Remove Owner
+                </button>
+
               </div>
           )}
 

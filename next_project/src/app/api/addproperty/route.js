@@ -10,8 +10,8 @@ const supabase = createClient(
 
 export async function POST(req) {
   const body = await req.json();
-  const { userId, propertyName, address, numberOfFloors, numberOfUnitsPerFloor, numberOfParkingSpaces, numberOfLockers, propertyType } = body;
-
+  const { userId, propertyName, address, numberOfFloors, numberOfUnitsPerFloor, numberOfParkingSpaces, numberOfLockers, propertyType, defaultUnitSqft, defaultUnitPpSqft, defaultLockerFee, defaultParkingFee } = body;
+  const defaultUnitFee = defaultUnitSqft * defaultUnitPpSqft;
 
   try {
     // Insert data into table1
@@ -44,7 +44,7 @@ export async function POST(req) {
           const { data2, error2 } = await supabase
           .from('unit')
           .insert([
-            {unit_id: unit_id, property_id: propertyId, owner_id: userId, occupied: 0, registration_key: registrationKey},
+            {unit_id: unit_id, property_id: propertyId, owner_id: userId, occupied: 0, registration_key: registrationKey, square_footage: defaultUnitSqft, price_per_square_foot: defaultUnitPpSqft, condo_fee: defaultUnitFee},
           ])
           .select();
           if (error2 != null){
@@ -60,7 +60,7 @@ export async function POST(req) {
       const { data3, error3 } = await supabase
       .from('locker')
       .insert([
-        {locker_id: i, property_id: propertyId, owner_id: userId, occupied: false},
+        {locker_id: i, property_id: propertyId, owner_id: userId, occupied: false, condo_fee: defaultLockerFee},
       ])
       .select();
       if (error3 != null){
@@ -74,7 +74,7 @@ export async function POST(req) {
       const { data4, error4 } = await supabase
       .from('parking')
       .insert([
-        {parking_id: i, property_id: propertyId, owner_id: userId, occupied: false},
+        {parking_id: i, property_id: propertyId, owner_id: userId, occupied: false, condo_fee: defaultParkingFee},
       ])
       .select();
       if (error4 != null){

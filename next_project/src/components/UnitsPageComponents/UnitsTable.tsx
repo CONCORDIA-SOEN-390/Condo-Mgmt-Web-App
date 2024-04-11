@@ -19,10 +19,22 @@ interface Parking {
   parking_id: number;
 }
 
+interface Owner{
+  user_id: number
+  username: string;
+  password: string;
+  email: string;
+  phone_number:string;
+  profile_picture_url: string;
+  account_type: string;
+}
+
 export default function UnitsTable({ propertyId }: { propertyId: number }) {
   const [units, setUnits] = useState<Unit[]>([]);
   const [lockers, setLockers] = useState<Record<number, Locker>>({});
   const [parkings, setParkings] = useState<Record<number, Parking>>({});
+  const [owners, setOwners] = useState<Record<number, Owner>>({});
+
 
   useEffect(() => {
     const fetchUnits = async () => {
@@ -46,6 +58,11 @@ export default function UnitsTable({ propertyId }: { propertyId: number }) {
 
     fetchUnits();
   }, [propertyId]);
+
+
+
+
+
 
   useEffect(() => {
     const fetchLockers = async (ownerId: number) => {
@@ -95,10 +112,34 @@ export default function UnitsTable({ propertyId }: { propertyId: number }) {
         console.error('Error fetching parkings:', error);
       }
     };
+    const fetchOwners = async (ownerId: number) => {
+      try {
+        const response = await fetch('/api/getOwnerInformation', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ userId: ownerId }),
+        });
+        if (!response.ok) {
+          throw new Error('Failed to fetch owners');
+        }
+        const data = await response.json();
+        if (data.length > 0) {
+          setOwners((prevOwners) => ({
+            ...prevOwners,
+            [ownerId]: data[0],
+          }));
+        }
+      } catch (error) {
+        console.error('Error fetching ownwers:', error);
+      }
+    };
 
     units.forEach((unit) => {
       fetchLockers(unit.owner_id);
       fetchParkings(unit.owner_id);
+      fetchOwners(unit.owner_id);
     });
   }, [propertyId, units]);
 
@@ -110,10 +151,12 @@ export default function UnitsTable({ propertyId }: { propertyId: number }) {
             <thead className="min-w-full bg-[#DAECFB] text-black">
             <tr>
               <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Unit ID</th>
-              <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Property ID</th>
+
               <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Square Footage</th>
               <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Occupied</th>
               <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Owner ID</th>
+              <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Owner Name</th>
+              <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Owner Email</th>
               <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Locker ID</th>
               <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Parking ID</th>
               <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Fee Per Sq Ft</th>
@@ -125,10 +168,12 @@ export default function UnitsTable({ propertyId }: { propertyId: number }) {
             {units.map((unit) => (
                 <tr key={unit.unit_id}>
                   <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{unit.unit_id}</td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{unit.property_id}</td>
+
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{unit.square_footage}</td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{unit.occupied ? 'Yes' : 'No'}</td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{unit.owner_id}</td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{owners[unit.owner_id] && owners[unit.owner_id].username}</td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{owners[unit.owner_id] && owners[unit.owner_id].email}</td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                     {lockers[unit.owner_id] && lockers[unit.owner_id].locker_id}</td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">

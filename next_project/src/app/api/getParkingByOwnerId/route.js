@@ -15,7 +15,7 @@ export async function POST(req) {
             .eq('property_id', propertyId)
             .eq('owner_id', ownerId);
 
-        console.log(parkings);
+
 
         if (parkingError) {
             return new Response(JSON.stringify(parkingError), {

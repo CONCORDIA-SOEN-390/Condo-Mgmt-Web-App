@@ -25,7 +25,6 @@ export async function POST(req) {
 
         const lockerCount = lockers ? lockers.length : 0;
 
-        console.log(lockerCount);
         return new Response(JSON.stringify(lockerCount), {
             status: 200,
             headers: {

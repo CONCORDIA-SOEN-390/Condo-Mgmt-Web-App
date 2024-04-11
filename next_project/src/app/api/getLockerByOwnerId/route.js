@@ -15,7 +15,6 @@ export async function POST(req) {
             .eq('property_id', propertyId)
             .eq('owner_id', ownerId);
 
-        console.log(lockers); // Log the lockers data
 
         if (lockerError) {
             return new Response(JSON.stringify(lockerError), {

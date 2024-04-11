@@ -35,6 +35,26 @@ export default function UnitsTable({ propertyId }: { propertyId: number }) {
   const [parkings, setParkings] = useState<Record<number, Parking>>({});
   const [owners, setOwners] = useState<Record<number, Owner>>({});
 
+  const [unitIdInput, setUnitIdInput] = useState('');
+  const [sqftInput, setSqftInput] = useState('');
+  const [priceFeeInput, setPriceFeeInput] = useState('');
+  const [showRegisterForm, setShowRegisterForm] = useState(false);
+
+  const handleUnitIdChange = (e) => {
+    setUnitIdInput(e.target.value);
+  };
+
+  const handleSqftChange =  (e) =>{
+    setSqftInput(e.target.value)
+  };
+
+  const handlePriceFeeChange =  (e) =>{
+    setPriceFeeInput(e.target.value)
+  };
+
+  const handleToggleRegisterForm = () => {
+    setShowRegisterForm(!showRegisterForm);
+  };
 
   useEffect(() => {
     const fetchUnits = async () => {
@@ -62,9 +82,54 @@ export default function UnitsTable({ propertyId }: { propertyId: number }) {
 
 
 
+  const handleRegistration = async () => {
+    try {
+      // Validate inputs
+      if (unitIdInput === '' || sqftInput === '' || priceFeeInput === '') {
+        console.error('Please fill out all fields');
+        return;
+      }
+
+      // Convert inputs to numbers
+      const unitId = parseInt(unitIdInput);
+      const sqft = parseFloat(sqftInput);
+      const pricePerSqft = parseFloat(priceFeeInput);
+
+      // Prepare request body
+      const requestBody = {
+        propertyId,
+        unitId,
+        sqft,
+        pricePerSqft
+      };
+
+      // Send POST request to updateSqftPrice API
+      const response = await fetch('/api/updateSqftPrice', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(requestBody)
+      });
+
+      // Check if request was successful
+      if (response.ok) {
+        console.log('Price updated successfully');
+      } else {
+        console.error('Failed to update price:', response.statusText);
+      }
+    } catch (error) {
+      console.error('Error updating price:', error);
+    }
+  };
 
 
-  useEffect(() => {
+
+
+
+
+
+    useEffect(() => {
     const fetchLockers = async (ownerId: number) => {
       try {
         const response = await fetch('/api/getLockerByOwnerId', {
@@ -147,21 +212,70 @@ export default function UnitsTable({ propertyId }: { propertyId: number }) {
       <div>
         <div className="bg-gray-50 rounded-lg shadow-md p-6">
           <h2 className="text-xl font-bold mb-4">Unit Information</h2>
+
+
+          <button
+              onClick={handleToggleRegisterForm}
+              className="bg-blue-300 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+          >
+            Update Fee
+          </button>
+          {showRegisterForm && (
+              <div className="mt-4">
+                <label className="block mb-2">
+                  Unit ID:
+                  <input
+                      type="text"
+                      value={unitIdInput}
+                      onChange={handleUnitIdChange}
+                      className="block w-full mt-1 border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+                  />
+                </label>
+                <label className="block mb-2">
+                  Enter Sqrt:
+                  <input
+                      type="text"
+                      value={sqftInput}
+                      onChange={handleSqftChange}
+                      className="block w-full mt-1 border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+                  />
+                </label>
+                <label className="block mb-2">
+                  Enter Fee by Sqft:
+                  <input
+                      type="text"
+                      value={priceFeeInput}
+                      onChange={handlePriceFeeChange}
+                      className="block w-full mt-1 border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+                  />
+                </label>
+                <button
+                    onClick={handleRegistration}
+                    className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                >
+                  Update Condo Sqft Fee
+                </button>
+              </div>
+          )}
+
+
+
           <table className="min-w-full divide-y divide-gray-200">
             <thead className="min-w-full bg-[#DAECFB] text-black">
             <tr>
               <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Unit ID</th>
 
-              <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Square Footage</th>
+
               <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Occupied</th>
               <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Owner ID</th>
               <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Owner Name</th>
               <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Owner Email</th>
               <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Locker ID</th>
               <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Parking ID</th>
+              <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Square Footage</th>
               <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Fee Per Sq Ft</th>
-              <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Registration Key</th>
               <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Condo Fee ($)</th>
+              <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Registration Key</th>
             </tr>
             </thead>
             <tbody>
@@ -169,7 +283,7 @@ export default function UnitsTable({ propertyId }: { propertyId: number }) {
                 <tr key={unit.unit_id}>
                   <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{unit.unit_id}</td>
 
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{unit.square_footage}</td>
+
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{unit.occupied ? 'Yes' : 'No'}</td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{unit.owner_id}</td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{owners[unit.owner_id] && owners[unit.owner_id].username}</td>
@@ -178,13 +292,17 @@ export default function UnitsTable({ propertyId }: { propertyId: number }) {
                     {lockers[unit.owner_id] && lockers[unit.owner_id].locker_id}</td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                     {parkings[unit.owner_id] && parkings[unit.owner_id].parking_id}</td>
+
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{unit.price_per_square_foot}</td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{unit.registration_key}</td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{unit.square_footage}</td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{unit.condo_fee}</td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{unit.registration_key}</td>
+
                 </tr>
             ))}
             </tbody>
           </table>
+
         </div>
       </div>
   );

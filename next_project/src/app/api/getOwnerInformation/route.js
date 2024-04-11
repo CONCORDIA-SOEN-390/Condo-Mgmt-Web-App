@@ -22,7 +22,6 @@ export async function POST(req) {
             });
         }
 
-        console.log(users)
 
         return new Response(JSON.stringify(users), {
             status: 200,

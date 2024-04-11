@@ -12,17 +12,17 @@ import CompanyPropertyTable from "@/components/PropertiesPageComponents/CompanyV
 
 
 function PropertiesPage() {
+
+  // RENDERING SHOULD BE FIXED HERE DO NO TOUCH THE COMPONENT CONTENT
   const page = 'company'; // company or anything for user
   const [showAddPropertyForm, setshowAddPropertyFormStatus] = useState(false);
-  const [properties, setProperties] = useState([]);
-  const userId = 1
 
+  // hardcoded
+  const userId = 1
 
   const toggleForm = () => {
     setshowAddPropertyFormStatus(!showAddPropertyForm);
   };
-
-
 
   return (
     <div className="flex min-h-screen-nav items-center justify-center h-full bg-white">
@@ -40,16 +40,3 @@ function PropertiesPage() {
 }
 
 export default PropertiesPage;
-
-
-// {requests.map(request => (
-//   <tr key={request.req_id} className={`bg-gray-50 cursor-pointer hover:bg-gray-100`} onClick={() => toggleSelectedRequest(request)}>
-//       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{request.req_id}</td>
-//       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{request.unit_id}</td>
-//       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{request.property_id}</td>
-//       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{request.req_creator_username}</td>
-//       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{request.type_name}</td>
-//       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{request.status_name}</td>
-//       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{request.details}</td>
-//   </tr>
-// ))}

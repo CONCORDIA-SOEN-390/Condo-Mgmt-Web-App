@@ -25,7 +25,6 @@ export async function POST(req) {
 
         const unitCount = units ? units.length : 0;
 
-        console.log("------ " + unitCount);
         return new Response(JSON.stringify(unitCount), {
             status: 200,
             headers: {

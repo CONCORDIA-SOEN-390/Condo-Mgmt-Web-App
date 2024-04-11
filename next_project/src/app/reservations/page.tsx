@@ -1,5 +1,4 @@
 "use client"
-import React, {useContext, useEffect, useState} from "react";
 import SideBar from "@/components/GeneralComponents/PublicUserView/SideBar";
 
 import CondoOwnerAndRentalPage from "@/components/ReservationPageComponents/CondoOwnerAndRentalView/CondoOwnerAndRentalPage";
@@ -15,7 +14,7 @@ function ReservationsPage() {
   //--------------------------HARDCODED VALUES--------------------------------------
   const userId = 1;
   const accountType = "company";
-  //const userId = 2;
+  //const userId = 3;
   //const accountType = "reg_user";
   //--------------------------------------------------------------------------------
 
@@ -28,13 +27,19 @@ function ReservationsPage() {
               <div className="flex-grow"></div>
               <div className="flex justify-center lg:justify-end"> {/* Adjusted to justify-end for right alignment on larger screens */}
                   {
-                      /*accountType === "reg_user" && (
-                      <CondoOwnerAndRentalPage userId={userId} />
-                      )*/
+                      /**/
                   }
                   {accountType === "company" && (
                       <CompanyViewPage userId={userId} />
                   )}
+
+
+                  {/*
+                 {accountType === "reg_user" && (
+                  <CondoOwnerAndRentalPage userId={userId} />
+                  )}
+                  */}
+
               </div>
           </div>
       </div>

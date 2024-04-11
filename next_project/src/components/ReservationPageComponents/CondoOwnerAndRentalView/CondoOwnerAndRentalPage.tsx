@@ -1,31 +1,47 @@
-"use client"
-import React, {useContext, useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 import CardHeader from "@/components/GeneralComponents/CardHeader";
 import MyReservationTable from "@/components/ReservationPageComponents/CondoOwnerAndRentalView/MyReservationTable";
-import AvailableFacilityTable from "@/components/ReservationPageComponents/CondoOwnerAndRentalView/AvailableFacilityTable";
-
+import AvailableFacilityTable from "@/components/ReservationPageComponents/CondoOwnerAndRentalView/AvailableFacility";
 
 function CondoOwnerAndRentalPage({ userId }) {
     const [openPopupForProperty, setOpenPopupForProperty] = useState(null);
     const [properties, setProperties] = useState([]);
 
-    // Getting properties from userId
+    // Getting properties from userId -> owner
     useEffect(() => {
-        const fetchProperties = async () => {
+        async function fetchProperties(userId) {
             try {
-                // this api call reads the unit table, finds the owner id, then finds the property id
-                const response = await fetch(`/api/getPropertyFromOwnerId?ownerId=${userId}`);
+                const response = await fetch('/api/getPropertyFromOwnerId', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ userId })
+                });
+
                 if (!response.ok) {
-                    throw new Error('Failed to fetch properties');
+                    throw new Error('Network response was not ok');
                 }
-                const data = await response.json();
-                setProperties(data);
+
+                const fetchedProperties = await response.json();
+
+                // Filter out duplicate property IDs
+                const uniquePropertyIds = [];
+                const uniqueProperties = [];
+                fetchedProperties.forEach(property => {
+                    if (!uniquePropertyIds.includes(property.property_id)) {
+                        uniquePropertyIds.push(property.property_id);
+                        uniqueProperties.push(property);
+                    }
+                });
+
+                setProperties(uniqueProperties);
             } catch (error) {
                 console.error('Error fetching properties:', error);
             }
-        };
+        }
 
-        fetchProperties();
+        fetchProperties(userId);
     }, [userId]);
 
     const togglePopup = (propertyId) => {
@@ -36,13 +52,12 @@ function CondoOwnerAndRentalPage({ userId }) {
         <div>
             {properties.map((property) => (
                 <div key={property.property_id} className="bg-white shadow-lg rounded-xl mb-5">
-                    <CardHeader title={`Reservations for Property ${property.property_name}`}>
+                    <CardHeader title={`Reservations for Property ${property.property.property_name}`}>
                     </CardHeader>
                     <div className="p-5 text-black text-xl">
                         <MyReservationTable propertyId={property.property_id} userId={userId} />
                     </div>
-                    <CardHeader title={`Available Facilities for Property ${property.property_name}`}>
-
+                    <CardHeader title={`Available Facilities for Property ${property.property.property_name}`}>
                     </CardHeader>
                     <div className="p-5 text-black text-xl">
                         <AvailableFacilityTable propertyId={property.property_id} userId={userId} />

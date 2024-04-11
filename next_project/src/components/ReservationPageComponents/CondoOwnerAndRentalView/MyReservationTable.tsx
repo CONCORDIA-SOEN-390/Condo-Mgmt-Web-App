@@ -18,14 +18,14 @@ const MyReservationTable: React.FC<{ propertyId: number, userId: number }> = ({ 
     useEffect(() => {
         const fetchReservations = async () => {
             try {
-                const response = await fetch("/api/getReservationByOwnerId", {
+                const response = await fetch("/api/getReservationByUserId", {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",
                     },
                     body: JSON.stringify({
                         propertyId: propertyId,
-                        ownerId: userId,
+                        userId: userId,
                     }),
                 });
 
@@ -49,7 +49,7 @@ const MyReservationTable: React.FC<{ propertyId: number, userId: number }> = ({ 
 
     const handleCancel = async (reservationId: number) => {
         try {
-            const response = await fetch("/api/cancelReservation", {
+            const response = await fetch("/api/handleCancelReservation", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -90,8 +90,8 @@ const MyReservationTable: React.FC<{ propertyId: number, userId: number }> = ({ 
             {reservations.map((reservation, index) => (
                 <tr key={reservation.reservation_id} className={index % 2 === 0 ? 'bg-white' : 'bg-gray-50'}>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{reservation.reservation_id}</td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{reservation.facility_name}</td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{reservation.username}</td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{reservation.facility_id}</td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{reservation.user_id}</td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{reservation.start_time}</td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{reservation.end_time}</td>
                     <td className="px-6 py-4 whitespace-nowrap">

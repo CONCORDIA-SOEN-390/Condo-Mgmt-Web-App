@@ -1,5 +1,6 @@
 const { GET } = require("../src/app/api/getunitsfromproperty/route"); // Update with your file name
 const { createClient } = require("@supabase/supabase-js");
+export {};
 
 // Mocking Supabase client
 jest.mock("@supabase/supabase-js", () => ({

@@ -1,4 +1,4 @@
-import { verifyUserSignUp } from "@/app/_actions";
+import completeSignup from "@/app/(auth)/signup/complete/page";
 //import { FormData } from 'your-mock-library'; // Replace with a suitable library for mocking FormData
 
 jest.mock("next/navigation", () => ({
@@ -12,7 +12,7 @@ describe("verifyUserSignUp", () => {
     formData.append("email", "invalid-email");
     formData.append("password", "ValidPassword1!");
 
-    const result = await verifyUserSignUp(prevState, formData);
+    const result = await completeSignup(prevState, formData);
 
     expect(result.errors?.email).toContain("Invalid Email");
   });
@@ -39,7 +39,7 @@ describe("verifyUserSignUp", () => {
     formData.append("email", "valid@example.com");
     formData.append("password", "ValidPassword1!");
 
-    await verifyUserSignUp(prevState, formData);
+    await completeSignup(prevState, formData);
 
     // Assuming redirect is mocked
     const redirectMock = require("next/navigation").redirect;

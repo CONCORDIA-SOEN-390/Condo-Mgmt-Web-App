@@ -1,7 +1,7 @@
 import { render, screen, fireEvent } from "@testing-library/react";
 import "@testing-library/jest-dom";
 import userEvent from "@testing-library/user-event";
-import LoginSignupForm from "@/components/LoginPageComponents/LoginSignupForm";
+import LoginSignupForm from "@/components/LoginPageComponents/LoginForm";
 import { useFormState } from "react-dom";
 
 // Mock the useFormState hook

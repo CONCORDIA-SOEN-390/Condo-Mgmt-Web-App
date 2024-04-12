@@ -1,5 +1,6 @@
 const { POST } = require("../src/app/api/getUnitDetails/route");
 const { createClient } = require("@supabase/supabase-js");
+const { Response } = require("node-fetch");
 export {};
 
 // Mock Supabase client
@@ -28,6 +29,20 @@ describe("POST function", () => {
         propertyId: 1,
       }),
     };
+
+    // Mock Supabase client's response
+    const mockUnitData = [{ unit_id: 11, property_id: 1 }];
+    const mockSupabaseResponse = { data: mockUnitData, error: null };
+
+    createClient.mockReturnValueOnce({
+      from: jest.fn(() => ({
+        select: jest.fn(() => ({
+          eq: jest.fn(() => ({
+            eq: jest.fn().mockResolvedValueOnce(mockSupabaseResponse),
+          })),
+        })),
+      })),
+    });
 
     await POST(req, mockResponse);
 

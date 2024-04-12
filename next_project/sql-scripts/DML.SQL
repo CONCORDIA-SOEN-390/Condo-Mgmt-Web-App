@@ -106,3 +106,6 @@ VALUES
     (16, 1, 3, 0),
     (17, 1, 3, 0);
 
+INSERT INTO sale (sale_id_id, property_id, old_owner_id, condo_fee, sale_date) 
+VALUES
+    (1, 1, 1, 2.0, '2017-07-23');

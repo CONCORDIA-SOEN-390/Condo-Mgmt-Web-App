@@ -1,93 +1,76 @@
+// Import the required modules for testing
+import "isomorphic-fetch";
 const { POST } = require("../src/app/api/getUnitDetails/route");
 const { createClient } = require("@supabase/supabase-js");
-const { Response } = require("node-fetch");
 export {};
-
-// Mock Supabase client
+// Mock the Supabase client
 jest.mock("@supabase/supabase-js", () => ({
   createClient: jest.fn(),
 }));
 
-describe("POST function", () => {
-  let mockResponse: any;
-
+describe("POST route", () => {
   beforeEach(() => {
-    mockResponse = {
-      status: jest.fn(),
-      json: jest.fn(),
-    };
-  });
-
-  afterEach(() => {
+    // Reset the mock implementation before each test
     jest.clearAllMocks();
   });
 
-  test("Valid Request with Existing Unit", async () => {
+  it("should return unit data when provided valid unitId and propertyId", async () => {
+    // Mock the request object
     const req = {
-      json: async () => ({
-        unitId: 11,
-        propertyId: 1,
-      }),
+      json: jest.fn().mockResolvedValue({ unitId: 11, propertyId: 1 }),
     };
 
-    // Mock Supabase client's response
-    const mockUnitData = [{ unit_id: 11, property_id: 1 }];
-    const mockSupabaseResponse = { data: mockUnitData, error: null };
+    // Mock the Supabase client response
+    const unitData = { property_id: 1, unit_id: 11 };
+    const supabaseMock = {
+      from: jest.fn().mockReturnThis(),
+      select: jest.fn().mockReturnThis(),
+      eq: jest.fn().mockResolvedValue({ data: [unitData], error: null }),
+    };
+    createClient.mockReturnValue(supabaseMock);
 
-    createClient.mockReturnValueOnce({
-      from: jest.fn(() => ({
-        select: jest.fn(() => ({
-          eq: jest.fn(() => ({
-            eq: jest.fn().mockResolvedValueOnce(mockSupabaseResponse),
-          })),
-        })),
-      })),
-    });
+    // Call the POST function
+    const response = await POST(req);
 
-    await POST(req, mockResponse);
-
-    expect(mockResponse.status).toHaveBeenCalledWith(200);
+    // Assertions
+    expect(response.status).toBe(200);
+    expect(response.body).toEqual(JSON.stringify([unitData]));
   });
 
-  test("Internal Server Error (Supabase Query Fails)", async () => {
+  it("should return status 500 and error message when Supabase client returns an error", async () => {
+    // Mock the request object
     const req = {
-      json: async () => ({
-        unitId: "1",
-        propertyId: "1",
-      }),
+      json: jest.fn().mockResolvedValue({ unitId: 1, propertyId: 1 }),
     };
 
-    const mockSupabaseQuery = jest
-      .fn()
-      .mockRejectedValue(new Error("Supabase query failed"));
-
-    createClient.mockReturnValueOnce({
-      from: jest.fn(() => ({
-        select: jest.fn(() => ({
-          eq: jest.fn(() => ({
-            eq: mockSupabaseQuery,
-          })),
-        })),
-      })),
-    });
-
-    await POST(req, mockResponse);
-
-    expect(mockResponse.status).toHaveBeenCalledWith(500);
-    expect(mockResponse.json).toHaveBeenCalledWith("Internal Server Error");
-  });
-
-  it("should return 500 status and error message when req.json() throws an error", async () => {
-    const mockJson = jest
-      .fn()
-      .mockRejectedValue(new Error("Mock request JSON error"));
-    const mockResponse = {
-      json: mockJson,
+    // Mock the Supabase client response with an error
+    const errorMessage = "Supabase error";
+    const supabaseMock = {
+      from: jest.fn().mockReturnThis(),
+      select: jest.fn().mockReturnThis(),
+      eq: jest.fn().mockResolvedValue({ data: null, error: errorMessage }),
     };
+    createClient.mockReturnValue(supabaseMock);
 
-    const response = await POST(mockResponse);
+    // Call the POST function
+    const response = await POST(req);
 
+    // Assertions
     expect(response.status).toBe(500);
-    expect(await response.text()).toBe("Internal Server Error");
+    expect(response.body).toEqual(JSON.stringify(errorMessage));
+  });
+
+  it("should return status 500 and error message when an internal server error occurs", async () => {
+    // Mock the request object
+    const req = {
+      json: jest.fn().mockRejectedValue(new Error("Internal Server Error")),
+    };
+
+    // Call the POST function
+    const response = await POST(req);
+
+    // Assertions
+    expect(response.status).toBe(500);
+    expect(response.body).toEqual(JSON.stringify("Internal Server Error"));
   });
 });

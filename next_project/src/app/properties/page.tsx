@@ -18,7 +18,8 @@ function PropertiesPage() {
   const [showAddPropertyForm, setshowAddPropertyFormStatus] = useState(false);
 
   // hardcoded
-  const userId = 1
+  //const userId = 3 // reg_user
+  const userId = 1 // company user
 
   const toggleForm = () => {
     setshowAddPropertyFormStatus(!showAddPropertyForm);

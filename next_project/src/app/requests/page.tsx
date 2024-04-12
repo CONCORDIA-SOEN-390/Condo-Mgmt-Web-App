@@ -12,7 +12,7 @@ function RequestsPage() {
     //const {userId, accountType} = useContext(UserContext);
     const page = 'company';
     // harcoded userId
-    const userId = 1;
+    const userId = 1; // company user
 
     //-----------------------------------------------------------------------------------------------
 
@@ -33,8 +33,6 @@ function RequestsPage() {
             {/*fix rendering here**/}
             {page === 'company'? <CompanySideBar page='requests'/>:<PublicUserSideBar page='requests'/>}
             <div className="absolute w-5/6 right-6 top-5 bottom-5 bg-white shadow-lg rounded-xl">
-                <CardHeader title="Requests">
-                </CardHeader>
 
                 {/*fix rendering here
                 there are three different types of pages

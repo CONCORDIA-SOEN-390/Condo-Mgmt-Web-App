@@ -11,6 +11,7 @@ import { MdCancel, MdEditSquare } from "react-icons/md";
 import { PiPlusSquareFill } from "react-icons/pi";
 
 export default function DocumentsPage() {
+    // page in progress
     const page = 'company';
     const [ isUploading, setIsUploading ] = useState(false);
 

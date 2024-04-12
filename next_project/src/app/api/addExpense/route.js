@@ -8,13 +8,13 @@ const supabase = createClient(
 
 export async function POST(req) {
   const body = await req.json();
-  const { companyId, value, description, occurence } = body;
+  const { companyId, value, description, occurence, date, propertyId } = body;
 
   try {
     const { data, error } = await supabase
   .from('expense')
   .insert([
-    { company_id: companyId, expense_value: value, occurence: occurence, description: description },
+    { company_id: companyId, expense_value: value, occurence: occurence, description: description, expense_date: date, property_id: propertyId },
   ])
   .select();
 

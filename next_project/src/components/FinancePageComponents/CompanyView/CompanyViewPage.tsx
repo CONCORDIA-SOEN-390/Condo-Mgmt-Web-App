@@ -1,11 +1,9 @@
 import React, { useEffect, useState } from "react";
 import CardHeader from "@/components/GeneralComponents/CardHeader";
-import RequestTable from "@/components/RequestPageComponents/CompanyView/RequestTable";
 import { PiPlusSquareFill } from "react-icons/pi";
-import AddEmployee from "@/components/RequestPageComponents/CompanyView/addEmployee";
-import AddRequestForm from "@/components/RequestPageComponents/CompanyView/AddRequestForm";
+import AddFinanceForm from "@/components/FinancePageComponents/CompanyView/AddFinanceForm";
+import FinanceTable from "@/components/FinancePageComponents/CompanyView/FinanceTable";
 
-// in progress
 function Request({ userId }) {
     const [showAddEmployee, setShowAddEmployee] = useState({});
     const [properties, setProperties] = useState([]);
@@ -24,7 +22,6 @@ function Request({ userId }) {
             [propertyId]: !prevVisibility[propertyId],
         }));
     };
-
 
     // Getting properties from userId
     useEffect(() => {
@@ -56,15 +53,12 @@ function Request({ userId }) {
         <div>
             {properties.map((property) => (
                 <div key={property.property_id} className="bg-white shadow-lg rounded-xl mb-5">
-                    <CardHeader title={`Requests for ${property.property_name}`}>
-                        <button onClick={() => toggleAddEmployee(property.property_id)}><PiPlusSquareFill/></button>
-                        <button onClick={() => toggleAddRequest(property.property_id)}><PiPlusSquareFill/></button>
+                    <CardHeader title={`Finances for ${property.property_name}`}>
+                        <button onClick={() => toggleAddEmployee(property.property_id)}><PiPlusSquareFill /></button>
                     </CardHeader>
                     <div className="p-5 text-black text-xl">
-                        <RequestTable propertyId={property.property_id} userId={userId} />
-                        {showAddEmployee[property.property_id] && <AddEmployee propertyId={property.property_id} />}
-                    </div>
-                    <div className="p-5 text-black text-xl">{showAddRequest[property.property_id] && <AddRequestForm propertyId={property.property_id} userId={userId} />}
+                        {showAddEmployee[property.property_id] && <AddFinanceForm propertyId={property.property_id} />}
+                        <FinanceTable propertyId={property.property_id} userId={userId} />
                     </div>
                 </div>
             ))}

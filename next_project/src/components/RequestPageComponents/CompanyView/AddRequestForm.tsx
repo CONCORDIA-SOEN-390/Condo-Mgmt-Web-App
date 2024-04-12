@@ -1,12 +1,9 @@
 import React, { useState, useEffect } from "react";
 
-// in progress
 function AddRequestForm({ userId, propertyId }) {
-    const [formData, setFormData] = useState({
-        requestTypeId: '',
-        details: '',
-        unitId: '',
-    });
+    const [requestTypeId, setRequestTypeId] = useState('');
+    const [details, setDetails] = useState('');
+    const [unitId, setUnitId] = useState('');
     const [requestTypes, setRequestTypes] = useState([]);
     const [errorMessage, setErrorMessage] = useState("");
 
@@ -27,9 +24,16 @@ function AddRequestForm({ userId, propertyId }) {
         fetchRequestTypes();
     }, []);
 
+    const handleChangeRequestType = (e) => {
+        setRequestTypeId(e.target.value);
+    };
 
-    const handleChange = (e) => {
-        setFormData({ ...formData, [e.target.name]: e.target.value });
+    const handleChangeDetails = (e) => {
+        setDetails(e.target.value);
+    };
+
+    const handleChangeUnitId = (e) => {
+        setUnitId(e.target.value);
     };
 
     const handleSubmit = async (e) => {
@@ -41,19 +45,15 @@ function AddRequestForm({ userId, propertyId }) {
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ ...formData, userId, propertyId }),
+                body: JSON.stringify({ requestTypeId, details, unitId, userId, propertyId }),
             });
 
             const data = await response.json();
             if (response.ok) {
                 setErrorMessage("Request submitted successfully!");
-                setFormData({
-                    requestTypeId: '',
-                    details: '',
-                    unitId: '',
-                    propertyId: propertyId,
-                    userId: userId
-                });
+                setRequestTypeId('');
+                setDetails('');
+                setUnitId('');
             } else {
                 setErrorMessage(data.message || 'An error occurred.');
             }
@@ -74,8 +74,8 @@ function AddRequestForm({ userId, propertyId }) {
                         <select
                             className="border border-gray-300 rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                             name="requestTypeId"
-                            value={formData.requestTypeId}
-                            onChange={handleChange}
+                            value={requestTypeId}
+                            onChange={handleChangeRequestType}
                         >
                             <option value="">Select Request Type</option>
                             {requestTypes.map(requestType => (
@@ -89,8 +89,8 @@ function AddRequestForm({ userId, propertyId }) {
                         <textarea
                             className="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                             name="details"
-                            value={formData.details}
-                            onChange={handleChange}
+                            value={details}
+                            onChange={handleChangeDetails}
                             placeholder="Enter Details"
                         />
                     </div>
@@ -101,8 +101,8 @@ function AddRequestForm({ userId, propertyId }) {
                             className="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                             type="text"
                             name="unitId"
-                            value={formData.unitId}
-                            onChange={handleChange}
+                            value={unitId}
+                            onChange={handleChangeUnitId}
                             placeholder="Enter Unit ID"
                         />
                     </div>
@@ -119,11 +119,11 @@ function AddRequestForm({ userId, propertyId }) {
                         <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="submit">
                             Confirm
                         </button>
-                        <button className="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="button" onClick={() => setFormData({
-                            requestTypeId: '',
-                            details: '',
-                            unitId: '',
-                        })}>
+                        <button className="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="button" onClick={() => {
+                            setRequestTypeId('');
+                            setDetails('');
+                            setUnitId('');
+                        }}>
                             Cancel
                         </button>
                     </div>

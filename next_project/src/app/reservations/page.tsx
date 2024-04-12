@@ -12,20 +12,18 @@ function ReservationsPage() {
   //const {userId, accountType} = useContext(UserContext);
 
   //--------------------------HARDCODED VALUES--------------------------------------
-  const userId = 1;
+  const userId = 1; // company user
   const accountType = "company";
   //const userId = 3;
   //const accountType = "reg_user";
   //--------------------------------------------------------------------------------
 
   return (
-      <div className="flex min-h-screen bg-gray-100">
-          <div className="w-64 bg-gray-200">
+      <div className="flex min-h-screen-nav items-center justify-center h-full bg-white">
               <SideBar page="reservations" />
-          </div>
-          <div className="flex flex-grow flex-col">
-              <div className="flex-grow"></div>
-              <div className="flex justify-center lg:justify-end"> {/* Adjusted to justify-end for right alignment on larger screens */}
+
+          <div className="absolute w-5/6 inset-y-0 right-5 bg-white shadow-lg rounded-xl">
+
                   {
                       /**/
                   }
@@ -40,7 +38,7 @@ function ReservationsPage() {
                   )}
                   */}
 
-              </div>
+
           </div>
       </div>
 

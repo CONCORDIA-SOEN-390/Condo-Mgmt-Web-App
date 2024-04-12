@@ -8,7 +8,7 @@ const supabase = createClient(
 
 export async function POST(req) {
     const body = await req.json();
-    const { propertyId, email, password_, username, phoneNumber, employeeType, profileUrl } = body;
+    const { propertyId, email, password_, username, phoneNumber, employeeType, profileUrl, companyId } = body;
 
     try {
 
@@ -34,7 +34,7 @@ export async function POST(req) {
             .insert([
                 {
                     employee_id: userId,
-                    company_id: null,
+                    company_id: companyId,
                     property_id: propertyId,
                     num_of_assigned_req: 0
                 }

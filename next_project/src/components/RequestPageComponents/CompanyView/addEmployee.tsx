@@ -2,15 +2,16 @@ import React, { useState } from "react";
 
 function AddEmployeeForm({ propertyId }) {
     const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
+    const [password_, setPassword] = useState('');
     const [username, setUsername] = useState('');
     const [phoneNumber, setPhoneNumber] = useState('');
     const [employeeType, setEmployeeType] = useState('');
     const [profileUrl, setProfileUrl] = useState('');
+    const [companyId, setCompanyId] = useState('');
     const [errorMessage, setErrorMessage] = useState('');
 
     const handleConfirm = async () => {
-        if (email.trim() === '' || password.trim() === '' || username.trim() === '' || phoneNumber.trim() === '' || employeeType.trim() === '') {
+        if (email.trim() === '' || password_.trim() === '' || username.trim() === '' || phoneNumber.trim() === '' || employeeType.trim() === '' || companyId.trim() === '') {
             setErrorMessage('Please fill in all required fields.');
         } else {
             try {
@@ -22,11 +23,12 @@ function AddEmployeeForm({ propertyId }) {
                     body: JSON.stringify({
                         propertyId,
                         email,
-                        password_:password,
+                        password_,
                         username,
                         phoneNumber,
                         account_type: employeeType,
                         profileUrl,
+                        companyId,
                     }),
                 });
 
@@ -40,12 +42,13 @@ function AddEmployeeForm({ propertyId }) {
                     setPhoneNumber('');
                     setEmployeeType('');
                     setProfileUrl('');
+                    setCompanyId('');
                 } else {
                     setErrorMessage(data.message || 'An error occurred.');
                 }
             } catch (error) {
                 console.error('Error:', error);
-                setErrorMessage('An error occurred while submitting the form.');
+                setErrorMessage('');
             }
         }
     };
@@ -58,6 +61,7 @@ function AddEmployeeForm({ propertyId }) {
         setPhoneNumber('');
         setEmployeeType('');
         setProfileUrl('');
+        setCompanyId('');
     };
 
     return (
@@ -83,7 +87,7 @@ function AddEmployeeForm({ propertyId }) {
                             type="password"
                             name="password"
                             placeholder="Enter Password"
-                            value={password}
+                            value={password_}
                             onChange={(e) => setPassword(e.target.value)}
                         />
                     </div>
@@ -132,6 +136,17 @@ function AddEmployeeForm({ propertyId }) {
                             placeholder="Enter Profile URL"
                             value={profileUrl}
                             onChange={(e) => setProfileUrl(e.target.value)}
+                        />
+                    </div>
+                    <div className="mb-4">
+                        <label htmlFor="companyId" className="block text-sm font-bold text-blue-700 mb-2">Company ID</label>
+                        <input
+                            className="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                            type="text"
+                            name="companyId"
+                            placeholder="Enter Company ID"
+                            value={companyId}
+                            onChange={(e) => setCompanyId(e.target.value)}
                         />
                     </div>
                 </div>

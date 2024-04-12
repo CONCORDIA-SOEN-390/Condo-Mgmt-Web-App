@@ -1,4 +1,4 @@
-const { GET } = require("../src/app/api/getunitsfromproperty/route"); // Update with your file name
+const { GET } = require("../src/app/api/getunitsfromproperty/route");
 const { createClient } = require("@supabase/supabase-js");
 export {};
 

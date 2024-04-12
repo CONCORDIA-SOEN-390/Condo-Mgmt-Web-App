@@ -1,4 +1,4 @@
-const { POST } = require("../src/app/api/handleLockerRegistration/route");
+const { POST } = require("../src/app/api/handleParkingRegistration/route");
 const { createClient } = require("@supabase/supabase-js");
 export {};
 
@@ -13,18 +13,18 @@ describe("POST function", () => {
     jest.clearAllMocks();
   });
 
-  it("should update locker successfully when propertyId and lockerOwnerId are provided and locker is available", async () => {
-    const mockBody = { propertyId: "123", lockerOwnerId: "456" };
+  it("should update parking successfully when propertyId and parkingOwnerId are provided and parking is available", async () => {
+    const mockBody = { propertyId: "123", parkingOwnerId: "456" };
     const mockJson = jest.fn().mockResolvedValue(mockBody);
     const mockReq = {
       json: mockJson,
     };
 
     const mockSelect = jest.fn().mockResolvedValue({
-      data: [{ locker_id: 1, property_id: "123", occupied: false }],
+      data: [{ parking_id: 1, property_id: "123", occupied: false }],
     });
     const mockUpdate = jest.fn().mockResolvedValue({
-      data: [{ locker_id: 1, owner_id: "456", occupied: true }],
+      data: [{ parking_id: 1, owner_id: "456", occupied: true }],
     });
     const mockFrom = jest.fn(() => ({
       select: mockSelect,
@@ -37,7 +37,7 @@ describe("POST function", () => {
 
     const response = await POST(mockReq);
 
-    expect(mockSupabase.from).toHaveBeenCalledWith("locker");
+    expect(mockSupabase.from).toHaveBeenCalledWith("parking");
     expect(mockSupabase.from().select).toHaveBeenCalledWith("*");
     expect(mockSupabase.from().select().eq).toHaveBeenCalledWith(
       "property_id",
@@ -52,7 +52,7 @@ describe("POST function", () => {
       occupied: true,
     });
     expect(mockSupabase.from().update().eq).toHaveBeenCalledWith(
-      "locker_id",
+      "parking_id",
       1
     );
     expect(mockSupabase.from().update().eq).toHaveBeenCalledWith(
@@ -60,11 +60,11 @@ describe("POST function", () => {
       "123"
     );
     expect(response.status).toBe(200);
-    expect(await response.text()).toBe("Locker updated succcessfully");
+    expect(await response.text()).toBe("Parking updated successfully");
   });
 
-  it("should return 400 status and error message when all lockers are filled", async () => {
-    const mockBody = { propertyId: "123", lockerOwnerId: "456" };
+  it("should return 400 status and error message when all parking spaces are filled", async () => {
+    const mockBody = { propertyId: "123", parkingOwnerId: "456" };
     const mockJson = jest.fn().mockResolvedValue(mockBody);
     const mockReq = {
       json: mockJson,
@@ -84,14 +84,14 @@ describe("POST function", () => {
   });
 
   it("should return 500 status and error message when there is an error in Supabase update query", async () => {
-    const mockBody = { propertyId: "123", lockerOwnerId: "456" };
+    const mockBody = { propertyId: "123", parkingOwnerId: "456" };
     const mockJson = jest.fn().mockResolvedValue(mockBody);
     const mockReq = {
       json: mockJson,
     };
 
     const mockSelect = jest.fn().mockResolvedValue({
-      data: [{ locker_id: 1, property_id: "123", occupied: false }],
+      data: [{ parking_id: 1, property_id: "123", occupied: false }],
     });
     const mockError = new Error("Mock Supabase error");
     const mockUpdate = jest.fn().mockRejectedValue(mockError);

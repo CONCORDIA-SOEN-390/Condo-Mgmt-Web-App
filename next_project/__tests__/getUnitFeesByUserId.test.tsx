@@ -1,6 +1,5 @@
-const { POST } = require("../src/app/api/getUnitFeesByUserId/route"); // Update with your file name
+const { POST } = require("../src/app/api/getUnitFeesByUserId/route");
 const { createClient } = require("@supabase/supabase-js");
-export {};
 
 // Mocking Supabase client
 jest.mock("@supabase/supabase-js", () => ({

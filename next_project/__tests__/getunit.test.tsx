@@ -1,4 +1,4 @@
-const { POST } = require("../src/app/api/getUnitDetails/route"); // Import your code file here
+const { POST } = require("../src/app/api/getUnitDetails/route");
 const { createClient } = require("@supabase/supabase-js");
 export {};
 

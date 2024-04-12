@@ -1,67 +1,108 @@
-import pool from "../../../../utils/db";
+import { createClient } from '@supabase/supabase-js';
 
-// used in request components
-export async function POST(req){
+// Initialize Supabase client
+const supabase = createClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+);
+
+export async function POST(req) {
     const body = await req.json();
     const { userId, requestTypeId, details, unitId, propertyId } = body;
+    let employeesWithAccountTypes;
 
     const defaultStatusId = 1;
-    const client = await pool.connect();
-    let employee_type;
-    let employee_id;
 
     try {
-        await client.query("BEGIN"); // Start the transaction
 
-        const emps = await client.query(`
-        SELECT e.*, u.account_type
-        FROM employee e
-        JOIN property p ON e.company_id = p.user_id
-        JOIN users u ON u.user_id = e.employee_id
-        WHERE p.property_id = $1;        
-        `, [propertyId]);
+        // Fetch Employees
+        const { data: employees, error: employeeError } = await supabase
+            .from('employee')
+            .select('*')
+            .eq('property_id', propertyId);
 
-        const req = await client.query(`
-        SELECT * FROM request_type WHERE type_id = $1
-        `, [requestTypeId]);
-
-        const req_type = req.rows[0]['type_name']
-
-        if (req_type === "Move In" || req_type === "Move Out" || req_type === "Change intercom number"){
-          employee_type = 'operations';
+        if (employeeError) {
+            // Handle error
         } else {
-          employee_type = 'management';
+            // Extract employee IDs
+            const employeeIds = employees.map(employee => employee.employee_id);
+
+            // Fetch Users
+            const { data: users, error: userError } = await supabase
+                .from('users')
+                .select('user_id, account_type')
+                .in('user_id', employeeIds);
+
+            if (userError) {
+                // Handle error
+            } else {
+                // Combine employee data with account types
+                employeesWithAccountTypes = employees.map(employee => {
+                    const user = users.find(user => user.user_id === employee.employee_id);
+                    const account_type = user ? user.account_type : null;
+
+                    return { ...employee, account_type };
+
+
+                });
+
+                // Handle successful response
+                // Handle successful response
+                let specificFields;
+                if (requestTypeId === 1 || requestTypeId === 2 || requestTypeId === 3) {
+                    // Fetch operations employees
+                    specificFields = employeesWithAccountTypes
+                        .filter(employee => employee.account_type === 'operations')
+                        .map(employee => ({
+                            employee_id: employee.employee_id,
+                            account_type: employee.account_type,
+                            // Add more fields as needed
+                        }));
+                } else {
+                    // Fetch management employees
+                    specificFields = employeesWithAccountTypes
+                        .filter(employee => employee.account_type === 'management')
+                        .map(employee => ({
+                            employee_id: employee.employee_id,
+                            account_type: employee.account_type,
+                            // Add more fields as needed
+                        }));
+                }
+
+
+                // Find the employee with the lowest num_of_assigned_req using reduce
+                const selectedEmployee = employeesWithAccountTypes.reduce((prev, current) => {
+                    return (prev.num_of_assigned_req < current.num_of_assigned_req) ? prev : current;
+                });
+
+                //console.log('Selected Employee---------------:', selectedEmployee);
+
+
+
+
+                await supabase
+                    .from('employee')
+                    .update({ num_of_assigned_req: selectedEmployee.num_of_assigned_req + 1 })
+                    .eq('employee_id', selectedEmployee.employee_id);
+
+                console.log('Updated num_of_assigned_req for selectedEmployee');
+
+
+                console.log("here-------end-------------");
+
+
+
+            }
         }
 
-        const e = await client.query(`
-        SELECT * FROM employee e
-        JOIN users u ON u.user_id = e.employee_id
-        JOIN property p ON p.property_id = e.property_id
-        WHERE u.account_type = $1 AND p.property_id = $2
-        ORDER BY e.num_of_assigned_req ASC
-        LIMIT 1;
-        `, [employee_type, propertyId]);
 
-        if (e.rows.length > 0){
-          employee_id = e.rows[0]['employee_id'];
-          await client.query("UPDATE employee SET num_of_assigned_req = num_of_assigned_req + 1 WHERE employee_id = $1", [employee_id]);
-        } else {
-          return new Response('No employees can handle this request', {
-            status:400,
-          })
-        }
-        await client.query("INSERT INTO request (unit_id, property_id, req_creator, req_reviewer, type_id, status_id, details) VALUES ($1, $2, $3, $4, $5, $6, $7)", [unitId, propertyId, userId, employee_id, requestTypeId, defaultStatusId, details]);
-        await client.query("COMMIT");
-        return new Response('Success',{
-            status:200,
+        return new Response('Success', {
+            status: 200,
         });
     } catch (error) {
-        await client.query("ROLLBACK"); // Rollback the transaction if an error occurs
         console.error("Error inserting data into tables:", error);
-        return new Response('Internal Server Errror', {
-          status:500,
+        return new Response('Internal Server Error', {
+            status: 500,
         });
-      } finally {
-        client.release();
-      }
+    }
 }

@@ -12,7 +12,7 @@ function RequestsPage() {
     //const {userId, accountType} = useContext(UserContext);
     const page = 'company';
     // harcoded userId
-    const userId = 4;
+    const userId = 1;
 
     //-----------------------------------------------------------------------------------------------
 
@@ -41,11 +41,14 @@ function RequestsPage() {
                 */}
 
                 {/*page === 'company'? <CompanyRequestTable/>:<PublicUserRequestTable/>
- <RequestCompanyView userId={userId}/>
-<RequestEmployeeView userId={userId}/>
+
+  <RequestEmployeeView userId={userId}/>
+<RequestPublicView userId={userId} />
 
                 */}
-                <RequestPublicView userId={userId} />
+
+                <RequestCompanyView userId={userId}/>
+
             </div>
         </div>
     );

@@ -1,7 +1,19 @@
 import React, { useState, useEffect } from 'react';
 
-const LockerTable = ({ propertyId }) => {
-    const [lockers, setLockers] = useState([]);
+interface Locker {
+    locker_id: number;
+    property_id: number;
+    owner_id: number;
+    condo_fee: number;
+    occupied: boolean;
+}
+
+interface LockerTableProps {
+    propertyId: number;
+}
+
+const LockerTable: React.FC<LockerTableProps> = ({ propertyId }) => {
+    const [lockers, setLockers] = useState<Locker[]>([]);
     const [lockerOwnerIdInput, setLockerOwnerIdInput] = useState('');
     const [lockerIdInput, setLockerIdInput] = useState('');
     const [lockerFeeInput, setLockerFeeInput] = useState('');
@@ -35,7 +47,6 @@ const LockerTable = ({ propertyId }) => {
 
         fetchLockers();
     }, [propertyId]);
-
 
     const handleUpdateFee = async () => {
         try {
@@ -89,17 +100,15 @@ const LockerTable = ({ propertyId }) => {
         }
     };
 
-
-
-    const handleLockerOwnerIdChange = (e) => {
+    const handleLockerOwnerIdChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setLockerOwnerIdInput(e.target.value);
     };
 
-    const handleLockerIdChange = (e) => {
+    const handleLockerIdChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setLockerIdInput(e.target.value);
     };
 
-    const handleLockerFeeChange = (e) => {
+    const handleLockerFeeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setLockerFeeInput(e.target.value);
     };
 
@@ -134,7 +143,6 @@ const LockerTable = ({ propertyId }) => {
             console.error('Error registering owner to locker:', error);
         }
     };
-
 
     return (
         <div className="bg-gray-50 rounded-lg shadow-md p-6">
@@ -234,7 +242,6 @@ const LockerTable = ({ propertyId }) => {
                     </button>
                 </div>
             )}
-
 
             <div className="overflow-x-auto">
                 <table className="min-w-full divide-y divide-gray-200">

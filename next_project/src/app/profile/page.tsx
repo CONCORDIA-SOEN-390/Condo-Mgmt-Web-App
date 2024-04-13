@@ -4,7 +4,7 @@ import SideBar from "@/components/GeneralComponents/PublicUserView/SideBar";
 import { UserContext } from "@/context/userInfoContext";
 import { useContext } from "react";
 import Image from "next/image";
-import RegisterForm from "@/components/ProfilePageComponent/RegistrationForm";
+import RegisterForm from "@/components/ProfilePageComponents/RegistrationForm";
 
 function ProfilePage() {
   const {profileUrl, email, phoneNumber, userName} = useContext(UserContext);

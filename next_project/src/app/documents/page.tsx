@@ -4,7 +4,7 @@ import CompanyDocumentTable from "@/components/DocumentPageComponents/CompanyVie
 import CardHeader from "@/components/GeneralComponents/CardHeader";
 import PublicUserSideBar from "@/components/GeneralComponents/PublicUserView/SideBar";
 import CompanySideBar from "@/components/GeneralComponents/CompanyView/SideBar";
-import PublicUserDocumentUploadForm from "@/components/DocumentPageComponents/PublicUserView/DocumentUploadForm";
+//import PublicUserDocumentUploadForm from "@/components/DocumentPageComponents/PublicUserView/DocumentUploadForm";
 import CompanyDocumentUploadForm from "@/components/DocumentPageComponents/CompanyView/DocumentUploadForm";
 import { useState } from "react";
 import { MdCancel, MdEditSquare } from "react-icons/md";
@@ -29,7 +29,7 @@ export default function DocumentsPage() {
                 <MdCancel className="" />
             </CardHeader>
 
-            {isUploading && ((page === 'company')? <CompanyDocumentUploadForm/> : <PublicUserDocumentUploadForm/>)}
+            {/*isUploading && ((page === 'company')? <CompanyDocumentUploadForm/> : <PublicUserDocumentUploadForm/>)*/}
             {page === 'company'? <CompanyDocumentTable/>:<PublicUserDocumentTable/>}
             </div>
         </div>

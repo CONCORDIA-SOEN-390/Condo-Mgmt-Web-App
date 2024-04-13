@@ -4,21 +4,24 @@ import AddRequestForm from "@/components/RequestPageComponents/CompanyView/AddRe
 import RequestTable from "@/components/RequestPageComponents/PublicUserView/RequestTable";
 import { PiPlusSquareFill } from "react-icons/pi";
 
-function Request({ userId }) {
-    const [properties, setProperties] = useState([]);
-    const [showAddRequestForms, setShowAddRequestForms] = useState({});
+interface RequestProps {
+    userId: number;
+}
 
-    const toggleFormAdd = (propertyId) => {
+function Request({ userId }: RequestProps) {
+    const [properties, setProperties] = useState([]);
+    const [showAddRequestForms, setShowAddRequestForms] = useState<Record<number, boolean>>({});
+
+    const toggleFormAdd = (propertyId: number) => {
         setShowAddRequestForms((prevForms) => ({
             ...prevForms,
             [propertyId]: !prevForms[propertyId],
         }));
     };
 
-
     // Getting properties from userId -> owner
     useEffect(() => {
-        async function fetchProperties(userId) {
+        async function fetchProperties(userId: number) {
             try {
                 const response = await fetch('/api/getPropertyFromOwnerId', {
                     method: 'POST',
@@ -35,13 +38,13 @@ function Request({ userId }) {
                 const fetchedProperties = await response.json();
 
                 // Filter out duplicate property IDs
-                const uniquePropertyIds = [];
-                const uniqueProperties = [];
-                fetchedProperties.forEach(property => {
+                const uniquePropertyIds: number[] = [];
+                const uniqueProperties = fetchedProperties.filter((property: any) => {
                     if (!uniquePropertyIds.includes(property.property_id)) {
                         uniquePropertyIds.push(property.property_id);
-                        uniqueProperties.push(property);
+                        return true;
                     }
+                    return false;
                 });
 
                 setProperties(uniqueProperties);
@@ -55,7 +58,7 @@ function Request({ userId }) {
 
     return (
         <div>
-            {properties.map((property) => (
+            {properties.map((property: any) => (
                 <div key={property.property_id} className="bg-white shadow-lg rounded-xl mb-5">
                     <CardHeader title={`Requests for ${property.property.property_name}`}>
                         <button onClick={() => toggleFormAdd(property.property_id)}><PiPlusSquareFill/></button>

@@ -1,10 +1,14 @@
 import React, { useState } from 'react';
 
-function RegisterForm({userId}) {
+interface RegisterFormProps {
+    userId: number;
+}
+
+const RegisterForm: React.FC<RegisterFormProps> = ({ userId }) => {
     const [regKey, setRegKey] = useState('');
     const [errorMessage, setErrorMessage] = useState('');
 
-    const handleSubmit = async (e) => {
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
         try {
@@ -43,7 +47,6 @@ function RegisterForm({userId}) {
                                 onChange={(e) => setRegKey(e.target.value)}
                                 className="w-full md:w-96 border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50"
                             />
-
                         </div>
                         <button
                             type="submit"
@@ -57,6 +60,6 @@ function RegisterForm({userId}) {
             </div>
         </div>
     );
-}
+};
 
 export default RegisterForm;

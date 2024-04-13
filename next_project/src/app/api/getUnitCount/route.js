@@ -16,11 +16,13 @@ export async function POST(req) {
             .eq('property_id', propertyId);
 
         if (error) {
-            console.error('Error fetching lockers:', error);
-            return {
+            console.error('Error fetching units:', error);
+            return new Response(JSON.stringify({ error: 'Failed to fetch units' }), {
                 status: 500,
-                body: JSON.stringify({ error: 'Failed to fetch lockers' })
-            };
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
         }
 
         const unitCount = units ? units.length : 0;
@@ -33,9 +35,11 @@ export async function POST(req) {
         });
     } catch (error) {
         console.error('Error:', error);
-        return {
+        return new Response(JSON.stringify({ error: 'Internal Server Error' }), {
             status: 500,
-            body: JSON.stringify({ error: 'Internal Server Error' })
-        };
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
     }
 }

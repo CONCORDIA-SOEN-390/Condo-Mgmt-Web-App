@@ -1,27 +1,47 @@
 import React, { useEffect, useState } from "react";
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
+import { CalendarProps } from 'react-calendar';
+import Facility from "@/components/ReservationPageComponents/CompanyView/AvailableFacilityTable"
 
-function ReserveFacilityPopup({ facility, userId, propertyId, onReservationSubmit, onCancel }) {
+
+interface ReserveFacilityPopupProps {
+  // @ts-ignore
+  facility: Facility;
+  userId: number;
+  propertyId: number;
+  onReservationSubmit: (reservationDetails: any) => void;
+  onCancel: () => void;
+}
+
+function ReserveFacilityPopup({ facility, userId, propertyId, onReservationSubmit, onCancel }: ReserveFacilityPopupProps) {
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [startTime, setStartTime] = useState("");
   const [endTime, setEndTime] = useState("");
 
-  const handleDateChange = (date) => {
-    setSelectedDate(date);
+  if (!facility) {
+    throw new Error("Facility is null");
+  }
+
+  const handleDateChange = (date: CalendarProps['value']) => {
+    setSelectedDate(date as Date); // Convert Value to Date if necessary
   };
 
-  const handleStartTimeChange = (e) => {
+  const handleStartTimeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setStartTime(e.target.value);
   };
 
-  const handleEndTimeChange = (e) => {
+  const handleEndTimeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setEndTime(e.target.value);
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
+      if (!facility) {
+        throw new Error("Facility is null");
+      }
+
       const formattedStartTime = `${selectedDate.toISOString().slice(0, 10)} ${startTime}:00.000000 +00:00`;
       const formattedEndTime = `${selectedDate.toISOString().slice(0, 10)} ${endTime}:00.000000 +00:00`;
 
@@ -43,14 +63,22 @@ function ReserveFacilityPopup({ facility, userId, propertyId, onReservationSubmi
         throw new Error("Failed to add reservation");
       }
 
-
-      onReservationSubmit();
+      // Pass reservationDetails to onReservationSubmit
+      onReservationSubmit({
+        facilityId: facility.facility_id,
+        userId: userId,
+        propertyId: propertyId,
+        startTime: formattedStartTime,
+        endTime: formattedEndTime,
+      });
     } catch (error) {
       console.error("Error adding reservation:", error);
     }
   };
 
-  const isToday = (date) => {
+
+
+  const isToday = (date: Date) => {
     const today = new Date();
     return (
         date.getDate() === today.getDate() &&
@@ -59,7 +87,7 @@ function ReserveFacilityPopup({ facility, userId, propertyId, onReservationSubmi
     );
   };
 
-  const tileClassName = ({ date }) => {
+  const tileClassName = ({ date }: { date: Date }) => {
     if (date.getTime() === selectedDate.getTime()) {
       return "bg-stone-300";
     }
@@ -68,6 +96,7 @@ function ReserveFacilityPopup({ facility, userId, propertyId, onReservationSubmi
     }
     return "";
   };
+
 
   return (
       <div className="popup bg-white p-6 rounded-lg flex flex-col">
@@ -82,10 +111,9 @@ function ReserveFacilityPopup({ facility, userId, propertyId, onReservationSubmi
           <div className="form-group text-lg p-3 flex-grow">
             <label htmlFor="date">Date: {selectedDate.toDateString()}</label>
             <Calendar
-                onChange={handleDateChange}
                 value={selectedDate}
+                onChange={handleDateChange}
                 className="mb-4 p mt-3"
-                calendarClassName="bg-white rounded-lg border border-gray-300 shadow-md"
                 tileClassName={tileClassName}
             />
           </div>

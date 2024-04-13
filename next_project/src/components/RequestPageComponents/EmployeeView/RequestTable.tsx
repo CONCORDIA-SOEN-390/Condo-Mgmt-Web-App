@@ -1,29 +1,39 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
+
+interface Request {
+    req_id: number;
+    unit_id: number;
+    property_id: number;
+    req_creator: number;
+    req_reviewer: number;
+    type_id: number;
+    status_id: number;
+    details: string;
+}
 
 interface RequestStatus {
     status_id: number;
     status_name: string;
 }
+
 interface RequestType {
     type_id: number;
     type_name: string;
 }
 
-const RequestTable = ({ userId }) => {
-    const [requests, setRequests] = useState([]);
-    const [selectedRequest, setSelectedRequest] = useState(null);
-    const [newStatus, setNewStatus] = useState('');
+interface RequestTableProps {
+    userId: number;
+}
+
+const RequestTable: React.FC<RequestTableProps> = ({ userId }) => {
+    const [requests, setRequests] = useState<Request[]>([]);
+    const [selectedRequest, setSelectedRequest] = useState<Request | null>(null);
+    const [newStatus, setNewStatus] = useState<string>('');
 
     const [requestTypes, setRequestTypes] = useState<RequestType[]>([]);
     const [requestStatuses, setRequestStatuses] = useState<RequestStatus[]>([]);
 
-
-
-    useEffect(() => {
-        fetchRequests();
-    }, []);
-
-    const fetchRequests = async () => {
+    const fetchRequests = useCallback(async () => {
         try {
             const response = await fetch('/api/getAssignedRequests', {
                 method: 'POST',
@@ -40,7 +50,11 @@ const RequestTable = ({ userId }) => {
         } catch (error) {
             console.error('Error fetching requests:', error);
         }
-    };
+    }, [userId]);
+
+    useEffect(() => {
+        fetchRequests();
+    }, [fetchRequests]);
 
     useEffect(() => {
         const fetchRequestStatuses = async () => {
@@ -62,7 +76,6 @@ const RequestTable = ({ userId }) => {
         fetchRequestStatuses();
     }, []);
 
-
     useEffect(() => {
         const fetchRequestTypes = async () => {
             try {
@@ -83,8 +96,6 @@ const RequestTable = ({ userId }) => {
         fetchRequestTypes();
     }, []);
 
-
-
     const handleStatusChange = async () => {
         try {
             const response = await fetch('/api/handleUpdateRequestStatus', {
@@ -93,7 +104,7 @@ const RequestTable = ({ userId }) => {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
-                    requestId: selectedRequest.req_id,
+                    requestId: selectedRequest?.req_id,
                     statusId: newStatus
                 })
             });
@@ -107,7 +118,7 @@ const RequestTable = ({ userId }) => {
         }
     };
 
-    const handleRowClick = (request) => {
+    const handleRowClick = (request: Request) => {
         if (selectedRequest && selectedRequest.req_id === request.req_id) {
             // Clicked on the selected row again, close the form
             setSelectedRequest(null);
@@ -117,15 +128,10 @@ const RequestTable = ({ userId }) => {
         }
     };
 
-    const handleCloseForm = () => {
-        setSelectedRequest(null);
-    };
-
     const getStatusNameById = (statusId: number) => {
         const requestStatus = requestStatuses.find(status => status.status_id === statusId);
         return requestStatus ? requestStatus.status_name : '';
     };
-
 
     const getTypeNameById = (typeId: number) => {
         const requestType = requestTypes.find(type => type.type_id === typeId);
@@ -134,6 +140,7 @@ const RequestTable = ({ userId }) => {
 
     return (
         <div className="overflow-x-auto">
+            <h2 className="text-xl font-semibold mb-4">Request</h2>
             {requests.length > 0 && (
                 <table className="min-w-full divide-y divide-gray-200">
                     <thead className="bg-blue-400 text-white">

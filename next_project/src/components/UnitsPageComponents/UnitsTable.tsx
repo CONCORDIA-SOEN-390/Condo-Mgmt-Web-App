@@ -42,16 +42,16 @@ export default function UnitsTable({ propertyId }: { propertyId: number }) {
   const [showRemoveForm, setShowRemoveForm] = useState(false);
 
 
-  const handleUnitIdChange = (e) => {
+  const handleUnitIdChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setUnitIdInput(e.target.value);
   };
 
-  const handleSqftChange =  (e) =>{
-    setSqftInput(e.target.value)
+  const handleSqftChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSqftInput(e.target.value);
   };
 
-  const handlePriceFeeChange =  (e) =>{
-    setPriceFeeInput(e.target.value)
+  const handlePriceFeeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setPriceFeeInput(e.target.value);
   };
 
   const handleToggleRegisterForm = () => {

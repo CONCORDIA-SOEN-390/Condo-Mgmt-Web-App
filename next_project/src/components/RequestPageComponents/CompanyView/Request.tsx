@@ -5,20 +5,31 @@ import { PiPlusSquareFill } from "react-icons/pi";
 import AddEmployee from "@/components/RequestPageComponents/CompanyView/addEmployee";
 import AddRequestForm from "@/components/RequestPageComponents/CompanyView/AddRequestForm";
 
-// in progress
-function Request({ userId }) {
-    const [showAddEmployee, setShowAddEmployee] = useState({});
-    const [properties, setProperties] = useState([]);
-    const [showAddRequest, setShowAddRequest] = useState({});
 
-    const toggleAddEmployee = (propertyId) => {
+interface Property {
+    property_id: number;
+    property_name: string;
+    // Add other properties as needed
+}
+
+interface RequestProps {
+    userId: number;
+}
+
+// in progress
+function Request({ userId }: RequestProps) {
+    const [showAddEmployee, setShowAddEmployee] = useState<{ [key: number]: boolean }>({});
+    const [properties, setProperties] = useState<Property[]>([]);
+    const [showAddRequest, setShowAddRequest] = useState<{ [key: number]: boolean }>({});
+
+    const toggleAddEmployee = (propertyId: number) => {
         setShowAddEmployee((prevVisibility) => ({
             ...prevVisibility,
             [propertyId]: !prevVisibility[propertyId],
         }));
     };
 
-    const toggleAddRequest = (propertyId) => {
+    const toggleAddRequest = (propertyId: number) => {
         setShowAddRequest((prevVisibility) => ({
             ...prevVisibility,
             [propertyId]: !prevVisibility[propertyId],
@@ -28,7 +39,7 @@ function Request({ userId }) {
 
     // Getting properties from userId
     useEffect(() => {
-        async function fetchProperties(userId) {
+        async function fetchProperties(userId: number) {
             try {
                 const response = await fetch('/api/getPropertiesByCompanyId', {
                     method: 'POST',

@@ -24,37 +24,43 @@ interface ReqReviewer {
     username: string;
 }
 
+interface RequestTableProps {
+    userId: number;
+    propertyId: number;
+}
 
-const RequestTable = ({ userId, propertyId }) => {
-    const [requests, setRequests] = useState([]);
-    const [selectedRequest, setSelectedRequest] = useState(null);
+
+
+const RequestTable: React.FC<RequestTableProps> = ({ userId, propertyId }) => {
+    const [requests, setRequests] = useState<Request[]>([]);
+    const [selectedRequest, setSelectedRequest] = useState<Request | null>(null);
     const [requestTypes, setRequestTypes] = useState<RequestType[]>([]);
     const [requestStatuses, setRequestStatuses] = useState<RequestStatus[]>([]);
     const [reqReviewers, setReqReviewers] = useState<ReqReviewer[]>([]);
 
     useEffect(() => {
-        fetchRequests();
-    }, []);
-
-    const fetchRequests = async () => {
-        try {
-            const response = await fetch('/api/getRequestsByProperty', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ propertyId: propertyId })
-            });
-            if (!response.ok) {
-                throw new Error('Failed to fetch data');
+        const fetchRequests = async () => {
+            try {
+                const response = await fetch('/api/getRequestsByProperty', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ propertyId: propertyId })
+                });
+                if (!response.ok) {
+                    throw new Error('Failed to fetch data');
+                }
+                const data = await response.json();
+                console.log('Fetched data:', data);
+                setRequests(data);
+            } catch (error) {
+                console.error('Error fetching data:', error);
             }
-            const data = await response.json();
-            console.log('Fetched data:', data);
-            setRequests(data);
-        } catch (error) {
-            console.error('Error fetching data:', error);
-        }
-    };
+        };
+
+        fetchRequests();
+    }, [propertyId]);
 
 
     useEffect(() => {
@@ -118,7 +124,7 @@ const RequestTable = ({ userId, propertyId }) => {
 
 
 
-    const handleRowClick = (request) => {
+    const handleRowClick = (request: Request) => {
         setSelectedRequest(request);
     };
 

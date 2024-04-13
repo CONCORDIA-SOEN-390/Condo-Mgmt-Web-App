@@ -1,6 +1,10 @@
 import React, { useState } from "react";
 
-function AddFinanceForm({propertyId}) {
+interface AddFinanceFormProps {
+    propertyId: number;
+}
+
+function AddFinanceForm({ propertyId }: AddFinanceFormProps) {
     const [occurrence, setOccurrence] = useState("");
     const [transactionDate, setTransactionDate] = useState("");
     const [description, setDescription] = useState("");

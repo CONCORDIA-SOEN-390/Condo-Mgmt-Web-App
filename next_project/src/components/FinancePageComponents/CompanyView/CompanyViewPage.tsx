@@ -4,20 +4,25 @@ import { PiPlusSquareFill } from "react-icons/pi";
 import AddFinanceForm from "@/components/FinancePageComponents/CompanyView/AddFinanceForm";
 import FinanceTable from "@/components/FinancePageComponents/CompanyView/FinanceTable";
 
-function Request({ userId }) {
-    const [showAddEmployee, setShowAddEmployee] = useState({});
-    const [properties, setProperties] = useState([]);
+interface RequestProps {
+    userId: number;
+}
+
+interface Property {
+    property_id: number;
+    user_id: number;
+    property_name: string;
+    property_type: string;
+    address: string;
+}
+
+function Request({ userId }: RequestProps) {
+    const [showAddEmployee, setShowAddEmployee] = useState<Record<number, boolean>>({});
+    const [properties, setProperties] = useState<Property[]>([]);
     const [showAddRequest, setShowAddRequest] = useState({});
 
-    const toggleAddEmployee = (propertyId) => {
+    const toggleAddEmployee = (propertyId: number) => {
         setShowAddEmployee((prevVisibility) => ({
-            ...prevVisibility,
-            [propertyId]: !prevVisibility[propertyId],
-        }));
-    };
-
-    const toggleAddRequest = (propertyId) => {
-        setShowAddRequest((prevVisibility) => ({
             ...prevVisibility,
             [propertyId]: !prevVisibility[propertyId],
         }));
@@ -25,7 +30,7 @@ function Request({ userId }) {
 
     // Getting properties from userId
     useEffect(() => {
-        async function fetchProperties(userId) {
+        async function fetchProperties(userId: number) {
             try {
                 const response = await fetch('/api/getPropertiesByCompanyId', {
                     method: 'POST',
@@ -39,7 +44,7 @@ function Request({ userId }) {
                     throw new Error('Network response was not ok');
                 }
 
-                const properties = await response.json();
+                const properties: Property[] = await response.json();
                 setProperties(properties);
             } catch (error) {
                 console.error('Error fetching properties:', error);

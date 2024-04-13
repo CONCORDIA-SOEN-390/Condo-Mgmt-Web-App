@@ -1,10 +1,20 @@
-import React, { useState, useEffect } from "react";
+import React, {useState, useEffect, ChangeEvent, FormEvent} from "react";
 
-function AddRequestForm({ userId, propertyId }) {
+interface RequestType {
+    type_id: number;
+    type_name: string;
+}
+
+interface AddRequestFormProps {
+    userId: number;
+    propertyId: number;
+}
+
+function AddRequestForm({ userId, propertyId }: AddRequestFormProps) {
     const [requestTypeId, setRequestTypeId] = useState('');
     const [details, setDetails] = useState('');
     const [unitId, setUnitId] = useState('');
-    const [requestTypes, setRequestTypes] = useState([]);
+    const [requestTypes, setRequestTypes] = useState<RequestType[]>([]);
     const [errorMessage, setErrorMessage] = useState("");
 
     useEffect(() => {
@@ -24,20 +34,21 @@ function AddRequestForm({ userId, propertyId }) {
         fetchRequestTypes();
     }, []);
 
-    const handleChangeRequestType = (e) => {
+    const handleChangeRequestType = (e: ChangeEvent<HTMLSelectElement>) => {
         setRequestTypeId(e.target.value);
     };
 
-    const handleChangeDetails = (e) => {
+    const handleChangeDetails = (e: ChangeEvent<HTMLTextAreaElement>) => {
         setDetails(e.target.value);
     };
 
-    const handleChangeUnitId = (e) => {
+    const handleChangeUnitId = (e: ChangeEvent<HTMLInputElement>) => {
         setUnitId(e.target.value);
     };
 
-    const handleSubmit = async (e) => {
+    const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
+
 
         try {
             const response = await fetch('/api/handleCreateRequest', {

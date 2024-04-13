@@ -1,43 +1,25 @@
-"use client";
-import { MdEditSquare } from "react-icons/md";
-import { MdCancel } from "react-icons/md";
-import PublicUserSideBar from "@/components/GeneralComponents/PublicUserView/SideBar";
+"use client"
+import React, { useState } from "react";
 import CompanySideBar from "@/components/GeneralComponents/CompanyView/SideBar";
-import CardHeader from "@/components/GeneralComponents/CardHeader";
-import PublicUserFinanceTable from "@/components/FinancePageComponents/PublicUserView/FinanceTable";
-import CompanyFinanceTable from "@/components/FinancePageComponents/CompanyView/FinanceTable";
-import {PiPlusSquareFill} from "react-icons/pi";
-import React, {useState} from "react";
-import AddFinanceForm from "@/components/FinancePageComponents/CompanyView/AddFinanceForm";
+import PublicUserSideBar from "@/components/GeneralComponents/PublicUserView/SideBar";
+import CompanyViewPage from "@/components/FinancePageComponents/CompanyView/CompanyViewPage";
+import PublicUserPropertyTable from "@/components/PropertiesPageComponents/PublicUserView/PropertyTable";
 
 function FinancesPage() {
+    // page in progress
+    //------------------------------------FIX PAGE RENDERING HERE -------------------------------------------------------
   const page = 'company';
+  //const userId = 3 // reg_user
+  const userId = 1; // company user
 
-
-    const [showAddFinanceForm, setshowAddFinanceFormFormStatus] = useState(false);
-
-    const toggleFormAdd = () => {
-      setshowAddFinanceFormFormStatus(!showAddFinanceForm);
-    };
-
-
-
-    return (
-    <div className="flex min-h-screen-nav items-center justify-center h-full bg-white">
-      {page === 'company'? <CompanySideBar page='finances'/>:<PublicUserSideBar page='finances'/>}
-      
-      <div className="absolute w-5/6 right-6 top-5 bottom-5 bg-white shadow-lg rounded-xl">
-        <CardHeader title="Finances">
-            <button onClick={toggleFormAdd}><PiPlusSquareFill/></button>
-
-          <MdCancel className="" />
-        </CardHeader>
-
-        {showAddFinanceForm && <AddFinanceForm />}
-        {page === 'company'? <CompanyFinanceTable/>:<PublicUserFinanceTable/>}
-        
+    //-------------------------------------------------------------------------------------------------------------------
+  return (
+      <div className="flex min-h-screen-nav items-center justify-center h-full bg-white">
+          {page === 'company'? <CompanySideBar page='properties'/> : <PublicUserSideBar page='properties'/>}
+          <div className="absolute w-5/6 inset-y-0 right-5 bg-white shadow-lg rounded-xl">
+              {page === 'company'? <CompanyViewPage userId={userId} />: <PublicUserPropertyTable/>}
+          </div>
       </div>
-    </div>
   );
 }
 

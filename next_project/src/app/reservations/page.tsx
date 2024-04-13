@@ -1,29 +1,54 @@
-import React from "react";
+"use client"
 import SideBar from "@/components/GeneralComponents/PublicUserView/SideBar";
-import CardHeader from "@/components/GeneralComponents/CardHeader";
-import MyReservationTable from "@/components/ReservationPageComponents/MyReservationTable";
-import AvailableFacilityTable from "@/components/ReservationPageComponents/AvailableFacilityTable";
-import { MdEditSquare } from "react-icons/md";
+
+import CondoOwnerAndRentalPage from "@/components/ReservationPageComponents/CondoOwnerAndRentalView/CondoOwnerAndRentalPage";
+import CompanyViewPage from "@/components/ReservationPageComponents/CompanyView/CompanyViewPage"
+import {UserContext} from "@/context/userInfoContext";
 
 function ReservationsPage() {
+  // FIX PAGE RENDERING HERE DEPENDING ON THE accountType
+  // also fetch user_id since its being passed
+
+  //const {userId, accountType} = useContext(UserContext);
+
+  //--------------------------HARDCODED VALUES--------------------------------------
+  const userId = 1; // company user
+  const accountType = "company";
+  //const userId = 3;
+  //const accountType = "reg_user";
+  //--------------------------------------------------------------------------------
+
   return (
-    <div className="flex min-h-screen-nav items-center justify-center h-full bg-white">
-      <SideBar page="reservations" />
-      <div className="absolute grid grid-rows-3 w-5/6 right-5 gap-5">
-        <div className="bg-white shadow-lg rounded-xl ">
-          <CardHeader title="My Reservations">
-            <MdEditSquare className="text-white text-3xl" />
-          </CardHeader>
-          <div className="grid grid-cols-2 grid-rows-3 gap-5 p-5 text-black text-xl"></div>
-        </div>
-        <div className="bg-white shadow-lg rounded-xl">
-          <CardHeader title="Available Facilities">hello</CardHeader>
-          <div className="p-5 text-black text-xl">
-            <AvailableFacilityTable />
+      <div className="flex min-h-screen-nav items-center justify-center h-full bg-white">
+              <SideBar page="reservations" />
+
+          <div className="absolute w-5/6 inset-y-0 right-5 bg-white shadow-lg rounded-xl">
+
+                  {
+                      /**/
+                  }
+                  {accountType === "company" && (
+                      <CompanyViewPage userId={userId} />
+                  )}
+
+
+                  {/*
+                 {accountType === "reg_user" && (
+                  <CondoOwnerAndRentalPage userId={userId} />
+                  )}
+                  */}
+
+
           </div>
-        </div>
       </div>
-    </div>
+
+
+
+
+
+
+
+
   );
 }
 

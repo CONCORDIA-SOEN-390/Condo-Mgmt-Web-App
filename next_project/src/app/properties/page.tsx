@@ -8,6 +8,7 @@ import CompanySideBar from "@/components/GeneralComponents/CompanyView/SideBar";
 import CardHeader from "@/components/GeneralComponents/CardHeader";
 import PublicUserPropertyTable from "@/components/PropertiesPageComponents/PublicUserView/PropertyTable";
 import CompanyPropertyTable from "@/components/PropertiesPageComponents/CompanyView/CompanyPropertyTable";
+import CondoOwnerView from "@/components/PropertiesPageComponents/PublicUserView/PropertyTable";
 
 
 
@@ -34,7 +35,13 @@ function PropertiesPage() {
         </CardHeader>
 
         {showAddPropertyForm && <AddPropertyForm userId={userId} />}
-        {page === 'company'? <CompanyPropertyTable userId={userId} />: <PublicUserPropertyTable/>}
+
+
+        {page === 'company'? <CompanyPropertyTable userId={userId} />: <CondoOwnerView userId={userId} />}
+
+
+
+
       </div>
     </div>
   );

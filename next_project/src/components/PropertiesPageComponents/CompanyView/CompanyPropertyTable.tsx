@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import React from "react";
 import LockerTable from "@/components/PropertiesPageComponents/CompanyView/LockerTable";
 import ParkingTable from "@/components/PropertiesPageComponents/CompanyView/ParkingTable";
-import UnitsTable from "@/components/UnitsPageComponents/UnitsTable";
+import UnitsTable from "@/components/UnitsPageComponents/CompanyView/UnitsTable";
 
 interface Property {
     property_id: number;

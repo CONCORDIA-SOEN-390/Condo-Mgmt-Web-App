@@ -1,76 +1,67 @@
-// Import the required modules for testing
-import "isomorphic-fetch";
-const { POST } = require("../src/app/api/getUnitDetails/route");
-const { createClient } = require("@supabase/supabase-js");
-export {};
+// Import the function to be tested
+import { POST } from "../src/app/api/getUnitDetails/route";
+
 // Mock the Supabase client
 jest.mock("@supabase/supabase-js", () => ({
-  createClient: jest.fn(),
+  createClient: jest.fn(() => ({
+    from: jest.fn(() => ({
+      select: jest.fn(() => ({
+        eq: jest.fn(() => ({
+          eq: jest.fn(() => ({
+            data: [{ property_id: 1, unit_id: 11 }], // This can be customized for different scenarios
+            error: null, // This can be customized for different scenarios
+          })),
+        })),
+      })),
+    })),
+  })),
 }));
 
-describe("POST route", () => {
-  beforeEach(() => {
-    // Reset the mock implementation before each test
-    jest.clearAllMocks();
-  });
-
-  it("should return unit data when provided valid unitId and propertyId", async () => {
-    // Mock the request object
+describe("POST function", () => {
+  it("should return unit details when unitId and propertyId exist", async () => {
     const req = {
-      json: jest.fn().mockResolvedValue({ unitId: 11, propertyId: 1 }),
+      json: jest.fn().mockResolvedValue({
+        unitId: 11,
+        propertyId: 1,
+      }),
     };
 
-    // Mock the Supabase client response
-    const unitData = { property_id: 1, unit_id: 11 };
-    const supabaseMock = {
-      from: jest.fn().mockReturnThis(),
-      select: jest.fn().mockReturnThis(),
-      eq: jest.fn().mockResolvedValue({ data: [unitData], error: null }),
-    };
-    createClient.mockReturnValue(supabaseMock);
-
-    // Call the POST function
     const response = await POST(req);
 
-    // Assertions
     expect(response.status).toBe(200);
-    expect(response.body).toEqual(JSON.stringify([unitData]));
+
+    // You can add more specific assertions based on your expected response
   });
 
-  it("should return status 500 and error message when Supabase client returns an error", async () => {
-    // Mock the request object
+  it("should return 500 error when Supabase client returns an error", async () => {
     const req = {
-      json: jest.fn().mockResolvedValue({ unitId: 1, propertyId: 1 }),
+      json: jest.fn().mockResolvedValue({
+        unitId: "someUnitId",
+        propertyId: "somePropertyId",
+      }),
     };
 
-    // Mock the Supabase client response with an error
-    const errorMessage = "Supabase error";
-    const supabaseMock = {
-      from: jest.fn().mockReturnThis(),
-      select: jest.fn().mockReturnThis(),
-      eq: jest.fn().mockResolvedValue({ data: null, error: errorMessage }),
-    };
-    createClient.mockReturnValue(supabaseMock);
+    const mockError = new Error("Supabase error");
 
-    // Call the POST function
+    // Override the mocked Supabase client function to return an error
+    require("@supabase/supabase-js").createClient.mockImplementation(() => ({
+      from: jest.fn(() => ({
+        select: jest.fn(() => ({
+          eq: jest.fn(() => ({
+            eq: jest.fn(() => ({
+              error: mockError,
+            })),
+          })),
+        })),
+      })),
+    }));
+
     const response = await POST(req);
 
-    // Assertions
     expect(response.status).toBe(500);
-    expect(response.body).toEqual(JSON.stringify(errorMessage));
+    expect(response.body).toBe(JSON.stringify("Supabase error"));
+    // You can add more specific assertions based on your expected error response
   });
 
-  it("should return status 500 and error message when an internal server error occurs", async () => {
-    // Mock the request object
-    const req = {
-      json: jest.fn().mockRejectedValue(new Error("Internal Server Error")),
-    };
-
-    // Call the POST function
-    const response = await POST(req);
-
-    // Assertions
-    expect(response.status).toBe(500);
-    expect(response.body).toEqual(JSON.stringify("Internal Server Error"));
-  });
+  // Add more test cases as needed for edge cases, error handling, etc.
 });

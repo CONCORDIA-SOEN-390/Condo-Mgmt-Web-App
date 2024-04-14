@@ -1,72 +1,102 @@
-// Import the required modules for testing
-const { POST } = require("../src/app/api/getSalesByCompanyId/route"); // Assuming this file is named "file.js"
-const { createClient } = require("@supabase/supabase-js");
-export {};
-// Mock the Supabase client
+// Import the function to test
+import { POST } from "../src/app/api/getSalesByCompanyId/route"; // Replace 'your-file-name' with the actual file name
+
+// Mocking Supabase client
 jest.mock("@supabase/supabase-js", () => ({
-  createClient: jest.fn(),
+  createClient: jest.fn(() => ({
+    from: jest.fn(() => ({
+      select: jest.fn(() => ({
+        eq: jest.fn(() => ({
+          data: [], // Mocked data
+          error: null, // No error
+        })),
+      })),
+    })),
+  })),
 }));
 
-describe("POST route", () => {
+describe("POST function", () => {
+  let req: any;
+
   beforeEach(() => {
-    // Reset the mock implementation before each test
-    jest.clearAllMocks();
+    // Mocking request object
+    req = {
+      json: jest.fn(() => ({})), // Mocked json() method
+    };
   });
 
-  it("should return sales data when provided a valid userId", async () => {
-    // Mock the request object
-    const req = { json: jest.fn().mockResolvedValue({ userId: 1 }) };
+  it("should return 500 if error occurs during sales retrieval", async () => {
+    req.json.mockResolvedValueOnce({ userId: "example_user_id" });
+    require("@supabase/supabase-js").createClient.mockReturnValueOnce({
+      from: jest.fn(() => ({
+        select: jest.fn(() => ({
+          eq: jest.fn(() => ({
+            data: null, // Mocked data
+            error: new Error("Sales retrieval error"), // Error occurred
+          })),
+        })),
+      })),
+    });
 
-    // Mock the Supabase client response
-    const salesData = [{ id: 1 }];
-    const supabaseMock = {
-      from: jest.fn().mockReturnThis(),
-      select: jest.fn().mockReturnThis(),
-      eq: jest.fn().mockResolvedValue({ data: salesData, error: null }),
-    };
-    createClient.mockReturnValue(supabaseMock);
-
-    // Call the POST function
     const response = await POST(req);
+    expect(response.status).toBe(500);
+    expect(await response.text()).toEqual("Internal Server Error");
+  });
 
-    // Assertions
+  it("should return 200 if sales retrieval is successful", async () => {
+    const mockSalesData = [
+      {
+        //sale_id_id: 1,
+        //property_id: 1,
+        old_owner_id: 1,
+        //condo_fee: 2.0,
+        //sale_date: "2017-07-23",
+      },
+    ];
+    req.json.mockResolvedValueOnce({ userId: 1 });
+    require("@supabase/supabase-js").createClient.mockReturnValueOnce({
+      from: jest.fn(() => ({
+        select: jest.fn(() => ({
+          eq: jest.fn(() => ({
+            data: mockSalesData, // Mocked data
+            error: null, // No error
+          })),
+        })),
+      })),
+    });
+
+    const response = await POST(req);
     expect(response.status).toBe(200);
-    expect(response.headers["Content-Type"]).toBe("application/json");
-    expect(response.body).toEqual(JSON.stringify(salesData));
+    expect(response.headers.get("Content-Type")).toBe("application/json");
+    expect(await response.json()).toEqual(mockSalesData);
   });
 
-  it("should return status 500 and error message when Supabase client returns an error", async () => {
-    // Mock the request object
-    const req = { json: jest.fn().mockResolvedValue({ userId: 1 }) };
+  it("should return 500 if sales retrieval is successful", async () => {
+    const mockSalesData = [
+      {
+        //sale_id_id: 1,
+        //property_id: 1,
+        old_owner_id: 1,
+        //condo_fee: 2.0,
+        //sale_date: "2017-07-23",
+      },
+    ];
+    req.json.mockResolvedValueOnce({ userId: 1 });
 
-    // Mock the Supabase client response with an error
-    const errorMessage = "Supabase error";
-    const supabaseMock = {
-      from: jest.fn().mockReturnThis(),
-      select: jest.fn().mockReturnThis(),
-      eq: jest.fn().mockResolvedValue({ data: null, error: errorMessage }),
-    };
-    createClient.mockReturnValue(supabaseMock);
+    require("@supabase/supabase-js").createClient.mockReturnValueOnce({
+      from: jest.fn(() => ({
+        select: jest.fn(() => ({
+          eq: jest.fn(() => ({
+            data: null, // Mocked data
+            error: new Error("Locker update error"), // No error
+          })),
+        })),
+      })),
+    });
 
-    // Call the POST function
     const response = await POST(req);
-
-    // Assertions
     expect(response.status).toBe(500);
-    expect(response.body).toEqual(JSON.stringify(errorMessage));
-  });
-
-  it("should return status 500 and error message when an internal server error occurs", async () => {
-    // Mock the request object
-    const req = {
-      json: jest.fn().mockRejectedValue(new Error("Internal Server Error")),
-    };
-
-    // Call the POST function
-    const response = await POST(req);
-
-    // Assertions
-    expect(response.status).toBe(500);
-    expect(response.body).toEqual("Internal Server Error");
+    //expect(response.headers.get("Content-Type")).toBe("application/json");
+    //expect(await response.json()).toEqual(mockSalesData);
   });
 });

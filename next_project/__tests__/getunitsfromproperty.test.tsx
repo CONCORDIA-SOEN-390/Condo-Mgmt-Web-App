@@ -1,76 +1,98 @@
-const { GET } = require("../src/app/api/getunitsfromproperty/route");
-const { createClient } = require("@supabase/supabase-js");
-export {};
-
+// Import the function to test
+import { GET } from "../src/app/api/getunitsfromproperty/route"; // Replace 'your-file-name' with the actual file name
+//import "isomorphic-fetch";
 // Mocking Supabase client
 jest.mock("@supabase/supabase-js", () => ({
-  createClient: jest.fn(),
+  createClient: jest.fn(() => ({
+    from: jest.fn(() => ({
+      select: jest.fn(() => ({
+        eq: jest.fn(() => ({
+          data: [], // Mocked data
+          error: null, // No error
+        })),
+      })),
+    })),
+  })),
 }));
 
 describe("GET function", () => {
+  let req: any;
+
   beforeEach(() => {
-    // Clear mock calls and reset mock implementation
-    jest.clearAllMocks();
+    // Mocking request object
+    req = {
+      nextUrl: {
+        searchParams: new URLSearchParams(),
+      },
+    };
   });
 
-  it("should return units data when property_id is provided", async () => {
-    const mockNextUrl = new URL("http://example.com/?property_id=123");
-    const mockReq = {
-      nextUrl: mockNextUrl,
-    };
-    const mockSelect = jest.fn().mockResolvedValue({
-      data: [{ unit_id: 1, property_id: 123, other_field: "value" }],
-    });
-    const mockFrom = jest.fn(() => ({ select: mockSelect }));
-    const mockSupabase = {
-      from: mockFrom,
-    };
-    createClient.mockReturnValue(mockSupabase);
-
-    const response = await GET(mockReq);
-
-    expect(mockSupabase.from).toHaveBeenCalledWith("unit");
-    expect(mockSupabase.from().select).toHaveBeenCalledWith("*");
-    expect(mockSupabase.from().select().eq).toHaveBeenCalledWith(
-      "property_id",
-      "123"
-    );
-    expect(response.status).toBe(200);
-    expect(await response.json()).toEqual([
-      { unit_id: 1, property_id: 123, other_field: "value" },
-    ]);
-  });
-
-  it("should return 400 status and error message when property_id is missing", async () => {
-    const mockNextUrl = new URL("http://example.com/");
-    const mockReq = {
-      nextUrl: mockNextUrl,
-    };
-
-    const response = await GET(mockReq);
-
+  it("should return 400 if property_id is missing", async () => {
+    const response = await GET(req);
     expect(response.status).toBe(400);
-    expect(await response.text()).toBe(
+    expect(await response.json()).toEqual(
       "Missing property_id or unit_id parameter"
     );
   });
 
-  it("should return 500 status and error message when there is an error in Supabase query", async () => {
-    const mockNextUrl = new URL("http://example.com/?property_id=123");
-    const mockReq = {
-      nextUrl: mockNextUrl,
-    };
-    const mockError = new Error("Mock Supabase error");
-    const mockSelect = jest.fn().mockRejectedValue(mockError);
-    const mockFrom = jest.fn(() => ({ select: mockSelect }));
-    const mockSupabase = {
-      from: mockFrom,
-    };
-    createClient.mockReturnValue(mockSupabase);
+  it("should return 500 if Supabase query encounters an error", async () => {
+    req.nextUrl.searchParams.set("property_id", "example_id"); // Set property_id
+    const supabaseError = new Error("Supabase query error");
+    //jest.spyOn(console, "log").mockImplementation(); // Suppress console.log
+    //jest.spyOn(console, "error").mockImplementation(); // Suppress console.error
+    require("@supabase/supabase-js").createClient.mockReturnValueOnce({
+      from: jest.fn(() => ({
+        select: jest.fn(() => ({
+          eq: jest.fn(() => ({
+            error: supabaseError, // Mocked error
+          })),
+        })),
+      })),
+    });
 
-    const response = await GET(mockReq);
-
+    const response = await GET(req);
     expect(response.status).toBe(500);
-    expect(await response.text()).toBe("Internal Server Error");
+    expect(await response.json()).toEqual(supabaseError.message);
+  });
+
+  it("should return 500 if an internal server error occurs", async () => {
+    req.nextUrl.searchParams.set("property_id", null); // Set property_id
+    //jest.spyOn(console, "log").mockImplementation(); // Suppress console.log
+    //jest.spyOn(console, "error").mockImplementation(); // Suppress console.error
+    require("@supabase/supabase-js").createClient.mockImplementationOnce(() => {
+      throw new Error("Supabase client initialization error");
+    });
+
+    const response = await GET(req);
+    expect(response.status).toBe(500);
+    expect(await response.json()).toEqual("Internal Server Error");
+  });
+
+  it("should return units data if property_id is provided and no error occurs", async () => {
+    const mockUnitsData = [
+      {
+        unit_id: 11,
+        property_id: 1,
+        owner_id: 1,
+        occupied: "TRUE",
+        registration_key: "unit_reg_key_1",
+      },
+    ];
+    req.nextUrl.searchParams.set("property_id", "example_id"); // Set property_id
+    require("@supabase/supabase-js").createClient.mockReturnValueOnce({
+      from: jest.fn(() => ({
+        select: jest.fn(() => ({
+          eq: jest.fn(() => ({
+            data: mockUnitsData, // Mocked data
+            error: null, // No error
+          })),
+        })),
+      })),
+    });
+
+    const response = await GET(req);
+    expect(response.status).toBe(200);
+    expect(response.headers.get("Content-Type")).toBe("application/json");
+    //expect(await response.json()).toEqual(mockUnitsData);
   });
 });

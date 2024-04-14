@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
 import CardHeader from "@/components/GeneralComponents/CardHeader";
 import { PiPlusSquareFill } from "react-icons/pi";
-import AddFinanceForm from "@/components/FinancePageComponents/CompanyView/AddFinanceForm";
-import FinanceTable from "@/components/FinancePageComponents/CompanyView/FinanceTable";
+import AddExpenseForm from "@/components/FinancePageComponents/CompanyView/AddExpenseForm";
+import ExpenseTable from "@/components/FinancePageComponents/CompanyView/ExpenseTable";
 import UnitFee from "@/components/FinancePageComponents/CompanyView/UnitFee";
+import IncomeTable from "@/components/FinancePageComponents/CompanyView/IncomeTable";
 
 interface RequestProps {
     userId: number;
@@ -60,11 +61,13 @@ function Request({ userId }: RequestProps) {
             {properties.map((property) => (
                 <div key={property.property_id} className="bg-white shadow-lg rounded-xl mb-5">
                     <CardHeader title={`Finances for ${property.property_name}`}>
-                        <button onClick={() => toggleAddEmployee(property.property_id)}><PiPlusSquareFill /></button>
+                        .
                     </CardHeader>
                     <div className="p-5 text-black text-xl">
-                        {showAddEmployee[property.property_id] && <AddFinanceForm propertyId={property.property_id} />}
-                        <FinanceTable propertyId={property.property_id} userId={userId} />
+                        <ExpenseTable propertyId={property.property_id} userId={userId} />
+                    </div>
+                    <div className="p-5 text-black text-xl">
+                        <IncomeTable propertyId={property.property_id} userId={userId} />
                     </div>
                     <div className="p-5 text-black text-xl">
                         <UnitFee propertyId={property.property_id} />

@@ -4,7 +4,7 @@ interface AddFinanceFormProps {
     propertyId: number;
 }
 
-function AddFinanceForm({ propertyId }: AddFinanceFormProps) {
+function AddExpenseForm({ propertyId }: AddFinanceFormProps) {
     const [occurrence, setOccurrence] = useState("");
     const [transactionDate, setTransactionDate] = useState("");
     const [description, setDescription] = useState("");
@@ -111,4 +111,4 @@ function AddFinanceForm({ propertyId }: AddFinanceFormProps) {
     );
 }
 
-export default AddFinanceForm;
+export default AddExpenseForm;

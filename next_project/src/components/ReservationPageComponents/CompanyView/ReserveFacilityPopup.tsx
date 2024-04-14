@@ -70,6 +70,7 @@ function ReserveFacilityPopup({ facility, userId, propertyId, onReservationSubmi
   };
 
   return (
+    <div className="overflow-y-auto overflow-x-auto">
       <div className="popup bg-white p-6 rounded-lg flex flex-col">
         <strong className="p-3">Reserve Facility</strong>
         <form onSubmit={handleSubmit} className="flex flex-col flex-grow">
@@ -124,6 +125,7 @@ function ReserveFacilityPopup({ facility, userId, propertyId, onReservationSubmi
           </div>
         </form>
       </div>
+    </div>
   );
 }
 

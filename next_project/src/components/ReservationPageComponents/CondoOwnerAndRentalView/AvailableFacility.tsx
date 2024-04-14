@@ -59,9 +59,8 @@ const AvailableFacilityTable: React.FC<{ propertyId: number; userId: number }> =
     }
 
     return (
-
         <div className="overflow-y-auto h-64">
-            <table className="min-w-full divide-y">
+            <table className="min-w-full divide-y overflow-x-auto">
                 <tbody>
 
                 {facilities.map((facilityItem, index) => (
@@ -92,8 +91,6 @@ const AvailableFacilityTable: React.FC<{ propertyId: number; userId: number }> =
                         propertyId={propertyId}
                         onReservationSubmit={handleReservationSubmit}
                         onCancel={handleCancel}
-                    />
-
                     />
                 </div>
             )}

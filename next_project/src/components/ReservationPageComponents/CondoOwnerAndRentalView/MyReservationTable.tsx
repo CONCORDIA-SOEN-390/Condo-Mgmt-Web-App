@@ -75,32 +75,34 @@ const MyReservationTable: React.FC<{ propertyId: number, userId: number }> = ({ 
     }
 
     return (
-        <table className="min-w-full divide-y divide-gray-200">
-            <thead className="bg-blue-500 text-white">
-            <tr>
-                <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Reservation ID</th>
-                <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Facility Name</th>
-                <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">User</th>
-                <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Start Time</th>
-                <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">End Time</th>
-                <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Action</th>
-            </tr>
-            </thead>
-            <tbody className="bg-white divide-y divide-gray-200">
-            {reservations.map((reservation, index) => (
-                <tr key={reservation.reservation_id} className={index % 2 === 0 ? 'bg-white' : 'bg-gray-50'}>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{reservation.reservation_id}</td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{reservation.facility_id}</td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{reservation.user_id}</td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{reservation.start_time}</td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{reservation.end_time}</td>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                        <button className="bg-blue-500 hover:bg-zinc-600 text-sm mr-7 text-white py-2 px-4 rounded mr-5" onClick={() => handleCancel(reservation.reservation_id)}>Cancel</button>
-                    </td>
-                </tr>
-            ))}
-            </tbody>
-        </table>
+        <div className="overflow-x-auto">
+            <table className="min-w-full divide-y divide-gray-200">
+                <thead className="bg-blue-500 text-white">
+                    <tr>
+                        <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Reservation ID</th>
+                        <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Facility Name</th>
+                        <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">User</th>
+                        <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Start Time</th>
+                        <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">End Time</th>
+                        <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Action</th>
+                    </tr>
+                </thead>
+                <tbody className="bg-white divide-y divide-gray-200">
+                    {reservations.map((reservation, index) => (
+                        <tr key={reservation.reservation_id} className={index % 2 === 0 ? 'bg-white' : 'bg-gray-50'}>
+                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{reservation.reservation_id}</td>
+                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{reservation.facility_id}</td>
+                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{reservation.user_id}</td>
+                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{reservation.start_time}</td>
+                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{reservation.end_time}</td>
+                            <td className="px-6 py-4 whitespace-nowrap">
+                                <button className="bg-blue-500 hover:bg-zinc-600 text-sm mr-7 text-white py-2 px-4 rounded mr-5" onClick={() => handleCancel(reservation.reservation_id)}>Cancel</button>
+                            </td>
+                        </tr>
+                    ))}
+                </tbody>
+            </table>
+        </div>
     );
 };
 

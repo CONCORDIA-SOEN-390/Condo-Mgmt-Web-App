@@ -22,7 +22,7 @@ export default function DocumentsPage() {
     return (
         <div className="flex min-h-screen-nav items-center justify-center h-full bg-white">
             {page === 'company'? <CompanySideBar page='documents'/>:<PublicUserSideBar page='documents'/>}
-            <div className="absolute w-5/6 right-6 top-5 bottom-5 bg-white shadow-lg rounded-xl">
+            <div className="absolute max-w-screen-sm w-1/2 sm:w-2/3 max-w-screen-md md:w-3/5 max-w-screen-lg lg:w-4/6 max-w-screen-xl xl:w-5/6 top-5 bottom-5 bg-white shadow-lg rounded-xl ml-40">
             <CardHeader title="Documents">
                 <button onClick={toggleForm}><PiPlusSquareFill/></button>
                 <MdEditSquare className="" />

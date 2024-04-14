@@ -55,6 +55,7 @@ const properties = [
 
 export default function PropertyTable() {
     return (
+      <div className="overflow-x-auto p-3">
         <table className="min-w-full divide-y divide-gray-200">
             <thead className="min-w-full bg-[#DAECFB] text-black">
                 <tr>
@@ -87,5 +88,6 @@ export default function PropertyTable() {
                 })}
             </tbody>
         </table>
+      </div>
     );
 }

@@ -43,7 +43,6 @@ function CompanyViewPage({ userId }) {
 
     return (
         <div>
-            <h1>Reservations</h1>
             {properties.map((property) => (
                 <div key={property.property_id} className="bg-white shadow-lg rounded-xl mb-5">
                     <CardHeader title={`Reservations for Property ${property.property_name}`}>

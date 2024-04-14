@@ -59,7 +59,7 @@ const AvailableFacilityTable: React.FC<{ propertyId: number; userId: number }> =
   }
 
   return (
-      <div className="overflow-y-auto h-64">
+      <div className="overflow-y-auto overflow-x-auto h-64">
         <table className="min-w-full divide-y">
           <tbody>
           {facilities.map((facilityItem, index) => (

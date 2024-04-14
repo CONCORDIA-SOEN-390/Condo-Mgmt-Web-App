@@ -105,7 +105,7 @@ const UnitsTable: React.FC = () => {
         <tbody>
           {units.map((unit, id) => {
             return (
-              <tr onClick={() => handleRowClick(unit)}>
+              <tr key={id} onClick={() => handleRowClick(unit)}>
                 <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{unit.unitNumber}</td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{unit.parkingLocker}</td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{unit.parkingLocker}</td>

@@ -1,1 +1,1 @@
-// q write a function for adding numbers
+export {GET, POST} from "@/lib/auth";

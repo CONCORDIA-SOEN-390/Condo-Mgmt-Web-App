@@ -1,11 +1,15 @@
+
+
 import Image from "next/image";
 import Link from "next/link";
 import "./styling/style.css";
 import NavBar from "../components/GeneralComponents/NavBar";
 import AboutUs from "@/components/HomePageComponents/AboutUs";
 import Footer from "../components/GeneralComponents/Footer";
-
-export default function Home() {
+import {auth} from "@/lib/auth";
+export default async function Home() {
+  const session = await auth()
+  console.log(session)
   return (
     
     <div className="container-hero">

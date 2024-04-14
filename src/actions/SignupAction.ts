@@ -2,6 +2,7 @@
 
 import { z } from "zod";
 import { redirect } from "next/navigation";
+import pool from "@/utils/db";
 
 //prettier-ignore
 const schema = z.object({
@@ -21,31 +22,31 @@ export async function verifyUserSignUp(prevState: any, formData: FormData) {
       errors: validatedFields.error.flatten().fieldErrors,
     };
   }
-  const email = formData.get('email');
-  const password = formData.get('password');
+
+  const { email, password } = validatedFields.data;
+  const client = await pool.connect();
+  let redirectPath = null;
 
   try {
-    fetch('/api/signupstepone', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        email: email,
-        password: password
-      }),
-    });
-    // Redirect only if the request was successful
-    redirect("/signup/complete");
+    await client.query("BEGIN");
+    const userExistsResult = await client.query("SELECT user_id FROM users WHERE email = $1", [email]);
+
+    if (userExistsResult.rows.length > 0) {
+      await client.query("ROLLBACK");
+      return { message: "Email already exists" };
+    }
+    await client.query("INSERT INTO users (email, password_) VALUES ($1, $2) RETURNING user_id", [email, password]);
+    await client.query("COMMIT");
+    redirectPath = "/signup/complete";
   } catch (error) {
-    console.error('Error:', error);
-    // Handle client-side errors or failed fetch request
-    // For example, you can show an error message to the user
-    return {
-      errors: {
-        server: 'Failed to sign up. Please try again later.'
-      }
-    };
+    await client.query("ROLLBACK");
+    console.error("Error in user signup:", error);
+    // Handle database errors
+    return { message: "Database error" };
+  } finally {
+    client.release();
+    if (redirectPath) {
+      redirect(`${redirectPath}?email=${email}`);
+    }
   }
 }
-

@@ -8,7 +8,7 @@ import RegisterForm from "@/components/ProfilePageComponents/RegistrationForm";
 
 function ProfilePage() {
   const {profileUrl, email, phoneNumber, userName} = useContext(UserContext);
-  const userId = 20;
+  const userId = 19;
   return (
       <div className="flex min-h-screen-nav items-center justify-center h-full bg-white">
         <SideBar page="profile" />

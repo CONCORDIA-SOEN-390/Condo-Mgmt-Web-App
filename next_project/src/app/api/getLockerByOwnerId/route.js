@@ -21,6 +21,7 @@ export async function POST(req) {
                 status: 500,
             });
         }
+        //console.log(lockers);
 
         return new Response(JSON.stringify(lockers), {
             status: 200,

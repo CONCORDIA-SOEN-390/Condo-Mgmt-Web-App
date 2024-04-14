@@ -3,6 +3,7 @@ import CardHeader from "@/components/GeneralComponents/CardHeader";
 import { PiPlusSquareFill } from "react-icons/pi";
 import AddFinanceForm from "@/components/FinancePageComponents/CompanyView/AddFinanceForm";
 import FinanceTable from "@/components/FinancePageComponents/CompanyView/FinanceTable";
+import UnitFee from "@/components/FinancePageComponents/CompanyView/UnitFee";
 
 interface RequestProps {
     userId: number;
@@ -64,6 +65,9 @@ function Request({ userId }: RequestProps) {
                     <div className="p-5 text-black text-xl">
                         {showAddEmployee[property.property_id] && <AddFinanceForm propertyId={property.property_id} />}
                         <FinanceTable propertyId={property.property_id} userId={userId} />
+                    </div>
+                    <div className="p-5 text-black text-xl">
+                        <UnitFee propertyId={property.property_id} />
                     </div>
                 </div>
             ))}

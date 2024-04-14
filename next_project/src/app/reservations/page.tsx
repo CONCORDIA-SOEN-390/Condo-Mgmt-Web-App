@@ -12,10 +12,10 @@ function ReservationsPage() {
   //const {userId, accountType} = useContext(UserContext);
 
   //--------------------------HARDCODED VALUES--------------------------------------
-  //const userId = 1; // company user
-  //const accountType = "company";
-  const userId = 3;
-  const accountType = "reg_user";
+  const userId = 1; // company user    // <CompanyViewPage userId={userId} />
+  const accountType = "company";
+  //const userId = 19; // condo owner <CondoOwnerAndRentalPage userId={userId} />
+  //const accountType = "reg_user";
   //--------------------------------------------------------------------------------
 
   return (
@@ -27,16 +27,19 @@ function ReservationsPage() {
                   {
                       /**/
                   }
-              {accountType === "reg_user" && (
-                  <CondoOwnerAndRentalPage userId={userId} />
-              )}
+              <CompanyViewPage userId={userId} />
 
               {/*
 
-  {accountType === "company" && (
-                  <CompanyViewPage userId={userId} />
-              )}
 
+               {accountType === "reg_user" && (
+
+              )}
+<CondoOwnerAndRentalPage userId={userId} />
+
+ {accountType === "company" && (
+
+              )}
 
                   */}
 

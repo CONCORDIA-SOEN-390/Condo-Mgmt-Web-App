@@ -13,15 +13,14 @@ import CondoOwnerView from "@/components/PropertiesPageComponents/PublicUserView
 
 
 function PropertiesPage() {
-
-  // RENDERING SHOULD BE FIXED HERE DO NO TOUCH THE COMPONENT CONTENT
   const page = 'company'; // company or anything for user
-  const [showAddPropertyForm, setshowAddPropertyFormStatus] = useState(false);
-
+  // RENDERING SHOULD BE FIXED HERE DO NO TOUCH THE COMPONENT CONTENT
   // hardcoded
-  //const userId = 3 // reg_user
-  const userId = 1 // company user
+  //const userId = 19 // reg_user           <CondoOwnerView userId={userId} />}
+  const userId = 1 // company user    <CompanyPropertyTable userId={userId} />   <AddPropertyForm userId={userId} />
 
+
+  const [showAddPropertyForm, setshowAddPropertyFormStatus] = useState(false);
   const toggleForm = () => {
     setshowAddPropertyFormStatus(!showAddPropertyForm);
   };
@@ -33,15 +32,8 @@ function PropertiesPage() {
         <CardHeader title="Properties">
           <button onClick={toggleForm}><PiPlusSquareFill/></button>
         </CardHeader>
-
         {showAddPropertyForm && <AddPropertyForm userId={userId} />}
-
-
         {page === 'company'? <CompanyPropertyTable userId={userId} />: <CondoOwnerView userId={userId} />}
-
-
-
-
       </div>
     </div>
   );

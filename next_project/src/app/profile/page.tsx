@@ -8,7 +8,12 @@ import RegisterForm from "@/components/ProfilePageComponents/RegistrationForm";
 
 function ProfilePage() {
   const {profileUrl, email, phoneNumber, userName} = useContext(UserContext);
-  const userId = 19;
+
+  //------------------------------------------HARDCODED VALUE REMOVE----------------------------------------------------
+    const userId = 19;
+    // fix rendering here
+  //--------------------------------------------------------------------------------------------------------------------
+
   return (
       <div className="flex min-h-screen-nav items-center justify-center h-full bg-white">
         <SideBar page="profile" />

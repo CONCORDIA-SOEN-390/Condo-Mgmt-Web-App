@@ -140,7 +140,6 @@ const RequestTable: React.FC<RequestTableProps> = ({ userId }) => {
 
     return (
         <div className="overflow-x-auto">
-            <h2 className="text-xl font-semibold mb-4">Request</h2>
             {requests.length > 0 && (
                 <table className="min-w-full divide-y divide-gray-200">
                     <thead className="bg-blue-400 text-white">

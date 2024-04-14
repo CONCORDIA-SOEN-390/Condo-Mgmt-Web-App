@@ -55,7 +55,7 @@ function CompanyViewPage({ userId }: CompanyViewPageProps) {
             {properties.map((property) => (
                 <div key={property.property_id} className="bg-white shadow-lg rounded-xl mb-5">
                     <CardHeader title={`Reservations for Property ${property.property_name}`}>
-                        Reservations
+                        .
                     </CardHeader>
                     <div className="p-5 text-black text-xl">
                         <MyReservationTable propertyId={property.property_id} />

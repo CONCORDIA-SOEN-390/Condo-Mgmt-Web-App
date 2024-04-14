@@ -243,7 +243,7 @@ export default function UnitsTable({ propertyId }: { propertyId: number }) {
   }, [propertyId, units]);
 
   return (
-      <div>
+      <div className="overflow-x-auto">
         <div className="bg-gray-50 rounded-lg shadow-md p-6">
           <h2 className="text-xl font-bold mb-4">Unit Information</h2>
 

@@ -94,7 +94,6 @@ const AvailableFacilityTable: React.FC<{ propertyId: number; userId: number }> =
                         onCancel={handleCancel}
                     />
 
-                    />
                 </div>
             )}
         </div>

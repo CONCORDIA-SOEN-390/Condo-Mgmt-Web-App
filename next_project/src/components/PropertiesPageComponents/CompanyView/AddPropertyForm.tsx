@@ -1,7 +1,6 @@
-import React, { useState, useContext } from "react";
-import { UserContext } from "@/context/userInfoContext";
+import React, { useState} from "react";
 
-function AddPropertyForm({ userId }) {
+function AddPropertyForm({ userId }: { userId: number }) {
   const [numberOfUnits, setNumberOfUnits] = useState(0);
   const [numberOfParkingSpaces, setNumberOfParkingSpaces] = useState(0);
   const [numberOfLockers, setNumberOfLockers] = useState(0);

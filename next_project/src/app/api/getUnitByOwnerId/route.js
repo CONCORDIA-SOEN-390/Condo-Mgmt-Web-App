@@ -7,23 +7,24 @@ const supabase = createClient(
 
 export async function POST(req) {
     try {
-        const { ownerId, propertyId } = await req.json();
+        const { userId, propertyId } = await req.json();
 
-        const { data: lockers, error: lockerError } = await supabase
-            .from('locker')
+        const { data: units, error } = await supabase
+            .from('unit')
             .select('*')
-            .eq('property_id', propertyId)
-            .eq('owner_id', ownerId);
+            .eq('owner_id', userId)
+            .eq('property_id', propertyId);
 
-
-        if (lockerError) {
-            return new Response(JSON.stringify(lockerError), {
+        if (error) {
+            return new Response(JSON.stringify(error), {
                 status: 500,
+                headers: {
+                    'Content-Type': 'application/json',
+                },
             });
         }
-        //console.log(lockers);
 
-        return new Response(JSON.stringify(lockers), {
+        return new Response(JSON.stringify(units), {
             status: 200,
             headers: {
                 'Content-Type': 'application/json',

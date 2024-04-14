@@ -2,14 +2,25 @@ import { useEffect, useState } from 'react';
 import React from "react";
 import LockerTable from "@/components/PropertiesPageComponents/CompanyView/LockerTable";
 import ParkingTable from "@/components/PropertiesPageComponents/CompanyView/ParkingTable";
-import UnitsTable from "@/components/UnitsPageComponents/UnitsTable";
+import UnitsTable from "@/components/UnitsPageComponents/CompanyView/UnitsTable";
 
-export default function CompanyPropertyTable({ userId }) {
-    const [properties, setProperties] = useState([]);
-    const [lockerCounts, setLockerCounts] = useState({});
-    const [parkingCounts, setParkingCounts] = useState({});
-    const [unitCounts, setUnitCounts] = useState({});
-    const [expandedPropertyId, setExpandedPropertyId] = useState(null);
+interface Property {
+    property_id: number;
+    property_name: string;
+    address: string;
+    property_type: string;
+}
+
+interface CompanyPropertyTableProps {
+    userId: number;
+}
+
+export default function CompanyPropertyTable({ userId }: CompanyPropertyTableProps) {
+    const [properties, setProperties] = useState<Property[]>([]);
+    const [lockerCounts, setLockerCounts] = useState<{ [key: number]: number }>({});
+    const [parkingCounts, setParkingCounts] = useState<{ [key: number]: number }>({});
+    const [unitCounts, setUnitCounts] = useState<{ [key: number]: number }>({});
+    const [expandedPropertyId, setExpandedPropertyId] = useState<number | null>(null);
 
     useEffect(() => {
         const fetchProperties = async () => {
@@ -34,7 +45,7 @@ export default function CompanyPropertyTable({ userId }) {
     }, [userId]);
 
     useEffect(() => {
-        const fetchLockerCount = async (propertyId) => {
+        const fetchLockerCount = async (propertyId: number) => {
             try {
                 const response = await fetch('/api/getLockerCount', {
                     method: 'POST',
@@ -62,7 +73,7 @@ export default function CompanyPropertyTable({ userId }) {
     }, [properties]);
 
     useEffect(() => {
-        const fetchParkingCount = async (propertyId) => {
+        const fetchParkingCount = async (propertyId: number) => {
             try {
                 const response = await fetch('/api/getParkingCount', {
                     method: 'POST',
@@ -91,7 +102,7 @@ export default function CompanyPropertyTable({ userId }) {
 
 
     useEffect(() => {
-        const fetchUnitCount = async (propertyId) => {
+        const fetchUnitCount = async (propertyId: number) => {
             try {
                 const response = await fetch('/api/getUnitCount', {
                     method: 'POST',
@@ -118,7 +129,7 @@ export default function CompanyPropertyTable({ userId }) {
         });
     }, [properties]);
 
-    const handleRowClick = (propertyId) => {
+    const handleRowClick = (propertyId: number) => {
         setExpandedPropertyId((prevId) => (prevId === propertyId ? null : propertyId));
     };
 
@@ -150,7 +161,7 @@ export default function CompanyPropertyTable({ userId }) {
                         </tr>
                         {expandedPropertyId === property.property_id && (
                             <tr>
-                                <td colSpan="9" className="py-10">
+                                <td colSpan={9} className="py-10">
                                     <div className="space-y-8">
                                         <UnitsTable propertyId={property.property_id}/>
                                         <LockerTable propertyId={property.property_id} />

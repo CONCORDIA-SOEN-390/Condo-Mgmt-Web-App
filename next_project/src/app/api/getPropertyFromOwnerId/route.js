@@ -15,8 +15,6 @@ export async function POST(req) {
             .select('property_id, property(*)')
             .eq('owner_id', userId);
 
-        console.log(properties);
-
         if (error) {
             return new Response(JSON.stringify(error), {
                 status: 500,

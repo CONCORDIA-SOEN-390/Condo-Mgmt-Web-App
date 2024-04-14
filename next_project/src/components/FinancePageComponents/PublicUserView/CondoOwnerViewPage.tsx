@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import React from "react";
-import UnitsTable from "@/components/UnitsPageComponents/CondoOwnerView/UnitsTable";
+import UnitFee from "@/components/FinancePageComponents/PublicUserView/UnitFee";
+import CardHeader from "@/components/GeneralComponents/CardHeader";
 
 
 interface Property {
@@ -66,6 +67,10 @@ export default function CompanyPropertyTable({ userId }: CompanyPropertyTablePro
 
     return (
         <div>
+            <div>
+                <CardHeader title={`Finances`}>
+                    .
+                </CardHeader>
             <table className="min-w-full divide-y divide-gray-200">
                 <thead className="min-w-full bg-[#DAECFB] text-black">
                 <tr>
@@ -88,7 +93,7 @@ export default function CompanyPropertyTable({ userId }: CompanyPropertyTablePro
                             <tr>
                                 <td colSpan={9} className="py-10">
                                     <div className="space-y-8">
-                                        <UnitsTable propertyId={property.property_id} userId={userId} />
+                                        <UnitFee propertyId={property.property_id} userId={userId} />
                                     </div>
                                 </td>
                             </tr>
@@ -97,6 +102,7 @@ export default function CompanyPropertyTable({ userId }: CompanyPropertyTablePro
                 ))}
                 </tbody>
             </table>
+        </div>
         </div>
     );
 }

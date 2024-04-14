@@ -1,6 +1,10 @@
 import React, { useState } from "react";
 
-function AddFinanceForm({propertyId}) {
+interface AddFinanceFormProps {
+    propertyId: number;
+}
+
+function AddExpenseForm({ propertyId }: AddFinanceFormProps) {
     const [occurrence, setOccurrence] = useState("");
     const [transactionDate, setTransactionDate] = useState("");
     const [description, setDescription] = useState("");
@@ -107,4 +111,4 @@ function AddFinanceForm({propertyId}) {
     );
 }
 
-export default AddFinanceForm;
+export default AddExpenseForm;

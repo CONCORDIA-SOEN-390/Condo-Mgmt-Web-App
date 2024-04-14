@@ -1,34 +1,30 @@
 import React, { useEffect, useState } from "react";
 import CardHeader from "@/components/GeneralComponents/CardHeader";
 import { PiPlusSquareFill } from "react-icons/pi";
-import AddExpenseForm from "@/components/FinancePageComponents/CompanyView/AddExpenseForm";
-import ExpenseTable from "@/components/FinancePageComponents/CompanyView/ExpenseTable";
-import UnitFee from "@/components/FinancePageComponents/CompanyView/UnitFee";
-import IncomeTable from "@/components/FinancePageComponents/CompanyView/IncomeTable";
+import DocumentTable from "@/components/DocumentPageComponents/CompanyView/DocumentTable";
+import DocumentUploadForm from "@/components/DocumentPageComponents/CompanyView/DocumentUploadForm";
+
+interface Property {
+    property_id: number;
+    property_name: string;
+}
 
 interface RequestProps {
     userId: number;
 }
 
-interface Property {
-    property_id: number;
-    user_id: number;
-    property_name: string;
-    property_type: string;
-    address: string;
-}
-
 function Request({ userId }: RequestProps) {
-    const [showAddEmployee, setShowAddEmployee] = useState<Record<number, boolean>>({});
     const [properties, setProperties] = useState<Property[]>([]);
-    const [showAddRequest, setShowAddRequest] = useState({});
+    const [showAddRequest, setShowAddRequest] = useState<{ [key: number]: boolean }>({});
 
-    const toggleAddEmployee = (propertyId: number) => {
-        setShowAddEmployee((prevVisibility) => ({
+
+    const toggleAddRequest = (propertyId: number) => {
+        setShowAddRequest((prevVisibility) => ({
             ...prevVisibility,
             [propertyId]: !prevVisibility[propertyId],
         }));
     };
+
 
     // Getting properties from userId
     useEffect(() => {
@@ -46,7 +42,7 @@ function Request({ userId }: RequestProps) {
                     throw new Error('Network response was not ok');
                 }
 
-                const properties: Property[] = await response.json();
+                const properties = await response.json();
                 setProperties(properties);
             } catch (error) {
                 console.error('Error fetching properties:', error);
@@ -60,17 +56,13 @@ function Request({ userId }: RequestProps) {
         <div>
             {properties.map((property) => (
                 <div key={property.property_id} className="bg-white shadow-lg rounded-xl mb-5">
-                    <CardHeader title={`Finances for ${property.property_name}`}>
-                        .
+                    <CardHeader title={`Documents for ${property.property_name}`}>
+                        <button onClick={() => toggleAddRequest(property.property_id)}><PiPlusSquareFill/></button>
                     </CardHeader>
                     <div className="p-5 text-black text-xl">
-                        <ExpenseTable propertyId={property.property_id} userId={userId} />
+                        <DocumentTable propertyId={property.property_id} userId={userId} />
                     </div>
-                    <div className="p-5 text-black text-xl">
-                        <IncomeTable propertyId={property.property_id} userId={userId} />
-                    </div>
-                    <div className="p-5 text-black text-xl">
-                        <UnitFee propertyId={property.property_id} />
+                    <div className="p-5 text-black text-xl">{showAddRequest[property.property_id] && <DocumentUploadForm propertyId={property.property_id} userId={userId} />}
                     </div>
                 </div>
             ))}

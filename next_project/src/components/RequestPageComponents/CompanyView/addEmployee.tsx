@@ -1,6 +1,10 @@
 import React, { useState } from "react";
 
-function AddEmployeeForm({ propertyId }) {
+interface AddEmployeeFormProps {
+    propertyId: number;
+}
+
+function AddEmployeeForm({ propertyId }: AddEmployeeFormProps) {
     const [email, setEmail] = useState('');
     const [password_, setPassword] = useState('');
     const [username, setUsername] = useState('');

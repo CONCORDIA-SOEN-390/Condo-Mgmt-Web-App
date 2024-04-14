@@ -1,18 +1,26 @@
 import React, { useState } from "react";
 
-function AddFacilityForm({ onClose, propertyId }) {
+interface AddFacilityFormProps {
+    onClose: () => void;
+    propertyId: number;
+}
+
+function AddFacilityForm({ onClose, propertyId }: AddFacilityFormProps) {
     const [formData, setFormData] = useState({
         facilityName: "",
         facilityDescription: ""
     });
-    const [errorMessage, setErrorMessage] = useState("");
 
-    const handleChange = (e) => {
+    const [errorMessage, setErrorMessage] = useState<string>("");
+
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
     };
 
-    const handleSubmit = async (e) => {
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
+
+
 
         try {
             const response = await fetch("/api/addFacility", {

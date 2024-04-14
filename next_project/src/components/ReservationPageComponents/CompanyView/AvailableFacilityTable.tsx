@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from "react";
 import ReserveFacilityPopup from "@/components/ReservationPageComponents/CompanyView/ReserveFacilityPopup";
 interface Facility {
+  property_id: number;
   facility_id: number;
+  type: string;
   name: string;
   description: string;
 }
@@ -40,9 +42,21 @@ const AvailableFacilityTable: React.FC<{ propertyId: number; userId: number }> =
     fetchFacilities();
   }, [propertyId]);
 
+
+
+
+
+
   const handleReserveClick = (facilityItem: Facility) => {
-    setSelectedFacility(facilityItem);
-    setShowPopup(true);
+    if (selectedFacility && selectedFacility.facility_id === facilityItem.facility_id) {
+      // Clicked on the selected facility again, close the popup
+      setSelectedFacility(null);
+      setShowPopup(false);
+    } else {
+      // Clicked on a different facility, select it and show the popup
+      setSelectedFacility(facilityItem);
+      setShowPopup(true);
+    }
   };
 
   const handleReservationSubmit = (reservationDetails: any) => {
@@ -82,16 +96,15 @@ const AvailableFacilityTable: React.FC<{ propertyId: number; userId: number }> =
           ))}
           </tbody>
         </table>
-        {showPopup && (
+        {showPopup && selectedFacility !== null && (
             <div className="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50">
               <ReserveFacilityPopup
-                  facility={selectedFacility}
+                  facility={selectedFacility!}
                   userId={userId}
                   propertyId={propertyId}
                   onReservationSubmit={handleReservationSubmit}
                   onCancel={handleCancel}
               />
-
             </div>
         )}
       </div>

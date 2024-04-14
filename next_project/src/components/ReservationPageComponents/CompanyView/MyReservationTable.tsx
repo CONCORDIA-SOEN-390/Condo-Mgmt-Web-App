@@ -90,8 +90,8 @@ const MyReservationTable: React.FC<{ propertyId: number }> = ({ propertyId }) =>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{reservation.reservation_id}</td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{reservation.facility_id}</td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{reservation.user_id}</td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{reservation.start_time}</td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{reservation.end_time}</td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{new Date(reservation.start_time).toLocaleString()}</td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{new Date(reservation.end_time).toLocaleString()}</td>
                     <td className="px-6 py-4 whitespace-nowrap">
                         <button className="bg-blue-500 hover:bg-zinc-600 text-sm mr-7 text-white py-2 px-4 rounded mr-5" onClick={() => handleCancel(reservation.reservation_id)}>Cancel</button>
                     </td>

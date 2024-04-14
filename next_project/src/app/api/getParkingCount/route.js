@@ -17,15 +17,16 @@ export async function POST(req) {
 
         if (error) {
             console.error('Error fetching lockers:', error);
-            return {
+            return new Response(JSON.stringify({ error: 'Failed to fetch lockers' }), {
                 status: 500,
-                body: JSON.stringify({ error: 'Failed to fetch lockers' })
-            };
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
         }
 
         const parkingCount = parkings ? parkings.length : 0;
 
-        console.log(parkingCount);
         return new Response(JSON.stringify(parkingCount), {
             status: 200,
             headers: {
@@ -34,9 +35,11 @@ export async function POST(req) {
         });
     } catch (error) {
         console.error('Error:', error);
-        return {
+        return new Response(JSON.stringify({ error: 'Internal Server Error' }), {
             status: 500,
-            body: JSON.stringify({ error: 'Internal Server Error' })
-        };
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
     }
 }

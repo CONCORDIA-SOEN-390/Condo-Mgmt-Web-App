@@ -4,11 +4,16 @@ import SideBar from "@/components/GeneralComponents/PublicUserView/SideBar";
 import { UserContext } from "@/context/userInfoContext";
 import { useContext } from "react";
 import Image from "next/image";
-import RegisterForm from "@/components/ProfilePageComponent/RegistrationForm";
+import RegisterForm from "@/components/ProfilePageComponents/RegistrationForm";
 
 function ProfilePage() {
   const {profileUrl, email, phoneNumber, userName} = useContext(UserContext);
-  const userId = 20;
+
+  //------------------------------------------HARDCODED VALUE REMOVE----------------------------------------------------
+    const userId = 19;
+    // fix rendering here
+  //--------------------------------------------------------------------------------------------------------------------
+
   return (
       <div className="flex min-h-screen-nav items-center justify-center h-full bg-white">
         <SideBar page="profile" />

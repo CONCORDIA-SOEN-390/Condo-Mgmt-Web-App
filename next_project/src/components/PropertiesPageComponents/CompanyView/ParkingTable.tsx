@@ -1,7 +1,19 @@
 import React, { useState, useEffect } from 'react';
 
-const ParkingTable = ({ propertyId }) => {
-    const [parkings, setParkings] = useState([]);
+interface Parking {
+    parking_id: number;
+    property_id: number;
+    owner_id: number;
+    condo_fee: number;
+    occupied: boolean;
+}
+
+interface ParkingTableProps {
+    propertyId: number;
+}
+
+const ParkingTable: React.FC<ParkingTableProps> = ({ propertyId }) => {
+    const [parkings, setParkings] = useState<Parking[]>([]);
     const [parkingOwnerIdInput, setParkingOwnerIdInput] = useState('');
     const [parkingIdInput, setParkingIdInput] = useState('');
     const [parkingFeeInput, setParkingFeeInput] = useState('');
@@ -69,15 +81,15 @@ const ParkingTable = ({ propertyId }) => {
         fetchParkings();
     }, [propertyId]);
 
-    const handleParkingOwnerIdChange = (e) => {
+    const handleParkingOwnerIdChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setParkingOwnerIdInput(e.target.value);
     };
 
-    const handleParkingIdChange = (e) => {
+    const handleParkingIdChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setParkingIdInput(e.target.value);
     };
 
-    const handleParkingFeeChange = (e) => {
+    const handleParkingFeeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setParkingFeeInput(e.target.value);
     };
 

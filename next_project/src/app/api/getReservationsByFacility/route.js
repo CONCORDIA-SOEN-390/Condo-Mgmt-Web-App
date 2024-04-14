@@ -2,16 +2,20 @@ import pool from "../../../../utils/db";
 
 export async function POST(req) {
     const body = await req.json();
-    const { facilityId, propertyId, reservationDay } = body;
+    const { propertyId, reservationDay } = body;
 
     const client = await pool.connect();
 
     try {
-        const reqs = await client.query(`
-        SELECT * FROM reservation WHERE facility_id = $1 AND property_id = $2 AND $3::DATE BETWEEN start_time::DATE AND end_time::DATE;
-        `, [facilityId, propertyId, reservationDay]);
+        const query = `
+        SELECT facility_id, start_time, end_time
+        FROM reservation
+        WHERE property_id = $1 
+            AND $2::DATE BETWEEN start_time::DATE AND end_time::DATE;
+        `;
+        const reservations = await client.query(query, [propertyId, reservationDay]);
 
-        return new Response(JSON.stringify(reqs.rows), {
+        return new Response(JSON.stringify(reservations.rows), {
             status: 200,
             headers: {
                 'Content-Type': 'application/json'
@@ -26,3 +30,4 @@ export async function POST(req) {
         client.release();
     }
 }
+

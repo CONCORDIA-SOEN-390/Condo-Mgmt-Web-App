@@ -89,17 +89,6 @@ export default function UnitFee({ propertyId, userId }: { propertyId: number, us
     }, [propertyId, userId]);
 
 
-
-
-
-
-
-
-
-
-
-
-
     useEffect(() => {
         const fetchLockers = async (ownerId: number) => {
             try {

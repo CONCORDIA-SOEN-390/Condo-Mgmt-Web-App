@@ -11,14 +11,14 @@ function FinancesPage() {
     //------------------------------------FIX PAGE RENDERING HERE -------------------------------------------------------
   const page = 'company';
   //const userId = 3 // reg_user
-  const userId = 1; // company user
+  const userId = 19; // company user
 
     //-------------------------------------------------------------------------------------------------------------------
   return (
       <div className="flex min-h-screen-nav items-center justify-center h-full bg-white">
           {page === 'company'? <CompanySideBar page='properties'/> : <PublicUserSideBar page='properties'/>}
           <div className="absolute w-5/6 inset-y-0 right-5 bg-white shadow-lg rounded-xl">
-              { <CompanyViewPage userId={userId} />}{/*: <CondoOwnerViewPage userId={userId}/>*/}
+              {<CondoOwnerViewPage userId={userId}/> }{/*: <CompanyViewPage userId={userId} />*/}
           </div>
       </div>
   );

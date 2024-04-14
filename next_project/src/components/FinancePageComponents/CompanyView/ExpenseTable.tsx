@@ -12,7 +12,7 @@ interface Expense {
   expense_id: number;
   company_id: number;
   expense_value: number;
-  occurence: string; // Corrected typo in property name
+  occurence: string;
   description: string;
   expense_date: string;
   property_id: number;
@@ -20,7 +20,8 @@ interface Expense {
 
 const ExpenseTable: React.FC<FinanceTableProps> = ({ propertyId, userId }) => {
   const [expenses, setExpenses] = useState<Expense[]>([]);
-  const [showAddExpense, setShowAddExpense] = useState<boolean>(false); // Changed type to boolean
+  const [showAddExpense, setShowAddExpense] = useState<boolean>(false);
+  const [filterYear, setFilterYear] = useState<number | null>(null); // State for filter year
 
   useEffect(() => {
     const fetchExpenses = async () => {
@@ -50,6 +51,24 @@ const ExpenseTable: React.FC<FinanceTableProps> = ({ propertyId, userId }) => {
     setShowAddExpense(prevState => !prevState);
   };
 
+  // filter expenses by year
+  const filteredExpenses = expenses.filter(expense => {
+    if (filterYear === null) {
+      return true; // Show all expenses if no filter year is selected
+    }
+    const expenseYear = new Date(expense.expense_date).getFullYear();
+    return expenseYear === filterYear;
+  });
+
+
+  // calculate total expenses by year
+  const calculateTotalExpensesByYear = (year: number) => {
+    return expenses
+        .filter(expense => new Date(expense.expense_date).getFullYear() === year)
+        .reduce((total, expense) => total + expense.expense_value, 0);
+  };
+
+
   return (
       <div className="bg-gray-50 rounded-lg shadow-md p-6">
         <CardHeader title={'Expenses'}>
@@ -57,9 +76,16 @@ const ExpenseTable: React.FC<FinanceTableProps> = ({ propertyId, userId }) => {
         </CardHeader>
         <div className="p-5 text-black text-xl">
           {showAddExpense && <AddExpenseForm propertyId={propertyId} />}
+          {/* Filter input */}
+          <input
+              type="number"
+              placeholder="Filter by year"
+              value={filterYear || ''}
+              onChange={(e) => setFilterYear(parseInt(e.target.value))}
+          />
         </div>
         <div className="overflow-x-auto">
-          {expenses.length > 0 ? (
+          {filteredExpenses.length > 0 ? (
               <table className="min-w-full divide-y divide-gray-200">
                 <thead className="bg-blue-400 text-white">
                 <tr>
@@ -72,7 +98,7 @@ const ExpenseTable: React.FC<FinanceTableProps> = ({ propertyId, userId }) => {
                 </tr>
                 </thead>
                 <tbody className="bg-white divide-y divide-gray-200">
-                {expenses.map(expense => (
+                {filteredExpenses.map(expense => (
                     <tr key={expense.expense_id} className="bg-gray-50">
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{expense.expense_id}</td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{expense.company_id}</td>
@@ -82,6 +108,15 @@ const ExpenseTable: React.FC<FinanceTableProps> = ({ propertyId, userId }) => {
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{expense.expense_date}</td>
                     </tr>
                 ))}
+
+                {filterYear && (
+                    <tr className="bg-gray-50">
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 font-bold" colSpan={2}>Total Expenses for {filterYear}</td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 font-bold">{calculateTotalExpensesByYear(filterYear)}</td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 font-bold" colSpan={3}></td>
+                    </tr>
+                )}
+
                 </tbody>
               </table>
           ) : (

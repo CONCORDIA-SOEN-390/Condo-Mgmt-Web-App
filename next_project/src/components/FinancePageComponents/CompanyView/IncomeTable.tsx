@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import CardHeader from "@/components/GeneralComponents/CardHeader";
 import { PiPlusSquareFill } from "react-icons/pi";
-import AddIncomeForm from "@/components/FinancePageComponents/CompanyView/AddIncomeForm"; // Change the import path to the appropriate AddIncomeForm component
+import AddIncomeForm from "@/components/FinancePageComponents/CompanyView/AddIncomeForm";
 
 interface FinanceTableProps {
     propertyId: number;
@@ -21,6 +21,7 @@ interface Income {
 const IncomeTable: React.FC<FinanceTableProps> = ({ propertyId, userId }) => {
     const [incomes, setIncomes] = useState<Income[]>([]);
     const [showAddIncome, setShowAddIncome] = useState<boolean>(false);
+    const [filterYear, setFilterYear] = useState<number | null>(null); // State for filter year
 
     useEffect(() => {
         const fetchIncomes = async () => {
@@ -50,6 +51,13 @@ const IncomeTable: React.FC<FinanceTableProps> = ({ propertyId, userId }) => {
         setShowAddIncome(prevState => !prevState);
     };
 
+    // calculate total income per year
+    const calculateTotalIncomeByYear = (year: number) => {
+        return incomes
+            .filter(income => new Date(income.income_date).getFullYear() === year)
+            .reduce((total, income) => total + income.income_value, 0);
+    };
+
     return (
         <div className="bg-gray-50 rounded-lg shadow-md p-6">
             <CardHeader title={'Income'}>
@@ -57,6 +65,12 @@ const IncomeTable: React.FC<FinanceTableProps> = ({ propertyId, userId }) => {
             </CardHeader>
             <div className="p-5 text-black text-xl">
                 {showAddIncome && <AddIncomeForm propertyId={propertyId} />}
+                <input
+                    type="number"
+                    placeholder="Filter by year"
+                    value={filterYear || ''}
+                    onChange={(e) => setFilterYear(parseInt(e.target.value))}
+                />
             </div>
             <div className="overflow-x-auto">
                 {incomes.length > 0 ? (
@@ -72,16 +86,26 @@ const IncomeTable: React.FC<FinanceTableProps> = ({ propertyId, userId }) => {
                         </tr>
                         </thead>
                         <tbody className="bg-white divide-y divide-gray-200">
-                        {incomes.map(income => (
-                            <tr key={income.income_id} className="bg-gray-50">
-                                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{income.income_id}</td>
-                                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{income.company_id}</td>
-                                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{income.income_value}</td>
-                                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{income.occurence}</td>
-                                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{income.description}</td>
-                                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{income.income_date}</td>
+                        {incomes
+                            .filter(income => !filterYear || new Date(income.income_date).getFullYear() === filterYear)
+                            .map(income => (
+                                <tr key={income.income_id} className="bg-gray-50">
+                                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{income.income_id}</td>
+                                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{income.company_id}</td>
+                                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{income.income_value}</td>
+                                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{income.occurence}</td>
+                                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{income.description}</td>
+                                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{income.income_date}</td>
+                                </tr>
+                            ))
+                        }
+                        {filterYear && incomes.some(income => new Date(income.income_date).getFullYear() === filterYear) && (
+                            <tr className="bg-gray-50">
+                                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 font-bold" colSpan={2}>Total Income for {filterYear}</td>
+                                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 font-bold">{calculateTotalIncomeByYear(filterYear)}</td>
+                                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 font-bold" colSpan={3}></td>
                             </tr>
-                        ))}
+                        )}
                         </tbody>
                     </table>
                 ) : (

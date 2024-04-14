@@ -65,7 +65,7 @@ function AddRequestForm({ userId, propertyId }) {
 
     return (
         <div className="h-screen">
-            <div className="bg-sky-100 min-h-screen p-5">
+            <div className="bg-sky-100 min-h-screen p-5 overflow-y-auto ">
                 <h6 className="text-blue-800 font-semibold text-lg mb-6">Add Request</h6>
                 <form onSubmit={handleSubmit}>
                     {/* Request Type */}

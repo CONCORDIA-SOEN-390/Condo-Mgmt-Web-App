@@ -12,7 +12,7 @@ function ProfilePage() {
   return (
       <div className="flex min-h-screen-nav items-center justify-center h-full bg-white">
         <SideBar page="profile" />
-        <div className="relative grid grid-rows-4 grid-cols-1 gap-4 p-5 text-black text-xl justify-center items-center">
+        <div className="relative ml-40 grid grid-rows-4 grid-cols-1 gap-4 p-5 text-black text-xl justify-center items-center">
           <div className="row-start-2 row-end-2 col-start-1 col-end-2 flex items-center justify-center">
             <div className="w-40 h-40">
               <Image
@@ -34,9 +34,11 @@ function ProfilePage() {
             </div>
           </div>
         </div>
-        <div className="absolute bottom-0 left-0 right-0">
+      <div className="absolute ml-50 bottom-0 left-0 right-0 flex justify-center">
+        <div className=" ">
           <RegisterForm userId={userId} />
         </div>
+      </div>
       </div>
 
   );

@@ -43,7 +43,6 @@ function ReserveFacilityPopup({ facility, userId, propertyId, onReservationSubmi
         throw new Error("Failed to add reservation");
       }
 
-
       onReservationSubmit();
     } catch (error) {
       console.error("Error adding reservation:", error);
@@ -53,9 +52,9 @@ function ReserveFacilityPopup({ facility, userId, propertyId, onReservationSubmi
   const isToday = (date) => {
     const today = new Date();
     return (
-        date.getDate() === today.getDate() &&
-        date.getMonth() === today.getMonth() &&
-        date.getFullYear() === today.getFullYear()
+      date.getDate() === today.getDate() &&
+      date.getMonth() === today.getMonth() &&
+      date.getFullYear() === today.getFullYear()
     );
   };
 
@@ -70,7 +69,7 @@ function ReserveFacilityPopup({ facility, userId, propertyId, onReservationSubmi
   };
 
   return (
-    <div className="overflow-y-auto overflow-x-auto">
+    <div className="overflow-x-auto overflow-y-auto">
       <div className="popup bg-white p-6 rounded-lg flex flex-col">
         <strong className="p-3">Reserve Facility</strong>
         <form onSubmit={handleSubmit} className="flex flex-col flex-grow">
@@ -80,45 +79,49 @@ function ReserveFacilityPopup({ facility, userId, propertyId, onReservationSubmi
           <div className="form-group text-lg p-3">
             <label htmlFor="description">Description: {facility.description}</label>
           </div>
-          <div className="form-group text-lg p-3 flex-grow">
-            <label htmlFor="date">Date: {selectedDate.toDateString()}</label>
-            <Calendar
+          <div className="form-group text-lg p-3 flex-grow flex">
+            <div className="mr-3">
+              <label htmlFor="date">Date: {selectedDate.toDateString()}</label>
+              <Calendar
                 onChange={handleDateChange}
                 value={selectedDate}
                 className="mb-4 p mt-3"
                 calendarClassName="bg-white rounded-lg border border-gray-300 shadow-md"
                 tileClassName={tileClassName}
-            />
-          </div>
-          <div className="form-group text-lg p-3 flex-grow">
-            <label htmlFor="startTime">Start Time:</label>
-            <input
-                type="time"
-                value={startTime}
-                onChange={handleStartTimeChange}
-                className="mb-4 p mt-3"
-            />
-          </div>
-          <div className="form-group text-lg p-3 flex-grow">
-            <label htmlFor="endTime">End Time:</label>
-            <input
-                type="time"
-                value={endTime}
-                onChange={handleEndTimeChange}
-                className="mb-4 p mt-3"
-            />
+              />
+            </div>
+            <div className="mt-10">
+              <div>
+                <label htmlFor="startTime">Start Time:</label>
+                <input
+                  type="time"
+                  value={startTime}
+                  onChange={handleStartTimeChange}
+                  className="mb-4 p mt-3"
+                />
+              </div>
+              <div>
+                <label htmlFor="endTime">End Time:</label>
+                <input
+                  type="time"
+                  value={endTime}
+                  onChange={handleEndTimeChange}
+                  className="mb-4 p mt-3"
+                />
+              </div>
+            </div>
           </div>
           <div className="form-group flex justify-between">
             <button
-                type="submit"
-                className="bg-zinc-500 hover:bg-zinc-600 text-lg text-white px-4 py-2 rounded ml-3"
+              type="submit"
+              className="bg-zinc-500 hover:bg-zinc-600 text-lg text-white px-4 py-2 rounded ml-3"
             >
               Confirm
             </button>
             <button
-                type="button"
-                onClick={onCancel}
-                className="bg-zinc-500 hover:bg-zinc-600 text-lg text-white px-4 py-2 rounded mr-3"
+              type="button"
+              onClick={onCancel}
+              className="bg-zinc-500 hover:bg-zinc-600 text-lg text-white px-4 py-2 rounded mr-3"
             >
               Cancel
             </button>

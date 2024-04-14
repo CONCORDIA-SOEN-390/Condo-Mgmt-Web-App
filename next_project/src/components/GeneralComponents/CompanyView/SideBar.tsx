@@ -40,13 +40,13 @@ export default function SideBar({ page }: { page: string }) {
                         </div>
                     </Link>
                     <Link href={"documents"} className={page === 'documents' ? 'text-[#DAECFB]' : ' text-black'}>
-                        <div className="inline-flex items-center pl-3 mb-3 mb-20">
+                        <div className="inline-flex items-center pl-3 mb-20"> 
                             <FaFile className="text-xl" />
                             <span className="ml-2">Documents</span>
                         </div>
                     </Link>
                     <Link href={"/"}>
-                        <div className="inline-flex items-center pl-3 mb-3 ">
+                        <div className="inline-flex items-center pl-3 mb-3">
                             <FiLogOut className="text-xl" />
                             <span className="ml-2">Log Out</span>
                         </div>

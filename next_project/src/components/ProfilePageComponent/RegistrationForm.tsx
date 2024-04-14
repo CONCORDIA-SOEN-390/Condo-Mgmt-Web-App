@@ -30,20 +30,19 @@ function RegisterForm({userId}) {
     };
 
     return (
-        <div className="max-w-md mx-auto bg-blue-50 rounded-xl shadow-md overflow-hidden md:max-w-2xl">
-            <div className="md:flex">
-                <div className="p-8">
+        <div className="ml-40 bg-blue-50 rounded-xl mb-4 overflow-x-auto max-w-screen-sm  sm:w-4/5 max-w-screen-md md:w-4/5 max-w-screen-lg lg:w-5/6 max-w-screen-xl xl:w-5/6">
+            <div className="">
+                <div className="p-5 pl-8">
                     <h2 className="text-2xl font-bold mb-2">Register Unit</h2>
                     <form onSubmit={handleSubmit} className="space-y-4">
-                        <div>
+                        <div className='pr-10'>
                             <label className="block text-gray-700">Registration Key:</label>
                             <input
                                 type="text"
                                 value={regKey}
                                 onChange={(e) => setRegKey(e.target.value)}
-                                className="w-full md:w-96 border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50"
+                                className="mt-1 sm:w-70 md:w-70 lg:w-96 border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50"
                             />
-
                         </div>
                         <button
                             type="submit"

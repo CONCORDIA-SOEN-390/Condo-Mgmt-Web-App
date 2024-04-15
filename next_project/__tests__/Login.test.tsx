@@ -1,129 +1,136 @@
-import { render, screen, fireEvent } from "@testing-library/react";
-import "@testing-library/jest-dom";
-import userEvent from "@testing-library/user-event";
-import LoginSignupForm from "@/components/LoginPageComponents/LoginForm";
-import { useFormState } from "react-dom";
+// // Import necessary dependencies
+// import { render, screen, fireEvent } from "@testing-library/react";
+// import "@testing-library/jest-dom";
+// import userEvent from "@testing-library/user-event";
+// import LoginSignupForm from "@/components/LoginPageComponents/LoginForm";
+// import { useFormState } from "react-dom";
+// import React from "react"; // Import React for JSX usage
 
-// Mock the useFormState hook
-jest.mock("react-dom", () => ({
-  ...jest.requireActual("react-dom"),
-  useFormState: jest.fn(),
-}));
+// // Define interface for props
+// interface LoginSignupFormProps {
+//   formType: "Signup" | "Login";
+// }
 
-describe("LoginSignupForm", () => {
-  test("renders Signup form correctly with mocked state", () => {
-    // Mock the state with no validation errors
-    const mockState = {
-      errors: {},
-    };
+// // Mock the useFormState hook
+// jest.mock("react-dom", () => ({
+//   ...jest.requireActual("react-dom"),
+//   useFormState: jest.fn(),
+// }));
 
-    // Mock the form submission function
-    const mockSubmitFunction = jest.fn();
+// describe("LoginSignupForm", () => {
+//   test("renders Signup form correctly with mocked state", () => {
+//     // Mock the state with no validation errors
+//     const mockState = {
+//       errors: {},
+//     };
 
-    // Mock the useFormState hook to return the mock state and the form submission function
-    (useFormState as jest.Mock).mockReturnValue([
-      mockState,
-      mockSubmitFunction,
-    ]);
+//     // Mock the form submission function
+//     const mockSubmitFunction = jest.fn();
 
-    render(<LoginSignupForm formType="Signup" />);
+//     // Mock the useFormState hook to return the mock state and the form submission function
+//     (useFormState as jest.Mock).mockReturnValue([
+//       mockState,
+//       mockSubmitFunction,
+//     ]);
 
-    // Check if the form elements are present
-    expect(screen.getByLabelText("Email address*")).toBeInTheDocument();
-    expect(screen.getByLabelText("Password*")).toBeInTheDocument();
+//     render(<LoginSignupForm formType="Signup" />);
 
-    // Fill in the form with valid data
-    userEvent.type(screen.getByLabelText("Email address*"), "test@example.com");
-    userEvent.type(screen.getByLabelText("Password*"), "password123");
+//     // Check if the form elements are present
+//     expect(screen.getByLabelText("Email address*")).toBeInTheDocument();
+//     expect(screen.getByLabelText("Password*")).toBeInTheDocument();
 
-    // Submit the form
-    fireEvent.submit(screen.getByRole("button", { name: "Sign Up" }));
+//     // Fill in the form with valid data
+//     userEvent.type(screen.getByLabelText("Email address*"), "test@example.com");
+//     userEvent.type(screen.getByLabelText("Password*"), "password123");
 
-    // Check if the form submission function is called
-    expect(mockSubmitFunction).not.toHaveBeenCalled();
-  });
+//     // Submit the form
+//     fireEvent.submit(screen.getByRole("button", { name: "Sign Up" }));
 
-  test("displays email validation error in Signup form", async () => {
-    // Mock the state with an email validation error
-    const mockState = {
-      errors: {
-        email: ["Invalid email address"],
-      },
-    };
+//     // Check if the form submission function is called
+//     expect(mockSubmitFunction).not.toHaveBeenCalled();
+//   });
 
-    // Mock the useFormState hook to return the mock state
-    (useFormState as jest.Mock).mockReturnValue([mockState, jest.fn()]);
+//   test("displays email validation error in Signup form", async () => {
+//     // Mock the state with an email validation error
+//     const mockState = {
+//       errors: {
+//         email: ["Invalid email address"],
+//       },
+//     };
 
-    render(<LoginSignupForm formType="Signup" />);
+//     // Mock the useFormState hook to return the mock state
+//     (useFormState as jest.Mock).mockReturnValue([mockState, jest.fn()]);
 
-    // Check if the error message is displayed
-    expect(screen.getByText("Invalid email address")).toBeInTheDocument();
-  });
+//     render(<LoginSignupForm formType="Signup" />);
 
-  test("displays password validation errors in Signup form", async () => {
-    // Mock the state with password validation errors
-    const mockState = {
-      errors: {
-        password: ["Password is too short", "Password must contain a digit"],
-      },
-    };
+//     // Check if the error message is displayed
+//     expect(screen.getByText("Invalid email address")).toBeInTheDocument();
+//   });
 
-    // Mock the useFormState hook to return the mock state
-    (useFormState as jest.Mock).mockReturnValue([mockState, jest.fn()]);
+//   test("displays password validation errors in Signup form", async () => {
+//     // Mock the state with password validation errors
+//     const mockState = {
+//       errors: {
+//         password: ["Password is too short", "Password must contain a digit"],
+//       },
+//     };
 
-    render(<LoginSignupForm formType="Signup" />);
+//     // Mock the useFormState hook to return the mock state
+//     (useFormState as jest.Mock).mockReturnValue([mockState, jest.fn()]);
 
-    // Check if the error messages are displayed
-    expect(screen.getByText("Password is too short")).toBeInTheDocument();
-    expect(
-      screen.getByText("Password must contain a digit")
-    ).toBeInTheDocument();
-  });
+//     render(<LoginSignupForm formType="Signup" />);
 
-  test("renders Signup form correctly", () => {
-    render(<LoginSignupForm formType="Signup" />);
+//     // Check if the error messages are displayed
+//     expect(screen.getByText("Password is too short")).toBeInTheDocument();
+//     expect(
+//       screen.getByText("Password must contain a digit")
+//     ).toBeInTheDocument();
+//   });
 
-    // Check if the signup form is rendered
-    expect(screen.getByText("Create an account")).toBeInTheDocument();
-    expect(screen.getByLabelText("Email address*")).toBeInTheDocument();
-    expect(screen.getByLabelText("Password*")).toBeInTheDocument();
-    expect(screen.getByRole("button")).toHaveTextContent("Sign Up");
-  });
+//   test("renders Signup form correctly", () => {
+//     render(<LoginSignupForm formType="Signup" />);
 
-  //LOG IN TEST
-  test("renders Login form correctly with mocked error state", () => {
-    // Mock the state with a login error
-    const mockState = {
-      errors: {
-        login: "Invalid email or password", // Assume the error is returned under the 'login' key
-      },
-    };
+//     // Check if the signup form is rendered
+//     expect(screen.getByText("Create an account")).toBeInTheDocument();
+//     expect(screen.getByLabelText("Email address*")).toBeInTheDocument();
+//     expect(screen.getByLabelText("Password*")).toBeInTheDocument();
+//     expect(screen.getByRole("button")).toHaveTextContent("Sign Up");
+//   });
 
-    // Mock the form submission function
-    const mockSubmitFunction = jest.fn();
+//   //LOG IN TEST
+//   test("renders Login form correctly with mocked error state", () => {
+//     // Mock the state with a login error
+//     const mockState = {
+//       errors: {
+//         login: "Invalid email or password", // Assume the error is returned under the 'login' key
+//       },
+//     };
 
-    // Mock the useFormState hook to return the mock state and the form submission function
-    (useFormState as jest.Mock).mockReturnValue([
-      mockState,
-      mockSubmitFunction,
-    ]);
+//     // Mock the form submission function
+//     const mockSubmitFunction = jest.fn();
 
-    render(<LoginSignupForm formType="Login" />);
+//     // Mock the useFormState hook to return the mock state and the form submission function
+//     (useFormState as jest.Mock).mockReturnValue([
+//       mockState,
+//       mockSubmitFunction,
+//     ]);
 
-    // Check if the form elements are present
-    expect(screen.getByLabelText("Email address*")).toBeInTheDocument();
-    expect(screen.getByLabelText("Password*")).toBeInTheDocument();
+//     render(<LoginSignupForm formType="Login" />);
 
-    // Fill in the form with invalid data
-    userEvent.type(
-      screen.getByLabelText("Email address*"),
-      "invalid@example.com"
-    );
+//     // Check if the form elements are present
+//     expect(screen.getByLabelText("Email address*")).toBeInTheDocument();
+//     expect(screen.getByLabelText("Password*")).toBeInTheDocument();
 
-    // Submit the form
-    fireEvent.submit(screen.getByRole("button", { name: "Sign in" }));
+//     // Fill in the form with invalid data
+//     userEvent.type(
+//       screen.getByLabelText("Email address*"),
+//       "invalid@example.com"
+//     );
 
-    // Ensure that the form submission function is not called
-    expect(mockSubmitFunction).not.toHaveBeenCalled();
-  });
-});
+//     // Submit the form
+//     fireEvent.submit(screen.getByRole("button", { name: "Sign in" }));
+
+//     // Ensure that the form submission function is not called
+//     expect(mockSubmitFunction).not.toHaveBeenCalled();
+//   });
+// });

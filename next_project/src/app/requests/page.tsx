@@ -1,18 +1,16 @@
-"use client";
+
 import PublicUserSideBar from "@/components/GeneralComponents/PublicUserView/SideBar";
 import CompanySideBar from "@/components/GeneralComponents/CompanyView/SideBar";
 import CardHeader from "@/components/GeneralComponents/CardHeader";
-import React, {useState} from "react";
 import RequestCompanyView from "@/components/RequestPageComponents/CompanyView/Request";
-import RequestPublicView from "@/components/RequestPageComponents/PublicUserView/Request"
-import RequestEmployeeView from "@/components/RequestPageComponents/EmployeeView/RequestTable"
-import {PiPlusSquareFill} from "react-icons/pi";
-import { useSession } from "next-auth/react";
+import {auth} from "@/lib/auth";
 
-function RequestsPage() {
-    const {data: session} = useSession();
-     // @ts-ignore comment
-    const {account_type:page, user_id:userId} = session;
+async function RequestsPage() {
+    const session = await auth()
+  // @ts-ignore comment
+    const {account_type:page} = session?.user;  
+
+
     //------------------------------------FIX PAGE RENDERING HERE------------------------------------
     //const page = 'company';
     // harcoded userId
@@ -23,16 +21,16 @@ function RequestsPage() {
     //-----------------------------------------------------------------------------------------------
 
 
-    // toggle for add and edit
-    const [showAddRequestForm, setshowAddRequestFormFormStatus] = useState(false);
-    // const toggleFormAdd = () => {
-    //     setshowAddRequestFormFormStatus(!showAddRequestForm);
-    // };
+    // // toggle for add and edit
+    // const [showAddRequestForm, setshowAddRequestFormFormStatus] = useState(false);
+    // // const toggleFormAdd = () => {
+    // //     setshowAddRequestFormFormStatus(!showAddRequestForm);
+    // // };
 
-    const [showEditRequestForm, setshowEditRequestFormFormStatus] = useState(false);
-    // const toggleFormEdit = () => {
-    //     setshowEditRequestFormFormStatus(!showEditRequestForm);
-    // };
+    // const [showEditRequestForm, setshowEditRequestFormFormStatus] = useState(false);
+    // // const toggleFormEdit = () => {
+    // //     setshowEditRequestFormFormStatus(!showEditRequestForm);
+    // // };
 
     return (
         <div className="flex min-h-screen-nav items-center justify-center h-full bg-white">
@@ -54,7 +52,7 @@ function RequestsPage() {
 
                 */}
 
-                <RequestCompanyView userId={userId}/>
+                <RequestCompanyView />
 
             </div>
         </div>

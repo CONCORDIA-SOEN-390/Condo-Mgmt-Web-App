@@ -9,7 +9,7 @@ async function ProfilePage() {
   
   const session = await auth()
   // @ts-ignore comment
-  const {user_id:userId, email, phone_number:phoneNumber, profile_picture_url:profileUrl, username:userName} = session?.user?.user_id;  
+  const {user_id:userId, email, phone_number:phoneNumber, profile_picture_url:profileUrl, username:userName} = session?.user;  
 
 
 

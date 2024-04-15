@@ -1,5 +1,5 @@
-"use client"
-import React, { useEffect, useState} from "react";
+"use client";
+import React, { useEffect, useState } from "react";
 import CardHeader from "@/components/GeneralComponents/CardHeader";
 import MyReservationTable from "@/components/ReservationPageComponents/CompanyView/MyReservationTable";
 import AvailableFacilityTable from "@/components/ReservationPageComponents/CompanyView/AvailableFacilityTable";
@@ -8,79 +8,76 @@ import AddFacilityForm from "@/components/ReservationPageComponents/CompanyView/
 import { useSession } from "next-auth/react";
 
 interface Property {
-    property_id: number;
-    property_name: string;
-}
-
-interface CompanyViewPageProps {
-    userId: number;
+  property_id: number;
+  property_name: string;
 }
 
 function CompanyViewPage() {
-    const [openPopupForProperty, setOpenPopupForProperty] = useState<number | null>(null);
-    const [properties, setProperties] = useState<Property[]>([]);
-    const { data: session } = useSession();
-    // @ts-ignore comment
-    const { user_id:userId } = session;
+  const [openPopupForProperty, setOpenPopupForProperty] = useState<number | null>(null);
+  const [properties, setProperties] = useState<Property[]>([]);
+  const { data: session } = useSession();
+  // @ts-ignore comment
+  const userId = session?.user?.user_id;
 
-    // Getting properties from userId
-    useEffect(() => {
-        async function fetchProperties() {
-            try {
-                const response = await fetch('/api/getPropertiesByCompanyId', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({ userId })
-                });
+  // Getting properties from userId
+  useEffect(() => {
+    async function fetchProperties() {
+      try {
+        const response = await fetch("/api/getPropertiesByCompanyId", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ userId }),
+        });
 
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-
-                const properties = await response.json();
-                setProperties(properties);
-            } catch (error) {
-                console.error('Error fetching properties:', error);
-            }
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
         }
 
-        fetchProperties();
-    }, []);
+        const properties = await response.json();
+        setProperties(properties);
+      } catch (error) {
+        console.error("Error fetching properties:", error);
+      }
+    }
 
-    const togglePopup = (propertyId: number) => {
-        setOpenPopupForProperty(propertyId === openPopupForProperty ? null : propertyId);
-    };
+    if (userId) {
+      // Only fetch if userId is available
+      fetchProperties();
+    }
+  }, [userId]);
 
-    return (
-        <div>
-            <h1>Reservations</h1>
-            {properties.map((property) => (
-                <div key={property.property_id} className="bg-white shadow-lg rounded-xl mb-5">
-                    <CardHeader title={`Reservations for Property ${property.property_name}`}>
-                        .
-                    </CardHeader>
-                    <div className="p-5 text-black text-xl">
-                        <MyReservationTable propertyId={property.property_id} />
-                    </div>
-                    <CardHeader title={`Available Facilities for Property ${property.property_name}`}>
-                        <button onClick={() => togglePopup(property.property_id)} className="plus-button">
-                            <PiPlusSquareFill size={30} />
-                        </button>
-                    </CardHeader>
-                    {openPopupForProperty === property.property_id && (
-                        <div className="p-5">
-                            <AddFacilityForm onClose={() => togglePopup(property.property_id)} propertyId={property.property_id} />
-                        </div>
-                    )}
-                    <div className="p-5 text-black text-xl">
-                        <AvailableFacilityTable propertyId={property.property_id} userId={userId} />
-                    </div>
-                </div>
-            ))}
+  const togglePopup = (propertyId: number) => {
+    setOpenPopupForProperty(propertyId === openPopupForProperty ? null : propertyId);
+  };
+
+  return (
+    <div>
+      <h1>Reservations</h1>
+      {properties.map((property) => (
+        <div key={property.property_id} className="bg-white shadow-lg rounded-xl mb-5">
+          <CardHeader title={`Reservations for Property ${property.property_name}`}>.</CardHeader>
+          <div className="p-5 text-black text-xl">
+            <MyReservationTable propertyId={property.property_id} />
+          </div>
+          <CardHeader title={`Available Facilities for Property ${property.property_name}`}>
+            <button onClick={() => togglePopup(property.property_id)} className="plus-button">
+              <PiPlusSquareFill size={30} />
+            </button>
+          </CardHeader>
+          {openPopupForProperty === property.property_id && (
+            <div className="p-5">
+              <AddFacilityForm onClose={() => togglePopup(property.property_id)} propertyId={property.property_id} />
+            </div>
+          )}
+          <div className="p-5 text-black text-xl">
+            <AvailableFacilityTable propertyId={property.property_id} userId={userId} />
+          </div>
         </div>
-    );
+      ))}
+    </div>
+  );
 }
 
 export default CompanyViewPage;

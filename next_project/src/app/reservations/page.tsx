@@ -1,17 +1,30 @@
-
-import SideBar from "@/components/GeneralComponents/PublicUserView/SideBar";
+"use client"
+import React, { useState } from "react";
+import CompanySideBar from "@/components/GeneralComponents/CompanyView/SideBar";
+import PublicUserSideBar from "@/components/GeneralComponents/PublicUserView/SideBar";
 import CompanyViewPage from "@/components/ReservationPageComponents/CompanyView/CompanyViewPage";
+import { useSession } from "next-auth/react";
+import CondoOwnerViewPage from "@/components/ReservationPageComponents/CondoOwnerAndRentalView/CondoOwnerAndRentalPage";
 
-async function ReservationsPage() {
+function ReservationsPage() {
+    const { data: session } = useSession();
+    // @ts-ignore comment
+    const userId = session?.user?.user_id;
+    // @ts-ignore comment
+    const page = session?.user?.account_type;
 
-  return (
-    <div className="flex min-h-screen-nav items-center justify-center h-full bg-white">
-      <SideBar page="reservations" />
-      <div className="absolute w-5/6 inset-y-0 right-5 bg-white shadow-lg rounded-xl">
-        <CompanyViewPage />    
-      </div>
-    </div>
-  );
+    return (
+        <div className="flex min-h-screen-nav items-center justify-center h-full bg-white">
+            {page === 'company' ? <CompanySideBar page='reservations'/> : <PublicUserSideBar page='reservations'/>}
+            <div className="absolute w-5/6 inset-y-0 right-5 bg-white shadow-lg rounded-xl">
+                {page === 'company'
+                    // @ts-ignore comment
+                    ? <CompanyViewPage userId={userId} />
+                    : <CondoOwnerViewPage userId={userId} />
+                }
+            </div>
+        </div>
+    );
 }
 
 export default ReservationsPage;

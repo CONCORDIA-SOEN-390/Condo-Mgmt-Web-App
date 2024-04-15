@@ -1,17 +1,20 @@
-
+"use client"
 import React, { useState } from "react";
 import SideBar from "@/components/GeneralComponents/PublicUserView/SideBar";
-import Image from "next/image";
+import {useSession} from "next-auth/react";
 import RegisterForm from "@/components/ProfilePageComponents/RegistrationForm";
 import {auth} from "@/lib/auth";
 
-async function ProfilePage() {
-  
-  const session = await auth()
-  // @ts-ignore comment
-  const {user_id:userId, email, phone_number:phoneNumber, profile_picture_url:profileUrl, username:userName} = session?.user;  
-
-
+function ProfilePage() {
+    const { data: session } = useSession();
+    // @ts-ignore comment
+    const userId = session?.user?.user_id;
+    // @ts-ignore comment
+    const userName = session?.user?.username;
+    // @ts-ignore comment
+    const email = session?.user?.email;
+    // @ts-ignore comment
+    const phoneNumber = session?.user?.phone_number;
 
   return (
       <div className="flex min-h-screen-nav items-center justify-center h-full bg-white">
@@ -19,11 +22,7 @@ async function ProfilePage() {
         <div className="relative grid grid-rows-4 grid-cols-1 gap-4 p-5 text-black text-xl justify-center items-center">
           <div className="row-start-2 row-end-2 col-start-1 col-end-2 flex items-center justify-center">
             <div className="w-40 h-40">
-              <Image
-                  src={profileUrl}
-                  alt="Profile Picture"
-                  className="w-full h-full object-cover full"
-              />
+
             </div>
           </div>
           <div className="row-start-3 mrow-end-4 col-start-1 col-end-2">

@@ -1,26 +1,17 @@
 "use client"
 import PublicUserDocumentTable from "@/components/DocumentPageComponents/PublicUserView/DocumentTable";
-import CompanyDocumentTable from "@/components/DocumentPageComponents/CompanyView/DocumentTable";
-import CardHeader from "@/components/GeneralComponents/CardHeader";
 import PublicUserSideBar from "@/components/GeneralComponents/PublicUserView/SideBar";
 import CompanySideBar from "@/components/GeneralComponents/CompanyView/SideBar";
-//import PublicUserDocumentUploadForm from "@/components/DocumentPageComponents/PublicUserView/DocumentUploadForm";
-import CompanyDocumentUploadForm from "@/components/DocumentPageComponents/CompanyView/DocumentUploadForm";
-import { useState } from "react";
-import { MdCancel, MdEditSquare } from "react-icons/md";
-import { PiPlusSquareFill } from "react-icons/pi";
 import DocumentCompanyView from "@/components/DocumentPageComponents/CompanyView/DocumentCompanyView";
+import {useSession} from "next-auth/react";
 
 // this page is in progress
 export default function DocumentsPage() {
-    // page in progress
-    const page = 'company';
-    const [ isUploading, setIsUploading ] = useState(false);
-    const userId = 1
-
-    const toggleForm = () => {
-        setIsUploading(!isUploading);
-        };
+    const { data: session } = useSession();
+    // @ts-ignore comment
+    const userId = session?.user?.user_id;
+    // @ts-ignore comment
+    const page = session?.user?.account_type;
 
     return (
         <div className="flex min-h-screen-nav items-center justify-center h-full bg-white">

@@ -1,20 +1,16 @@
-"use client"
-import React, { useState } from "react";
+
 import CompanySideBar from "@/components/GeneralComponents/CompanyView/SideBar";
 import PublicUserSideBar from "@/components/GeneralComponents/PublicUserView/SideBar";
 import CompanyViewPage from "@/components/FinancePageComponents/CompanyView/CompanyViewPage";
-import PublicUserPropertyTable from "@/components/PropertiesPageComponents/PublicUserView/PropertyTable";
-import CondoOwnerViewPage from "@/components/FinancePageComponents/PublicUserView/CondoOwnerViewPage";
+import {auth} from "@/lib/auth"
 
-function FinancesPage() {
-    // page in progress
-    //------------------------------------FIX PAGE RENDERING HERE -------------------------------------------------------
-  const page = 'company';
 
-  const userId = 1 // company user      {/*: <CompanyViewPage userId={userId}
-  //const userId = 19; // reg_user         {<CondoOwnerViewPage userId={userId}/> }
+async function FinancesPage() {
 
-    //-------------------------------------------------------------------------------------------------------------------
+  const session = await auth()
+  // @ts-ignore comment
+  const {user_id:userId, account_type:page} = session?.user
+
   return (
       <div className="flex min-h-screen-nav items-center justify-center h-full bg-white">
           {page === 'company'? <CompanySideBar page='properties'/> : <PublicUserSideBar page='properties'/>}

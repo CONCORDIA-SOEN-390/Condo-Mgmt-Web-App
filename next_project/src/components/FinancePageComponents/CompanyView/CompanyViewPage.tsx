@@ -1,7 +1,6 @@
+"use client"
 import React, { useEffect, useState } from "react";
 import CardHeader from "@/components/GeneralComponents/CardHeader";
-import { PiPlusSquareFill } from "react-icons/pi";
-import AddExpenseForm from "@/components/FinancePageComponents/CompanyView/AddExpenseForm";
 import ExpenseTable from "@/components/FinancePageComponents/CompanyView/ExpenseTable";
 import UnitFee from "@/components/FinancePageComponents/CompanyView/UnitFee";
 import IncomeTable from "@/components/FinancePageComponents/CompanyView/IncomeTable";
@@ -19,16 +18,16 @@ interface Property {
 }
 
 function Request({ userId }: RequestProps) {
-    const [showAddEmployee, setShowAddEmployee] = useState<Record<number, boolean>>({});
+    //const [showAddEmployee, setShowAddEmployee] = useState<Record<number, boolean>>({});
     const [properties, setProperties] = useState<Property[]>([]);
-    const [showAddRequest, setShowAddRequest] = useState({});
+    //const [showAddRequest, setShowAddRequest] = useState({});
 
-    const toggleAddEmployee = (propertyId: number) => {
-        setShowAddEmployee((prevVisibility) => ({
-            ...prevVisibility,
-            [propertyId]: !prevVisibility[propertyId],
-        }));
-    };
+    // const toggleAddEmployee = (propertyId: number) => {
+    //     setShowAddEmployee((prevVisibility) => ({
+    //         ...prevVisibility,
+    //         [propertyId]: !prevVisibility[propertyId],
+    //     }));
+    // };
 
     // Getting properties from userId
     useEffect(() => {
@@ -52,8 +51,9 @@ function Request({ userId }: RequestProps) {
                 console.error('Error fetching properties:', error);
             }
         }
-
-        fetchProperties(userId);
+        if (userId){
+            fetchProperties(userId);
+        }
     }, [userId]);
 
     return (

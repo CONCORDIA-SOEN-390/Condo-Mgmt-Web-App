@@ -10,13 +10,19 @@ import { useState } from "react";
 import { MdCancel, MdEditSquare } from "react-icons/md";
 import { PiPlusSquareFill } from "react-icons/pi";
 import DocumentCompanyView from "@/components/DocumentPageComponents/CompanyView/DocumentCompanyView";
-
+import { useSession } from "next-auth/react";
 // this page is in progress
 export default function DocumentsPage() {
+
+    const { data: session } = useSession();
+    // @ts-ignore comment
+    const userId = session?.user?.user_id;
+    // @ts-ignore comment
+    const page = session?.user?.account_type;
     // page in progress
-    const page = 'company';
+    
     const [ isUploading, setIsUploading ] = useState(false);
-    const userId = 1
+    
 
     const toggleForm = () => {
         setIsUploading(!isUploading);

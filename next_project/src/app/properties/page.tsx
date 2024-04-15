@@ -9,15 +9,19 @@ import CardHeader from "@/components/GeneralComponents/CardHeader";
 import PublicUserPropertyTable from "@/components/PropertiesPageComponents/PublicUserView/PropertyTable";
 import CompanyPropertyTable from "@/components/PropertiesPageComponents/CompanyView/CompanyPropertyTable";
 import CondoOwnerView from "@/components/PropertiesPageComponents/PublicUserView/PropertyTable";
+import { useSession } from "next-auth/react";
 
 
 
 function PropertiesPage() {
-  const page = 'company'; // company or anything for user
-  // RENDERING SHOULD BE FIXED HERE DO NO TOUCH THE COMPONENT CONTENT
-  // hardcoded
-  //const userId = 19 // reg_user           <CondoOwnerView userId={userId} />}
-  const userId = 1 // company user    <CompanyPropertyTable userId={userId} />   <AddPropertyForm userId={userId} />
+
+  
+  const { data: session } = useSession();
+  // @ts-ignore comment
+  const userId = session?.user?.user_id;
+  // @ts-ignore comment
+  const page = session?.user?.account_type;
+  console.log(session)
 
 
   const [showAddPropertyForm, setshowAddPropertyFormStatus] = useState(false);

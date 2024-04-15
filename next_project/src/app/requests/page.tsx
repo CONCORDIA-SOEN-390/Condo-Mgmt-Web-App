@@ -7,14 +7,17 @@ import RequestCompanyView from "@/components/RequestPageComponents/CompanyView/R
 import RequestPublicView from "@/components/RequestPageComponents/PublicUserView/Request"
 import RequestEmployeeView from "@/components/RequestPageComponents/EmployeeView/RequestTable"
 import {PiPlusSquareFill} from "react-icons/pi";
+import { useSession } from "next-auth/react";
 
 function RequestsPage() {
+    const {data: session} = useSession();
+     // @ts-ignore comment
+    const {account_type:page, user_id:userId} = session;
     //------------------------------------FIX PAGE RENDERING HERE------------------------------------
-    //const {userId, accountType} = useContext(UserContext);
-    const page = 'company';
+    //const page = 'company';
     // harcoded userId
     //const userId = 13; // employee user   <RequestEmployeeView userId={userId}/>
-    const userId = 1;   // company user  <RequestCompanyView userId={userId}/>
+    //const userId = 1;   // company user  <RequestCompanyView userId={userId}/>
     //const userId = 19;   // condo owner  <RequestPublicView userId={userId} />
 
     //-----------------------------------------------------------------------------------------------
@@ -22,14 +25,14 @@ function RequestsPage() {
 
     // toggle for add and edit
     const [showAddRequestForm, setshowAddRequestFormFormStatus] = useState(false);
-    const toggleFormAdd = () => {
-        setshowAddRequestFormFormStatus(!showAddRequestForm);
-    };
+    // const toggleFormAdd = () => {
+    //     setshowAddRequestFormFormStatus(!showAddRequestForm);
+    // };
 
     const [showEditRequestForm, setshowEditRequestFormFormStatus] = useState(false);
-    const toggleFormEdit = () => {
-        setshowEditRequestFormFormStatus(!showEditRequestForm);
-    };
+    // const toggleFormEdit = () => {
+    //     setshowEditRequestFormFormStatus(!showEditRequestForm);
+    // };
 
     return (
         <div className="flex min-h-screen-nav items-center justify-center h-full bg-white">

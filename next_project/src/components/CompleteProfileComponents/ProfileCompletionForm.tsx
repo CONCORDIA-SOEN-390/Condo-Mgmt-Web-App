@@ -39,7 +39,7 @@ function ProfileCompletionForm() {
       if (response.ok) {
         // Handle success
         console.log('Profile updated successfully');
-        router.push('/')
+        router.push('/properties')
       } else {
         // Handle error
         console.error('Failed to update profile');

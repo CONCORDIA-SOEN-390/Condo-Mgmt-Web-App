@@ -2,15 +2,13 @@
 import { useState } from "react";
 import { FcGoogle } from "react-icons/fc";
 import Link from "next/link";
-import { useContext } from "react";
-import { UserContext } from "@/context/userInfoContext";
 import { useRouter } from "next/navigation";
 import { signIn } from "@/lib/auth";
 import { redirect } from "next/navigation";
 import {loginAction } from "@/actions/LoginAction";
 
 export default function LoginForm() {
-  //const { changeId, changeEmail, changeProfileUrl, changeAccountType, changePhoneNumber, changeUserName } = useContext(UserContext);
+  
 
 
   

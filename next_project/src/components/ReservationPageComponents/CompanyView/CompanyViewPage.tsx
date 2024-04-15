@@ -1,10 +1,11 @@
 "use client"
-import React, {useContext, useEffect, useState} from "react";
+import React, { useEffect, useState} from "react";
 import CardHeader from "@/components/GeneralComponents/CardHeader";
 import MyReservationTable from "@/components/ReservationPageComponents/CompanyView/MyReservationTable";
 import AvailableFacilityTable from "@/components/ReservationPageComponents/CompanyView/AvailableFacilityTable";
 import { PiPlusSquareFill } from "react-icons/pi";
 import AddFacilityForm from "@/components/ReservationPageComponents/CompanyView/AddFacilityForm";
+import { useSession } from "next-auth/react";
 
 interface Property {
     property_id: number;
@@ -15,13 +16,16 @@ interface CompanyViewPageProps {
     userId: number;
 }
 
-function CompanyViewPage({ userId }: CompanyViewPageProps) {
+function CompanyViewPage() {
     const [openPopupForProperty, setOpenPopupForProperty] = useState<number | null>(null);
     const [properties, setProperties] = useState<Property[]>([]);
+    const { data: session } = useSession();
+    // @ts-ignore comment
+    const { user_id:userId } = session;
 
     // Getting properties from userId
     useEffect(() => {
-        async function fetchProperties(userId: number) {
+        async function fetchProperties() {
             try {
                 const response = await fetch('/api/getPropertiesByCompanyId', {
                     method: 'POST',
@@ -42,8 +46,8 @@ function CompanyViewPage({ userId }: CompanyViewPageProps) {
             }
         }
 
-        fetchProperties(userId);
-    }, [userId]);
+        fetchProperties();
+    }, []);
 
     const togglePopup = (propertyId: number) => {
         setOpenPopupForProperty(propertyId === openPopupForProperty ? null : propertyId);

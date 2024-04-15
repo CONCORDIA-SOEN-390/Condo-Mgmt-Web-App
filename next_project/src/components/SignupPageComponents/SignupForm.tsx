@@ -1,5 +1,4 @@
 "use client";
-import React, { useState, useContext } from "react";
 import { FcGoogle } from "react-icons/fc";
 import { verifyUserSignUp } from "@/actions/SignupAction";
 import { useFormState } from "react-dom";

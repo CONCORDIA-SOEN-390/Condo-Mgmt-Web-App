@@ -1,5 +1,5 @@
 "use client";
-import { useState,useEffect } from "react";
+import { useState } from "react";
 import AddPropertyForm from "@/components/PropertiesPageComponents/CompanyView/AddPropertyForm";
 //import AddPropertyForm from "@/components/PropertiesPageComponents/PublicUserView/AddPropertyForm";
 import { PiPlusSquareFill } from "react-icons/pi";

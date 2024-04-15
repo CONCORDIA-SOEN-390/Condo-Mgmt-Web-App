@@ -2,7 +2,7 @@
 
 import { z } from "zod";
 import { redirect } from "next/navigation";
-import pool from "@/utils/db";
+import { createClient } from "@supabase/supabase-js";
 
 //prettier-ignore
 const schema = z.object({
@@ -10,7 +10,9 @@ const schema = z.object({
   password: z .string() .min(8, { message: "Password must be at least 8 characters long" }) .regex(/^(?=.*[0-9])(?=.*[!@#$%^&*])(?=.*[A-Z]).*$/, { message: "Password must contain at least 1 number, 1 special character, and 1 capital letter" }),
 });
 
-export async function verifyUserSignUp(prevState: any, formData: FormData) {
+const supabase = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL, process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY);
+
+export async function verifyUserSignUp(prevState, formData) {
   const validatedFields = schema.safeParse({
     email: formData.get("email"),
     password: formData.get("password"),
@@ -24,27 +26,25 @@ export async function verifyUserSignUp(prevState: any, formData: FormData) {
   }
 
   const { email, password } = validatedFields.data;
-  const client = await pool.connect();
+
   let redirectPath = null;
 
   try {
-    await client.query("BEGIN");
-    const userExistsResult = await client.query("SELECT user_id FROM users WHERE email = $1", [email]);
+    const { data: user, error } = await supabase.from("users").select("*").eq("email", email);
 
-    if (userExistsResult.rows.length > 0) {
-      await client.query("ROLLBACK");
+    if (user.length > 0) {
       return { message: "Email already exists" };
     }
-    await client.query("INSERT INTO users (email, password_) VALUES ($1, $2) RETURNING user_id", [email, password]);
-    await client.query("COMMIT");
+    const { data, error2 } = await supabase
+      .from("users")
+      .insert([{ email: email, password_: password }])
+      .select();
     redirectPath = "/signup/complete";
   } catch (error) {
-    await client.query("ROLLBACK");
     console.error("Error in user signup:", error);
     // Handle database errors
     return { message: "Database error" };
   } finally {
-    client.release();
     if (redirectPath) {
       redirect(`${redirectPath}?email=${email}`);
     }

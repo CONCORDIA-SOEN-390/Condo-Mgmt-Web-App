@@ -1,9 +1,12 @@
+"use client"
+
 import React, { useEffect, useState } from "react";
 import CardHeader from "@/components/GeneralComponents/CardHeader";
 import RequestTable from "@/components/RequestPageComponents/CompanyView/RequestTable";
 import { PiPlusSquareFill } from "react-icons/pi";
 import AddEmployee from "@/components/RequestPageComponents/CompanyView/addEmployee";
 import AddRequestForm from "@/components/RequestPageComponents/CompanyView/AddRequestForm";
+import { useSession } from "next-auth/react";
 
 
 interface Property {
@@ -12,12 +15,12 @@ interface Property {
     // Add other properties as needed
 }
 
-interface RequestProps {
-    userId: number;
-}
 
 // in progress
-function Request({ userId }: RequestProps) {
+function Request() {
+    const { data: session } = useSession();
+    // @ts-ignore comment
+    const { user_id: userId } = session?.user;
     const [showAddEmployee, setShowAddEmployee] = useState<{ [key: number]: boolean }>({});
     const [properties, setProperties] = useState<Property[]>([]);
     const [showAddRequest, setShowAddRequest] = useState<{ [key: number]: boolean }>({});

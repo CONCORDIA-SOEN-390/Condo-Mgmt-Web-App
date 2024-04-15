@@ -1,18 +1,17 @@
-"use client";
+
 import React, { useState } from "react";
 import SideBar from "@/components/GeneralComponents/PublicUserView/SideBar";
-import { UserContext } from "@/context/userInfoContext";
-import { useContext } from "react";
 import Image from "next/image";
 import RegisterForm from "@/components/ProfilePageComponents/RegistrationForm";
+import {auth} from "@/lib/auth";
 
-function ProfilePage() {
-  const {profileUrl, email, phoneNumber, userName} = useContext(UserContext);
+async function ProfilePage() {
+  
+  const session = await auth()
+  // @ts-ignore comment
+  const {user_id:userId, email, phone_number:phoneNumber, profile_picture_url:profileUrl, username:userName} = session?.user;  
 
-  //------------------------------------------HARDCODED VALUE REMOVE----------------------------------------------------
-    const userId = 19;
-    // fix rendering here
-  //--------------------------------------------------------------------------------------------------------------------
+
 
   return (
       <div className="flex min-h-screen-nav items-center justify-center h-full bg-white">

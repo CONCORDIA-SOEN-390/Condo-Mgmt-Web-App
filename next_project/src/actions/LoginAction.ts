@@ -1,7 +1,6 @@
 "use server";
 
 import { signIn } from "@/lib/auth";
-import { isRedirectError } from "next/dist/client/components/redirect";
 
 export async function loginAction(formData: FormData) {
   console.log("hello");

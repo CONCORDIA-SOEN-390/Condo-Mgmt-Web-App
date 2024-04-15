@@ -72,6 +72,10 @@
 
 </table>
 
+<br>
+Deployed web app: https://condo-mgmt-web-e4n3nallx-my-team-f49c658b.vercel.app/
+<br>
+
 <h2>Sprint 4</h2>
 The deliverables can be found in the Sprint_3_Deliverables folder in the main branch, or in the following link.
 <br> <a href="https://drive.google.com/drive/folders/1nSOur2yILN-avJMKgkyCWabeld0ez2Jv">Link to the Sprint 4 Folder Repository</a> <br>

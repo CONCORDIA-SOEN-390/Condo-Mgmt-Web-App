@@ -1,5 +1,5 @@
 // Import the function to be tested
-import { POST } from "../src/app/api/getUnitDetails/route";
+import { POST } from "../src/app/api/getUnitFeesByUserId/route";
 
 // Mock the Supabase client
 jest.mock("@supabase/supabase-js", () => ({
@@ -8,7 +8,7 @@ jest.mock("@supabase/supabase-js", () => ({
       select: jest.fn(() => ({
         eq: jest.fn(() => ({
           eq: jest.fn(() => ({
-            data: [{ property_id: 1, unit_id: 11 }], // This can be customized for different scenarios
+            data: [{ unit_id: 11, property_id: 1, condo_fee: null }], // This can be customized for different scenarios
             error: null, // This can be customized for different scenarios
           })),
         })),
@@ -18,27 +18,21 @@ jest.mock("@supabase/supabase-js", () => ({
 }));
 
 describe("POST function", () => {
-  it("should return unit details when unitId and propertyId exist", async () => {
+  it("should return fees when ownerId exists", async () => {
     const req = {
-      json: jest.fn().mockResolvedValue({
-        unitId: 11,
-        propertyId: 1,
-      }),
+      json: jest.fn().mockResolvedValue({ ownerId: 1 }),
     };
 
     const response = await POST(req);
 
     expect(response.status).toBe(200);
-
+    //expect(response.headers["Content-Type"]).toBe("application/json");
     // You can add more specific assertions based on your expected response
   });
 
   it("should return 500 error when Supabase client returns an error", async () => {
     const req = {
-      json: jest.fn().mockResolvedValue({
-        unitId: "someUnitId",
-        propertyId: "somePropertyId",
-      }),
+      json: jest.fn().mockResolvedValue({ ownerId: "someOwnerId" }),
     };
 
     const mockError = new Error("Supabase error");

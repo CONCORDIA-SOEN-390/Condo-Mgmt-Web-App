@@ -73,7 +73,7 @@
 </table>
 
 <br>
-Deployed web app: condo-mgmt-web-app.vercel.app
+Deployed web app: <a href="condo-mgmt-web-app.vercel.app">condo-mgmt-web-app.vercel.app</a>
 <br>
 
 <h2>Sprint 4</h2>

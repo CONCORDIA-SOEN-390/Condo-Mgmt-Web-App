@@ -19,12 +19,12 @@ interface Parking {
   parking_id: number;
 }
 
-interface Owner{
-  user_id: number
+interface Owner {
+  user_id: number;
   username: string;
   password: string;
   email: string;
-  phone_number:string;
+  phone_number: string;
   profile_picture_url: string;
   account_type: string;
 }
@@ -40,6 +40,12 @@ export default function UnitsTable({ propertyId }: { propertyId: number }) {
   const [priceFeeInput, setPriceFeeInput] = useState('');
   const [showRegisterForm, setShowRegisterForm] = useState(false);
   const [showRemoveForm, setShowRemoveForm] = useState(false);
+
+  const [selectedRow, setSelectedRow] = useState<number | null>(null);
+  const [updateFeeSuccessMessage, setUpdateFeeSuccessMessage] = useState("");
+  const [updateFeeErrorMessage, setUpdateFeeErrorMessage] = useState("");
+  const [removeOwnerSuccessMessage, setRemoveOwnerSuccessMessage] = useState("");
+  const [removeOwnerErrorMessage, setRemoveOwnerErrorMessage] = useState("");
 
 
   const handleUnitIdChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -60,6 +66,10 @@ export default function UnitsTable({ propertyId }: { propertyId: number }) {
 
   const handleToggleRemoveForm = () => {
     setShowRemoveForm(!showRemoveForm);
+  };
+
+  const handleRowClick = (index: number) => {
+    setSelectedRow(selectedRow === index ? null : index);
   };
 
   useEffect(() => {
@@ -117,12 +127,16 @@ export default function UnitsTable({ propertyId }: { propertyId: number }) {
       });
 
       if (response.ok) {
-        console.log('Price updated successfully');
+        setUpdateFeeSuccessMessage("Fee updated successfully");
+        setUpdateFeeErrorMessage("");
       } else {
-        console.error('Failed to update price:', response.statusText);
+        setUpdateFeeErrorMessage('Failed to update fee');
+        setUpdateFeeSuccessMessage("");
       }
     } catch (error) {
-      console.error('Error updating price:', error);
+      console.error('Error updating fee:', error);
+      setUpdateFeeErrorMessage('An error occurred while updating fee');
+      setUpdateFeeSuccessMessage("");
     }
   };
 
@@ -147,21 +161,18 @@ export default function UnitsTable({ propertyId }: { propertyId: number }) {
       });
 
       if (response.ok) {
-        console.log('Owner removed successfully');
+        setRemoveOwnerSuccessMessage("Owner removed successfully");
+        setRemoveOwnerErrorMessage("");
       } else {
-        console.error('Failed to remove owner:', response.statusText);
+        setRemoveOwnerErrorMessage('Failed to remove owner');
+        setRemoveOwnerSuccessMessage("");
       }
     } catch (error) {
       console.error('Error removing owner:', error);
+      setRemoveOwnerErrorMessage('An error occurred while removing owner');
+      setRemoveOwnerSuccessMessage("");
     }
   };
-
-
-
-
-
-
-
 
   useEffect(() => {
     const fetchLockers = async (ownerId: number) => {
@@ -247,10 +258,9 @@ export default function UnitsTable({ propertyId }: { propertyId: number }) {
         <div className="bg-gray-50 rounded-lg shadow-md p-6">
           <h2 className="text-xl font-bold mb-4">Unit Information</h2>
 
-
           <button
               onClick={handleToggleRegisterForm}
-              className="bg-blue-300 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline mr-2"
+              className="bg-blue-300 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline mr-2 mb-2"
           >
             Update Fee
           </button>
@@ -273,7 +283,7 @@ export default function UnitsTable({ propertyId }: { propertyId: number }) {
                   />
                 </label>
                 <label className="block mb-2">
-                  Enter Sqrt:
+                  Enter Square Foot:
                   <input
                       type="text"
                       value={sqftInput}
@@ -282,7 +292,7 @@ export default function UnitsTable({ propertyId }: { propertyId: number }) {
                   />
                 </label>
                 <label className="block mb-2">
-                  Enter Fee by Sqft:
+                  Enter Fee by Square Foot:
                   <input
                       type="text"
                       value={priceFeeInput}
@@ -292,11 +302,10 @@ export default function UnitsTable({ propertyId }: { propertyId: number }) {
                 </label>
                 <button
                     onClick={handleRegistration}
-                    className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                    className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline mb-5"
                 >
                   Update Condo Sqft Fee
                 </button>
-
               </div>
           )}
           {showRemoveForm && (
@@ -311,60 +320,92 @@ export default function UnitsTable({ propertyId }: { propertyId: number }) {
                   />
                 </label>
 
-
                 <button
                     onClick={handleRemoveOwner}
-                    className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                    className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline mb-5"
                 >
                   Remove Owner
                 </button>
-
+              </div>
+          )}
+          {updateFeeSuccessMessage && (
+              <div className="text-green-500 py-2">
+                <p>{updateFeeSuccessMessage}</p>
+              </div>
+          )}
+          {updateFeeErrorMessage && (
+              <div className="text-red-500 py-2">
+                <p>{updateFeeErrorMessage}</p>
               </div>
           )}
 
+          {removeOwnerSuccessMessage && (
+              <div className="text-green-500 py-2">
+                <p>{removeOwnerSuccessMessage}</p>
+              </div>
+          )}
+          {removeOwnerErrorMessage && (
+              <div className="text-red-500 py-2">
+                <p>{removeOwnerErrorMessage}</p>
+              </div>
+          )}
 
 
           <table className="min-w-full divide-y divide-gray-200">
             <thead className="min-w-full bg-[#DAECFB] text-black">
             <tr>
               <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Unit ID</th>
-
-
               <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Occupied</th>
               <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Owner ID</th>
               <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Owner Name</th>
               <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Owner Email</th>
               <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Locker ID</th>
               <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Parking ID</th>
-              <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Square Footage</th>
               <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Fee Per Sq Ft</th>
+              <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Square Footage</th>
               <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Condo Fee ($)</th>
-              <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Registration Key</th>
             </tr>
             </thead>
             <tbody>
-            {units.map((unit) => (
-                <tr key={unit.unit_id}>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{unit.unit_id}</td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{unit.occupied ? 'Yes' : 'No'}</td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{unit.owner_id}</td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{owners[unit.owner_id] && owners[unit.owner_id].username}</td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{owners[unit.owner_id] && owners[unit.owner_id].email}</td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                    {lockers[unit.owner_id] && lockers[unit.owner_id].locker_id}</td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                    {parkings[unit.owner_id] && parkings[unit.owner_id].parking_id}</td>
+            {units.map((unit, index) => (
+                <React.Fragment key={unit.unit_id}>
+                  <tr
+                      onClick={() => handleRowClick(index)}
+                      className={`${index % 2 === 0 ? 'bg-white' : 'bg-gray-50'} hover:bg-gray-200 cursor-pointer${
+                          selectedRow === index ? 'hover:bg-gray-200' : ''
+                      }`}
+                  >
+                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{unit.unit_id}</td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{unit.occupied ? 'Yes' : 'No'}</td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{unit.owner_id}</td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                      {owners[unit.owner_id] && owners[unit.owner_id].username}
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                      {owners[unit.owner_id] && owners[unit.owner_id].email}
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                      {lockers[unit.owner_id] && lockers[unit.owner_id].locker_id}
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                      {parkings[unit.owner_id] && parkings[unit.owner_id].parking_id}
+                    </td>
 
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{unit.price_per_square_foot}</td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{unit.square_footage}</td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{unit.condo_fee}</td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{unit.registration_key}</td>
-
-                </tr>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{unit.price_per_square_foot}</td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{unit.square_footage}</td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{unit.condo_fee}</td>
+                  </tr>
+                  {selectedRow === index && (
+                      <tr>
+                        <td colSpan={10} className="px-6 bg-blue-100 py-4 pb-6 whitespace-nowrap text-l text-black">
+                          Registration Key: {unit.registration_key}
+                        </td>
+                      </tr>
+                  )}
+                </React.Fragment>
             ))}
             </tbody>
           </table>
-
         </div>
       </div>
   );

@@ -20,6 +20,13 @@ const LockerTable: React.FC<LockerTableProps> = ({ propertyId }) => {
     const [showRegisterForm, setShowRegisterForm] = useState(false);
     const [showUpdateFeeForm, setShowUpdateFeeForm] = useState(false);
     const [showRemoveForm, setShowRemoveForm] = useState(false);
+    const [registerLockerSuccessMessage, setRegisterLockerSuccessMessage] = useState("");
+    const [registerLockerErrorMessage, setRegisterLockerErrorMessage] = useState("");
+    const [updateFeeSuccessMessage, setUpdateFeeSuccessMessage] = useState("");
+    const [updateFeeErrorMessage, setUpdateFeeErrorMessage] = useState("");
+    const [removeLockerOwnerSuccessMessage, setRemoveLockerOwnerSuccessMessage] = useState("");
+    const [removeLockerOwnerErrorMessage, setRemoveLockerOwnerErrorMessage] = useState("");
+
 
     const handleToggleRemoveForm = () => {
         setShowRemoveForm(!showRemoveForm);
@@ -58,15 +65,17 @@ const LockerTable: React.FC<LockerTableProps> = ({ propertyId }) => {
                 body: JSON.stringify({ propertyId: propertyId, lockerId: lockerIdInput, fee: lockerFeeInput}),
             });
 
-            if (!response.ok) {
-                throw new Error('Failed to register owner to locker');
+            if (response.ok) {
+                setUpdateFeeSuccessMessage("Fee updated successfully");
+                setUpdateFeeErrorMessage("");
+            } else {
+                setUpdateFeeErrorMessage('Failed to update fee');
+                setUpdateFeeSuccessMessage("");
             }
-
-            const data = await response.json();
-            console.log('Registration successful:', data);
-
         } catch (error) {
-            console.error('Error registering owner to locker:', error);
+            console.error('Error updating fee:', error);
+            setUpdateFeeErrorMessage('An error occurred while updating fee');
+            setUpdateFeeSuccessMessage("");
         }
     };
 
@@ -91,12 +100,16 @@ const LockerTable: React.FC<LockerTableProps> = ({ propertyId }) => {
             });
 
             if (response.ok) {
-                console.log('locker removed successfully');
+                setRemoveLockerOwnerSuccessMessage("Locker owner removed successfully");
+                setRemoveLockerOwnerErrorMessage("");
             } else {
-                console.error('Failed to remove locker:', response.statusText);
+                setRemoveLockerOwnerErrorMessage('Failed to remove locker owner');
+                setRemoveLockerOwnerSuccessMessage("");
             }
         } catch (error) {
             console.error('Error removing locker:', error);
+            setRemoveLockerOwnerErrorMessage('An error occurred while removing locker owner');
+            setRemoveLockerOwnerSuccessMessage("");
         }
     };
 
@@ -132,15 +145,20 @@ const LockerTable: React.FC<LockerTableProps> = ({ propertyId }) => {
                 body: JSON.stringify({ propertyId: propertyId, lockerOwnerId: lockerOwnerIdInput, lockerId: lockerIdInput  }),
             });
 
-            if (!response.ok) {
-                throw new Error('Failed to register owner to locker');
+            if (response.ok) {
+                const data = await response.json();
+                setRegisterLockerSuccessMessage("Locker registered successfully");
+                setRegisterLockerErrorMessage("");
+                console.log('Registration successful:', data);
+            } else {
+                console.error('Failed to register owner to locker:', response.statusText);
+                setRegisterLockerErrorMessage('An error occurred while registering owner to locker');
+                setRegisterLockerSuccessMessage("");
             }
-
-            const data = await response.json();
-            console.log('Registration successful:', data);
 
         } catch (error) {
             console.error('Error registering owner to locker:', error);
+            setRegisterLockerSuccessMessage("Locker registered successfully");
         }
     };
 
@@ -149,13 +167,13 @@ const LockerTable: React.FC<LockerTableProps> = ({ propertyId }) => {
             <h2 className="text-xl font-bold mb-4">Locker Information</h2>
             <button
                 onClick={handleToggleRegisterForm}
-                className="bg-blue-300 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline mr-2"
+                className="button-spacing bg-blue-300 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline mr-2 mb-2"
             >
                 Register Locker
             </button>
             <button
                 onClick={handleToggleRemoveForm}
-                className="bg-blue-300 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline ml-2"
+                className="bg-blue-300 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
             >
                 Remove Locker Owner
             </button>
@@ -189,7 +207,7 @@ const LockerTable: React.FC<LockerTableProps> = ({ propertyId }) => {
                     </label>
                     <button
                         onClick={handleRegistration}
-                        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline mb-5"
                     >
                         Register Locker
                     </button>
@@ -217,7 +235,7 @@ const LockerTable: React.FC<LockerTableProps> = ({ propertyId }) => {
                     </label>
                     <button
                         onClick={handleUpdateFee}
-                        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline mb-5"
                     >
                         Update Fee
                     </button>
@@ -236,10 +254,43 @@ const LockerTable: React.FC<LockerTableProps> = ({ propertyId }) => {
                     </label>
                     <button
                         onClick={handleRemoveLocker}
-                        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline mb-5"
                     >
                         Remove Locker Owner
                     </button>
+                </div>
+            )}
+
+            {registerLockerSuccessMessage && (
+                <div className="text-green-500 py-2">
+                    <p>{registerLockerSuccessMessage}</p>
+                </div>
+            )}
+            {registerLockerErrorMessage && (
+                <div className="text-red-500 py-2">
+                    <p>{registerLockerErrorMessage}</p>
+                </div>
+            )}
+
+            {removeLockerOwnerSuccessMessage && (
+                <div className="text-green-500 py-2">
+                    <p>{removeLockerOwnerSuccessMessage}</p>
+                </div>
+            )}
+            {removeLockerOwnerErrorMessage && (
+                <div className="text-red-500 py-2">
+                    <p>{removeLockerOwnerErrorMessage}</p>
+                </div>
+            )}
+
+            {updateFeeSuccessMessage && (
+                <div className="text-green-500 py-2">
+                    <p>{updateFeeSuccessMessage}</p>
+                </div>
+            )}
+            {updateFeeErrorMessage && (
+                <div className="text-red-500 py-2">
+                    <p>{updateFeeErrorMessage}</p>
                 </div>
             )}
 
@@ -255,8 +306,11 @@ const LockerTable: React.FC<LockerTableProps> = ({ propertyId }) => {
                     </tr>
                     </thead>
                     <tbody>
-                    {lockers.map(locker => (
-                        <tr key={locker.locker_id}>
+                    {lockers.map((locker, index) => (
+                        <tr
+                            key={locker.locker_id}
+                            className={index % 2 === 0 ? 'bg-white' : 'bg-gray-100'}
+                        >
                             <td className="px-6 py-4 whitespace-nowrap text-sm">{locker.locker_id}</td>
                             <td className="px-6 py-4 whitespace-nowrap text-sm">{locker.property_id}</td>
                             <td className="px-6 py-4 whitespace-nowrap text-sm">{locker.owner_id}</td>

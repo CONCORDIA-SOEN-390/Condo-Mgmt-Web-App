@@ -20,11 +20,16 @@ const ParkingTable: React.FC<ParkingTableProps> = ({ propertyId }) => {
     const [showRegisterForm, setShowRegisterForm] = useState(false);
     const [showUpdateFeeForm, setShowUpdateFeeForm] = useState(false);
     const [showRemoveForm, setShowRemoveForm] = useState(false);
+    const [registerParkingSuccessMessage, setRegisterParkingSuccessMessage] = useState('');
+    const [registerParkingErrorMessage, setRegisterParkingErrorMessage] = useState('');
+    const [updateFeeSuccessMessage, setUpdateFeeSuccessMessage] = useState('');
+    const [updateFeeErrorMessage, setUpdateFeeErrorMessage] = useState('');
+    const [removeParkingSuccessMessage, setRemoveParkingSuccessMessage] = useState('');
+    const [removeParkingErrorMessage, setRemoveParkingErrorMessage] = useState('');
 
     const handleToggleRemoveForm = () => {
         setShowRemoveForm(!showRemoveForm);
     };
-
 
     const handleRemoveParking = async () => {
         try {
@@ -47,16 +52,20 @@ const ParkingTable: React.FC<ParkingTableProps> = ({ propertyId }) => {
             });
 
             if (response.ok) {
-                console.log('parking removed successfully');
+                setRemoveParkingSuccessMessage('Parking owner removed successfully');
+                setRemoveParkingErrorMessage('');
+                console.log('Parking owner removed successfully');
             } else {
+                setRemoveParkingErrorMessage('Failed to remove parking owner: ' + response.statusText);
+                setRemoveParkingSuccessMessage('');
                 console.error('Failed to remove parking:', response.statusText);
             }
         } catch (error) {
             console.error('Error removing parking:', error);
+            setRemoveParkingErrorMessage('An error occurred while removing parking owner');
+            setRemoveParkingSuccessMessage('');
         }
     };
-
-
 
     useEffect(() => {
         const fetchParkings = async () => {
@@ -69,12 +78,12 @@ const ParkingTable: React.FC<ParkingTableProps> = ({ propertyId }) => {
                     body: JSON.stringify({ propertyId }),
                 });
                 if (!res.ok) {
-                    throw new Error('Failed to fetch lockers');
+                    throw new Error('Failed to fetch parkings');
                 }
                 const data = await res.json();
                 setParkings(data);
             } catch (error) {
-                console.error('Error fetching lockers:', error);
+                console.error('Error fetching parkings:', error);
             }
         };
 
@@ -98,7 +107,6 @@ const ParkingTable: React.FC<ParkingTableProps> = ({ propertyId }) => {
         setShowRegisterForm(false);
     };
 
-
     const handleUpdateFee = async () => {
         try {
             const response = await fetch('/api/updateParkingFee', {
@@ -106,21 +114,24 @@ const ParkingTable: React.FC<ParkingTableProps> = ({ propertyId }) => {
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ propertyId: propertyId, parkingId: parkingIdInput, fee: parkingFeeInput}),
+                body: JSON.stringify({ propertyId: propertyId, parkingId: parkingIdInput, fee: parkingFeeInput }),
             });
 
-            if (!response.ok) {
-                throw new Error('Failed to register owner to locker');
+            if (response.ok) {
+                setUpdateFeeSuccessMessage('Parking fee updated successfully');
+                setUpdateFeeErrorMessage('');
+                console.log('Parking fee updated successfully');
+            } else {
+                setUpdateFeeErrorMessage('Failed to update parking fee: ' + response.statusText);
+                setUpdateFeeSuccessMessage('');
+                console.error('Failed to update parking fee:', response.statusText);
             }
-
-            const data = await response.json();
-            console.log('Registration successful:', data);
-
         } catch (error) {
-            console.error('Error registering owner to locker:', error);
+            console.error('Error updating parking fee:', error);
+            setUpdateFeeErrorMessage('An error occurred while updating parking fee');
+            setUpdateFeeSuccessMessage('');
         }
     };
-
 
     const handleRegistration = async () => {
         try {
@@ -129,21 +140,22 @@ const ParkingTable: React.FC<ParkingTableProps> = ({ propertyId }) => {
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({  propertyId: propertyId, parkingOwnerId: parkingOwnerIdInput, parkingId: parkingIdInput}),
+                body: JSON.stringify({ propertyId: propertyId, parkingOwnerId: parkingOwnerIdInput, parkingId: parkingIdInput }),
             });
 
-            if (!response.ok) {
-                throw new Error('Failed to register owner to parking');
+            if (response.ok) {
+                setRegisterParkingSuccessMessage('Parking registered successfully');
+                setRegisterParkingErrorMessage('');
+                console.log('Registration successful');
+            } else {
+                setRegisterParkingErrorMessage('Failed to register parking: ' + response.statusText);
+                setRegisterParkingSuccessMessage('');
+                console.error('Failed to register parking:', response.statusText);
             }
-
-            const data = await response.json();
-            console.log('Registration successful:', data);
-
-
-
         } catch (error) {
-            console.error('Error registering owner to parking:', error);
-
+            console.error('Error registering parking:', error);
+            setRegisterParkingErrorMessage('An error occurred while registering parking');
+            setRegisterParkingSuccessMessage('');
         }
     };
 
@@ -249,6 +261,25 @@ const ParkingTable: React.FC<ParkingTableProps> = ({ propertyId }) => {
                 </div>
             )}
 
+            {registerParkingSuccessMessage && (
+                <div className="text-green-600 mt-2">{registerParkingSuccessMessage}</div>
+            )}
+            {registerParkingErrorMessage && (
+                <div className="text-red-600 mt-2">{registerParkingErrorMessage}</div>
+            )}
+            {updateFeeSuccessMessage && (
+                <div className="text-green-600 mt-2">{updateFeeSuccessMessage}</div>
+            )}
+            {updateFeeErrorMessage && (
+                <div className="text-red-600 mt-2">{updateFeeErrorMessage}</div>
+            )}
+            {removeParkingSuccessMessage && (
+                <div className="text-green-600 mt-2">{removeParkingSuccessMessage}</div>
+            )}
+            {removeParkingErrorMessage && (
+                <div className="text-red-600 mt-2">{removeParkingErrorMessage}</div>
+            )}
+
             <div className="overflow-x-auto mt-4">
                 <table className="min-w-full divide-y divide-gray-200">
                     <thead className="bg-[#DAECFB] text-black">
@@ -261,8 +292,11 @@ const ParkingTable: React.FC<ParkingTableProps> = ({ propertyId }) => {
                     </tr>
                     </thead>
                     <tbody>
-                    {parkings.map(parking => (
-                        <tr key={parking.parking_id}>
+                    {parkings.map((parking, index) => (
+                        <tr
+                            key={parking.parking_id}
+                            className={index % 2 === 0 ? 'bg-white' : 'bg-gray-100'}
+                        >
                             <td className="px-6 py-4 whitespace-nowrap text-sm">{parking.parking_id}</td>
                             <td className="px-6 py-4 whitespace-nowrap text-sm">{parking.property_id}</td>
                             <td className="px-6 py-4 whitespace-nowrap text-sm">{parking.owner_id}</td>
@@ -271,6 +305,7 @@ const ParkingTable: React.FC<ParkingTableProps> = ({ propertyId }) => {
                         </tr>
                     ))}
                     </tbody>
+
                 </table>
             </div>
         </div>

@@ -29,7 +29,7 @@ function PropertiesPage() {
       {page === 'company'? <CompanySideBar page='properties'/> : <PublicUserSideBar page='properties'/>}
       <div className="absolute w-5/6 inset-y-0 right-5 bg-white shadow-lg rounded-xl">
         <CardHeader title="Properties">
-          {page === 'company' && <button onClick={toggleForm}><PiPlusSquareFill/></button>}
+          {page === 'company' && <button onClick={toggleForm}><PiPlusSquareFill className="text-white"/></button>}
         </CardHeader>
         {showAddPropertyForm && page === 'company' && <AddPropertyForm userId={userId} />}
         {page === 'company'? <CompanyPropertyTable userId={userId} />: <CondoOwnerView userId={userId} />}

@@ -22,7 +22,7 @@ function AddIncomeForm({ propertyId }: AddFinanceFormProps) {
                     companyId: companyId,
                     value: amount,
                     description: description,
-                    occurence: occurrence,
+                    occurrence: occurrence,
                     date: transactionDate,
                     propertyId: propertyId
                 })
@@ -39,11 +39,11 @@ function AddIncomeForm({ propertyId }: AddFinanceFormProps) {
     };
 
     return (
-        <div className="h-screen">
-            <div className="bg-sky-100 min-h-screen p-5">
-                <h6 className="text-blue-800 font-semibold text-lg mb-6">Add Finance</h6>
-                <div className="mb-4">
-                    <label htmlFor="companyId" className="block text-sm font-bold text-blue-700 mb-2">Company ID</label>
+        <div className="h-auto">
+            <div className="bg-sky-100 p-3 mb-10">
+                <h6 className="text-blue-800 font-semibold text-lg mb-4">Add Finance</h6>
+                <div className="mb-2">
+                    <label htmlFor="companyId" className="block text-sm font-bold text-black mb-1">Company ID</label>
                     <input
                         className="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                         type="text"
@@ -53,8 +53,8 @@ function AddIncomeForm({ propertyId }: AddFinanceFormProps) {
                         onChange={(e) => setCompanyId(e.target.value)}
                     />
                 </div>
-                <div className="mb-4">
-                    <label htmlFor="occurrence" className="block text-sm font-bold text-blue-700 mb-2">Occurrence</label>
+                <div className="mb-2">
+                    <label htmlFor="occurrence" className="block text-sm font-bold text-black mb-1">Occurrence</label>
                     <select
                         className="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                         name="occurrence"
@@ -69,8 +69,8 @@ function AddIncomeForm({ propertyId }: AddFinanceFormProps) {
                         <option value="yearly">Yearly</option>
                     </select>
                 </div>
-                <div className="mb-4">
-                    <label htmlFor="transactionDate" className="block text-sm font-bold text-blue-700 mb-2">Transaction Date</label>
+                <div className="mb-2">
+                    <label htmlFor="transactionDate" className="block text-sm font-bold text-black mb-1">Transaction Date</label>
                     <input
                         className="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                         type="date"
@@ -79,8 +79,8 @@ function AddIncomeForm({ propertyId }: AddFinanceFormProps) {
                         onChange={(e) => setTransactionDate(e.target.value)}
                     />
                 </div>
-                <div className="mb-4">
-                    <label htmlFor="description" className="block text-sm font-bold text-blue-700 mb-2">Description</label>
+                <div className="mb-2">
+                    <label htmlFor="description" className="block text-sm font-bold text-black mb-1">Description</label>
                     <input
                         className="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                         type="text"
@@ -90,8 +90,8 @@ function AddIncomeForm({ propertyId }: AddFinanceFormProps) {
                         onChange={(e) => setDescription(e.target.value)}
                     />
                 </div>
-                <div className="mb-4">
-                    <label htmlFor="amount" className="block text-sm font-bold text-blue-700 mb-2">Amount</label>
+                <div className="mb-2">
+                    <label htmlFor="amount" className="block text-sm font-bold text-black mb-1">Amount</label>
                     <input
                         className="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                         type="number"
@@ -101,7 +101,7 @@ function AddIncomeForm({ propertyId }: AddFinanceFormProps) {
                         onChange={(e) => setAmount(e.target.value)}
                     />
                 </div>
-                <div className="flex justify-between">
+                <div className="flex justify-end">
                     <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" onClick={handleConfirm}>
                         Confirm
                     </button>

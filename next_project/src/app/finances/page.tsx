@@ -5,6 +5,8 @@ import PublicUserSideBar from "@/components/GeneralComponents/PublicUserView/Sid
 import CompanyViewPage from "@/components/FinancePageComponents/CompanyView/CompanyViewPage";
 import CondoOwnerViewPage from "@/components/FinancePageComponents/PublicUserView/CondoOwnerViewPage";
 import {useSession} from "next-auth/react";
+import CardHeader from "@/components/GeneralComponents/CardHeader";
+
 
 function FinancesPage() {
     const { data: session } = useSession();
@@ -17,10 +19,13 @@ function FinancesPage() {
       <div className="flex min-h-screen-nav items-center justify-center h-full bg-white">
           {page === 'company' ? <CompanySideBar page='properties'/> : <PublicUserSideBar page='properties'/>}
           <div className="absolute w-5/6 inset-y-0 right-5 bg-white shadow-lg rounded-xl">
+              <CardHeader title="Finances">
+              .
+              </CardHeader>
               {page === 'company'
-                  ? <CompanyViewPage userId={userId} />
-                  : <CondoOwnerViewPage userId={userId} />
-              }
+              ? <CompanyViewPage userId={userId} />
+              : <CondoOwnerViewPage userId={userId} />
+          }
           </div>
       </div>
   );

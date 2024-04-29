@@ -1,83 +1,100 @@
-"use client";
 import React, { useEffect, useState } from "react";
 import CardHeader from "@/components/GeneralComponents/CardHeader";
+import { PiPlusSquareFill } from "react-icons/pi";
+import AddExpenseForm from "@/components/FinancePageComponents/CompanyView/AddExpenseForm";
+import ExpenseTable from "@/components/FinancePageComponents/CompanyView/ExpenseTable";
+import UnitFee from "@/components/FinancePageComponents/CompanyView/UnitFee";
+import IncomeTable from "@/components/FinancePageComponents/CompanyView/IncomeTable";
 import MyReservationTable from "@/components/ReservationPageComponents/CompanyView/MyReservationTable";
 import AvailableFacilityTable from "@/components/ReservationPageComponents/CompanyView/AvailableFacilityTable";
-import { PiPlusSquareFill } from "react-icons/pi";
-import AddFacilityForm from "@/components/ReservationPageComponents/CompanyView/AddFacilityForm";
-import { useSession } from "next-auth/react";
+
+
+interface RequestProps {
+  userId: number;
+}
 
 interface Property {
   property_id: number;
+  user_id: number;
   property_name: string;
+  property_type: string;
+  address: string;
 }
 
-function CompanyViewPage() {
-  const [openPopupForProperty, setOpenPopupForProperty] = useState<number | null>(null);
+function Request({ userId }: RequestProps) {
+  const [selectedPropertyId, setSelectedPropertyId] = useState<number | null>(null);
   const [properties, setProperties] = useState<Property[]>([]);
-  const { data: session } = useSession();
-  // @ts-ignore comment
-  const userId = session?.user?.user_id;
 
   // Getting properties from userId
   useEffect(() => {
-    async function fetchProperties() {
+    async function fetchProperties(userId: number) {
       try {
-        const response = await fetch("/api/getPropertiesByCompanyId", {
-          method: "POST",
+        const response = await fetch('/api/getPropertiesByCompanyId', {
+          method: 'POST',
           headers: {
-            "Content-Type": "application/json",
+            'Content-Type': 'application/json'
           },
-          body: JSON.stringify({ userId }),
+          body: JSON.stringify({ userId })
         });
 
         if (!response.ok) {
-          throw new Error("Network response was not ok");
+          throw new Error('Network response was not ok');
         }
 
-        const properties = await response.json();
+        const properties: Property[] = await response.json();
         setProperties(properties);
       } catch (error) {
-        console.error("Error fetching properties:", error);
+        console.error('Error fetching properties:', error);
       }
     }
 
-    if (userId) {
-      // Only fetch if userId is available
-      fetchProperties();
-    }
+    fetchProperties(userId);
   }, [userId]);
 
-  const togglePopup = (propertyId: number) => {
-    setOpenPopupForProperty(propertyId === openPopupForProperty ? null : propertyId);
+  const handlePropertyClick = (propertyId: number) => {
+    setSelectedPropertyId(propertyId === selectedPropertyId ? null : propertyId);
   };
 
   return (
-    <div>
-      <h1>Reservations</h1>
-      {properties.map((property) => (
-        <div key={property.property_id} className="bg-white shadow-lg rounded-xl mb-5">
-          <CardHeader title={`Reservations for Property ${property.property_name}`}>.</CardHeader>
-          <div className="p-5 text-black text-xl">
-            <MyReservationTable propertyId={property.property_id} />
-          </div>
-          <CardHeader title={`Available Facilities for Property ${property.property_name}`}>
-            <button onClick={() => togglePopup(property.property_id)} className="plus-button">
-              <PiPlusSquareFill size={30} />
-            </button>
-          </CardHeader>
-          {openPopupForProperty === property.property_id && (
-            <div className="p-5">
-              <AddFacilityForm onClose={() => togglePopup(property.property_id)} propertyId={property.property_id} />
-            </div>
-          )}
-          <div className="p-5 text-black text-xl">
-            <AvailableFacilityTable propertyId={property.property_id} userId={userId} />
-          </div>
-        </div>
-      ))}
-    </div>
+      <div>
+        <table className="min-w-full divide-y divide-gray-200">
+          <thead className="min-w-full bg-[#DAECFB] text-black">
+          <tr>
+            <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">ID</th>
+            <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Property Name</th>
+            <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Address</th>
+          </tr>
+          </thead>
+          <tbody>
+          {properties.map((property, id) => (
+              <React.Fragment key={id}>
+                <tr
+                    onClick={() => handlePropertyClick(property.property_id)}
+                    className={`${
+                        id % 2 === 0 ? 'bg-white' : 'bg-gray-50'
+                    } hover:bg-gray-200 cursor-pointer`}
+                >
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{property.property_id}</td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{property.property_name}</td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{property.address}</td>
+                </tr>
+                {selectedPropertyId === property.property_id && (
+                    <tr>
+                      <td colSpan={3}>
+                        <div className="p-5 text-black text-xl">
+                          <AvailableFacilityTable propertyId={property.property_id} userId={userId} />
+                        </div>
+                      </td>
+                    </tr>
+                )}
+              </React.Fragment>
+          ))}
+          </tbody>
+        </table>
+      </div>
+
+
   );
 }
 
-export default CompanyViewPage;
+export default Request;

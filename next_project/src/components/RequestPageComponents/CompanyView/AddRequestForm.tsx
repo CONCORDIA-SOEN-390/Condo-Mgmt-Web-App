@@ -74,71 +74,69 @@ function AddRequestForm({ userId, propertyId }: AddRequestFormProps) {
     };
 
     return (
-        <div className="h-screen">
-            <div className="bg-sky-100 min-h-screen p-5">
-                <h6 className="text-black font-semibold text-lg mb-6">Add Request</h6>
-                <form onSubmit={handleSubmit}>
-                    {/* Request Type */}
-                    <div className="mb-4">
-                        <label htmlFor="requestTypeId" className="block text-sm font-bold text-black mb-2">Request Type</label>
-                        <select
-                            className="border border-gray-300 rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                            name="requestTypeId"
-                            value={requestTypeId}
-                            onChange={handleChangeRequestType}
-                        >
-                            <option value="">Select Request Type</option>
-                            {requestTypes.map(requestType => (
-                                <option key={requestType.type_id} value={requestType.type_id}>{requestType.type_name}</option>
-                            ))}
-                        </select>
-                    </div>
-                    {/* Details */}
-                    <div className="mb-4">
-                        <label htmlFor="details" className="block text-sm font-bold text-black mb-2">Details</label>
-                        <textarea
-                            className="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                            name="details"
-                            value={details}
-                            onChange={handleChangeDetails}
-                            placeholder="Enter Details"
-                        />
-                    </div>
-                    {/* Unit ID */}
-                    <div className="mb-4">
-                        <label htmlFor="unitId" className="block text-sm font-bold text-black mb-2">Unit ID</label>
-                        <input
-                            className="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                            type="text"
-                            name="unitId"
-                            value={unitId}
-                            onChange={handleChangeUnitId}
-                            placeholder="Enter Unit ID"
-                        />
-                    </div>
-                    {/* Error Message */}
-                    <div className="text-red-500 py-2">
-                        {errorMessage && (
-                            <p>
-                                {errorMessage}
-                            </p>
-                        )}
-                    </div>
-                    {/* Form Actions */}
-                    <div className="flex justify-between">
-                        <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="submit">
-                            Confirm
-                        </button>
-                        <button className="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="button" onClick={() => {
-                            setRequestTypeId('');
-                            setDetails('');
-                            setUnitId('');
-                        }}>
-                            Cancel
-                        </button>
-                    </div>
-                </form>
-            </div>
+        <div className="bg-sky-100 p-5">
+            <h6 className="text-black font-semibold text-lg mb-6">Add Request</h6>
+            <form onSubmit={handleSubmit}>
+                {/* Request Type */}
+                <div className="mb-4">
+                    <label htmlFor="requestTypeId" className="block text-sm font-bold text-black mb-2">Request Type</label>
+                    <select
+                        className="border border-gray-300 rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                        name="requestTypeId"
+                        value={requestTypeId}
+                        onChange={handleChangeRequestType}
+                    >
+                        <option value="">Select Request Type</option>
+                        {requestTypes.map(requestType => (
+                            <option key={requestType.type_id} value={requestType.type_id}>{requestType.type_name}</option>
+                        ))}
+                    </select>
+                </div>
+                {/* Details */}
+                <div className="mb-4">
+                    <label htmlFor="details" className="block text-sm font-bold text-black mb-2">Details</label>
+                    <textarea
+                        className="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                        name="details"
+                        value={details}
+                        onChange={handleChangeDetails}
+                        placeholder="Enter Details"
+                    />
+                </div>
+                {/* Unit ID */}
+                <div className="mb-4">
+                    <label htmlFor="unitId" className="block text-sm font-bold text-black mb-2">Unit ID</label>
+                    <input
+                        className="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                        type="text"
+                        name="unitId"
+                        value={unitId}
+                        onChange={handleChangeUnitId}
+                        placeholder="Enter Unit ID"
+                    />
+                </div>
+                {/* Error Message */}
+                <div className="text-red-500 py-2">
+                    {errorMessage && (
+                        <p>
+                            {errorMessage}
+                        </p>
+                    )}
+                </div>
+                {/* Form Actions */}
+                <div className="flex justify-between">
+                    <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="submit">
+                        Confirm
+                    </button>
+                    <button className="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="button" onClick={() => {
+                        setRequestTypeId('');
+                        setDetails('');
+                        setUnitId('');
+                    }}>
+                        Cancel
+                    </button>
+                </div>
+            </form>
         </div>
     );
 }

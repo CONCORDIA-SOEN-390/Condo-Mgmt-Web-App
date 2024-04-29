@@ -1,4 +1,4 @@
-import React, {useState, useEffect, ChangeEvent, FormEvent} from "react";
+import React, { useState, useEffect, ChangeEvent, FormEvent } from "react";
 
 interface RequestType {
     type_id: number;
@@ -49,7 +49,6 @@ function AddRequestForm({ userId, propertyId }: AddRequestFormProps) {
     const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
-
         try {
             const response = await fetch('/api/handleCreateRequest', {
                 method: 'POST',
@@ -70,18 +69,18 @@ function AddRequestForm({ userId, propertyId }: AddRequestFormProps) {
             }
         } catch (error) {
             console.error('Error:', error);
-            setErrorMessage('An error occurred while submitting the request.');
+            setErrorMessage('');
         }
     };
 
     return (
         <div className="h-screen">
             <div className="bg-sky-100 min-h-screen p-5">
-                <h6 className="text-blue-800 font-semibold text-lg mb-6">Add Request</h6>
+                <h6 className="text-black font-semibold text-lg mb-6">Add Request</h6>
                 <form onSubmit={handleSubmit}>
                     {/* Request Type */}
                     <div className="mb-4">
-                        <label htmlFor="requestTypeId" className="block text-sm font-bold text-blue-700 mb-2">Request Type</label>
+                        <label htmlFor="requestTypeId" className="block text-sm font-bold text-black mb-2">Request Type</label>
                         <select
                             className="border border-gray-300 rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                             name="requestTypeId"
@@ -96,7 +95,7 @@ function AddRequestForm({ userId, propertyId }: AddRequestFormProps) {
                     </div>
                     {/* Details */}
                     <div className="mb-4">
-                        <label htmlFor="details" className="block text-sm font-bold text-blue-700 mb-2">Details</label>
+                        <label htmlFor="details" className="block text-sm font-bold text-black mb-2">Details</label>
                         <textarea
                             className="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                             name="details"
@@ -107,7 +106,7 @@ function AddRequestForm({ userId, propertyId }: AddRequestFormProps) {
                     </div>
                     {/* Unit ID */}
                     <div className="mb-4">
-                        <label htmlFor="unitId" className="block text-sm font-bold text-blue-700 mb-2">Unit ID</label>
+                        <label htmlFor="unitId" className="block text-sm font-bold text-black mb-2">Unit ID</label>
                         <input
                             className="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                             type="text"

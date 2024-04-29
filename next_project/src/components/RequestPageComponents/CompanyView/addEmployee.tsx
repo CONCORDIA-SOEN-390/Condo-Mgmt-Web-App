@@ -75,7 +75,7 @@ function AddEmployeeForm({ propertyId }: AddEmployeeFormProps) {
                 <h6 className="text-blue-800 font-semibold text-lg mb-6">Add Employee</h6>
                 <div>
                     <div className="mb-4">
-                        <label htmlFor="email" className="block text-sm font-bold text-blue-700 mb-2">Email</label>
+                        <label htmlFor="email" className="block text-sm font-bold text-black mb-2">Email</label>
                         <input
                             className="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                             type="email"
@@ -86,7 +86,7 @@ function AddEmployeeForm({ propertyId }: AddEmployeeFormProps) {
                         />
                     </div>
                     <div className="mb-4">
-                        <label htmlFor="password" className="block text-sm font-bold text-blue-700 mb-2">Password</label>
+                        <label htmlFor="password" className="block text-sm font-bold text-black mb-2">Password</label>
                         <input
                             className="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                             type="password"
@@ -97,7 +97,7 @@ function AddEmployeeForm({ propertyId }: AddEmployeeFormProps) {
                         />
                     </div>
                     <div className="mb-4">
-                        <label htmlFor="username" className="block text-sm font-bold text-blue-700 mb-2">Username</label>
+                        <label htmlFor="username" className="block text-sm font-bold text-black mb-2">Username</label>
                         <input
                             className="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                             type="text"
@@ -108,7 +108,7 @@ function AddEmployeeForm({ propertyId }: AddEmployeeFormProps) {
                         />
                     </div>
                     <div className="mb-4">
-                        <label htmlFor="phoneNumber" className="block text-sm font-bold text-blue-700 mb-2">Phone Number</label>
+                        <label htmlFor="phoneNumber" className="block text-sm font-bold text-black mb-2">Phone Number</label>
                         <input
                             className="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                             type="tel"
@@ -119,7 +119,7 @@ function AddEmployeeForm({ propertyId }: AddEmployeeFormProps) {
                         />
                     </div>
                     <div className="mb-4">
-                        <label htmlFor="employeeType" className="block text-sm font-bold text-blue-700 mb-2">Employee Type</label>
+                        <label htmlFor="employeeType" className="block text-sm font-bold text-black mb-2">Employee Type</label>
                         <select
                             className="border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                             name="employeeType"
@@ -133,7 +133,7 @@ function AddEmployeeForm({ propertyId }: AddEmployeeFormProps) {
                         </select>
                     </div>
                     <div className="mb-4">
-                        <label htmlFor="profileUrl" className="block text-sm font-bold text-blue-700 mb-2">Profile URL</label>
+                        <label htmlFor="profileUrl" className="block text-sm font-bold text-black mb-2">Profile URL</label>
                         <input
                             className="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                             type="text"
@@ -144,7 +144,7 @@ function AddEmployeeForm({ propertyId }: AddEmployeeFormProps) {
                         />
                     </div>
                     <div className="mb-4">
-                        <label htmlFor="companyId" className="block text-sm font-bold text-blue-700 mb-2">Company ID</label>
+                        <label htmlFor="companyId" className="block text-sm font-bold text-black mb-2">Company ID</label>
                         <input
                             className="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                             type="text"

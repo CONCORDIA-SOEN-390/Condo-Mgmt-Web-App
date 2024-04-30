@@ -1,15 +1,13 @@
 "use client";
-import { useState } from "react";
+
 import { FcGoogle } from "react-icons/fc";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { signIn } from "@/lib/auth";
-import { redirect } from "next/navigation";
 import {loginAction } from "@/actions/LoginAction";
+import { useFormState } from "react-dom";
 
 export default function LoginForm() {
   
-
+  const [state, onSubmit] = useFormState(loginAction, null);
 
   
   return (
@@ -19,7 +17,7 @@ export default function LoginForm() {
       </div>
 
       <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-        <form action={loginAction} method="POST">
+        <form action={onSubmit} method="POST">
           <label htmlFor="email" className="block text-sm font-medium leading-6 text-gray-900">
             Email address*
           </label>
@@ -37,6 +35,7 @@ export default function LoginForm() {
           <button type="submit" className="flex w-full justify-center rounded-md bg-yellow-950 hover:bg-yellow-900 mt-10 mb-10 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-yellow-800">
             Sign in
           </button>
+          { state?.errors && <p className="text-red-500 text-md text-center ">{state?.message}</p>}
         </form>
       </div>
       <div className="mt-6 flex justify-center ">

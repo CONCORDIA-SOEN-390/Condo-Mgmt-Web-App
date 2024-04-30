@@ -18,7 +18,7 @@ function RequestsPage() {
 
     return (
         <div className="flex min-h-screen-nav items-center justify-center h-full bg-white">
-            {page === 'company' ? <CompanySideBar page={page}/> : <PublicUserSideBar page={page}/>}
+            <CompanySideBar page='requests'/>
             <div className="absolute w-5/6 right-6 top-5 bottom-5 bg-white shadow-lg rounded-xl">
                 <CardHeader title="Requests">
                     .

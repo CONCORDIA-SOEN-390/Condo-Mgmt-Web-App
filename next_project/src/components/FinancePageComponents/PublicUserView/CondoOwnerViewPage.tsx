@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import React from "react";
 import UnitFee from "@/components/FinancePageComponents/PublicUserView/UnitFee";
 import CardHeader from "@/components/GeneralComponents/CardHeader";
+import UnitsTable from "@/components/UnitsPageComponents/CondoOwnerView/UnitsTable";
 
 
 interface Property {
@@ -67,42 +68,38 @@ export default function CompanyPropertyTable({ userId }: CompanyPropertyTablePro
 
     return (
         <div>
-            <div>
-                <CardHeader title={`Finances`}>
-                    .
-                </CardHeader>
             <table className="min-w-full divide-y divide-gray-200">
                 <thead className="min-w-full bg-[#DAECFB] text-black">
                 <tr>
                     <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">#</th>
                     <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">PropertyName</th>
                     <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Address</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Property Type</th>
                 </tr>
                 </thead>
                 <tbody>
                 {properties.map((property, id) => (
                     <React.Fragment key={id}>
-                        <tr onClick={() => handleRowClick(property.property_id)}>
+                        <tr
+                            onClick={() => handleRowClick(property.property_id)}
+                            className={`${id % 2 === 0 ? 'bg-white' : 'bg-gray-50'} hover:bg-gray-200 cursor-pointer`}
+                        >
                             <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{property.property_id}</td>
                             <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{property.property.property_name}</td>
                             <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{property.property.address}</td>
-                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{property.property.property_type}</td>
                         </tr>
                         {expandedPropertyId === property.property_id && (
                             <tr>
-                                <td colSpan={9} className="py-10">
+                                <td colSpan={4} className="py-10">
                                     <div className="space-y-8">
                                         <UnitFee propertyId={property.property_id} userId={userId} />
                                     </div>
                                 </td>
                             </tr>
                         )}
-                    </ React.Fragment>
+                    </React.Fragment>
                 ))}
                 </tbody>
             </table>
-        </div>
         </div>
     );
 }

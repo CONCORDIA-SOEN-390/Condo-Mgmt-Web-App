@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import CardHeader from "@/components/GeneralComponents/CardHeader";
 import { PiPlusSquareFill } from "react-icons/pi";
 import AddIncomeForm from "@/components/FinancePageComponents/CompanyView/AddIncomeForm";
 
@@ -60,9 +59,13 @@ const IncomeTable: React.FC<FinanceTableProps> = ({ propertyId, userId }) => {
 
     return (
         <div className="bg-gray-50 rounded-lg shadow-md p-6">
-            <CardHeader title={'Income'}>
-                <button onClick={toggleAddIncome}><PiPlusSquareFill /></button>
-            </CardHeader>
+            <div className="flex justify-between items-center">
+                <h2 className="text-xl font-bold mb-4">Income</h2>
+                <button onClick={toggleAddIncome} className="flex items-center bg-blue-300 text-white px-4 py-2 rounded-md hover:bg-blue-700">
+                    <PiPlusSquareFill className="mr-2" />
+                    Add Income
+                </button>
+            </div>
             <div className="p-5 text-black text-xl">
                 {showAddIncome && <AddIncomeForm propertyId={propertyId} />}
                 <input
@@ -75,7 +78,7 @@ const IncomeTable: React.FC<FinanceTableProps> = ({ propertyId, userId }) => {
             <div className="overflow-x-auto">
                 {incomes.length > 0 ? (
                     <table className="min-w-full divide-y divide-gray-200">
-                        <thead className="bg-blue-400 text-white">
+                        <thead className="bg-[#DAECFB] text-black">
                         <tr>
                             <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Income ID</th>
                             <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Company ID</th>

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-
+import {PiPlusSquareFill} from "react-icons/pi";
+import DocumentUploadForm from "@/components/DocumentPageComponents/CompanyView/DocumentUploadForm";
 interface Document {
   document_id: number;
   property_id: number;
@@ -20,6 +21,8 @@ const DocumentTable: React.FC<DocumentTableProps> = ({ userId, propertyId }) => 
   const [documents, setDocuments] = useState<Document[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
+  const [showAddExpense, setShowAddExpense] = useState<boolean>(false);
+
 
   useEffect(() => {
     const fetchDocuments = async () => {
@@ -46,12 +49,25 @@ const DocumentTable: React.FC<DocumentTableProps> = ({ userId, propertyId }) => 
     fetchDocuments();
   }, [propertyId]);
 
+  const toggleAddExpense = () => {
+    setShowAddExpense(prevState => !prevState);
+  };
+
   return (
       <div className="overflow-x-auto">
+        <div className="bg-gray-50 rounded-lg shadow-md p-6">
+          <div className="flex justify-between items-center">
+            <h2 className="text-xl font-bold mb-4">Documents</h2>
+            <button onClick={toggleAddExpense} className="flex items-center bg-blue-300 text-white px-4 py-2 rounded-md hover:bg-blue-700">
+              <PiPlusSquareFill className="mr-2" />
+              Add Document
+            </button>
+          </div>
+          {showAddExpense && <DocumentUploadForm propertyId={propertyId} userId={userId} />}
         {error && <div>Error: {error}</div>}
         {documents.length > 0 && (
             <table className="min-w-full divide-y divide-gray-200">
-              <thead className="bg-blue-400 text-white">
+              <thead className="min-w-full bg-[#DAECFB] text-black">
               <tr>
                 <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Document ID</th>
                 <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Document Type</th>
@@ -64,7 +80,7 @@ const DocumentTable: React.FC<DocumentTableProps> = ({ userId, propertyId }) => 
               </thead>
               <tbody className="bg-white divide-y divide-gray-200">
               {documents.map(document => (
-                  <tr key={document.document_id}>
+                  <tr key={document.document_id} >
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{document.document_id}</td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{document.document_type}</td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{document.document_title}</td>
@@ -76,7 +92,9 @@ const DocumentTable: React.FC<DocumentTableProps> = ({ userId, propertyId }) => 
               ))}
               </tbody>
             </table>
+
         )}
+      </div>
       </div>
   );
 };

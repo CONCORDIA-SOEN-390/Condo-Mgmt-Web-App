@@ -11,20 +11,20 @@ interface Reservation {
     username: string;
 }
 
-const MyReservationTable: React.FC<{ propertyId: number }> = ({ propertyId }) => {
+const MyReservationTable: React.FC<{ facilityId: number }> = ({ facilityId }) => {
     const [reservations, setReservations] = useState<Reservation[]>([]);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         const fetchReservations = async () => {
             try {
-                const response = await fetch("/api/getReservationsByProperty", {
+                const response = await fetch("/api/getFacilityReservations", {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",
                     },
                     body: JSON.stringify({
-                        propertyId,
+                        facilityId,
                     }),
                 });
 
@@ -43,7 +43,7 @@ const MyReservationTable: React.FC<{ propertyId: number }> = ({ propertyId }) =>
         };
 
         fetchReservations();
-    }, [propertyId]);
+    }, [facilityId]);
 
     const handleCancel = async (reservationId: number) => {
         try {
@@ -73,11 +73,12 @@ const MyReservationTable: React.FC<{ propertyId: number }> = ({ propertyId }) =>
     }
 
     return (
+        <div className="bg-gray-50 rounded-lg shadow-md p-6">
+            <h2 className="text-xl font-bold mb-4">Reservations</h2>
         <table className="min-w-full divide-y divide-gray-200">
-            <thead className="bg-blue-500 text-white">
+            <thead className="bg-[#DAECFB] text-black">
             <tr>
                 <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Reservation ID</th>
-                <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Facility Name</th>
                 <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">User</th>
                 <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Start Time</th>
                 <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">End Time</th>
@@ -88,17 +89,17 @@ const MyReservationTable: React.FC<{ propertyId: number }> = ({ propertyId }) =>
             {reservations.map((reservation, index) => (
                 <tr key={reservation.reservation_id} className={index % 2 === 0 ? 'bg-white' : 'bg-gray-50'}>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{reservation.reservation_id}</td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{reservation.facility_id}</td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{reservation.user_id}</td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{new Date(reservation.start_time).toLocaleString()}</td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{new Date(reservation.end_time).toLocaleString()}</td>
                     <td className="px-6 py-4 whitespace-nowrap">
-                        <button className="bg-blue-500 hover:bg-zinc-600 text-sm mr-7 text-white py-2 px-4 rounded mr-5" onClick={() => handleCancel(reservation.reservation_id)}>Cancel</button>
+                        <button className="bg-zinc-500 hover:bg-zinc-600 text-sm mr-7 text-white py-2 px-4 rounded mr-5" onClick={() => handleCancel(reservation.reservation_id)}>Cancel</button>
                     </td>
                 </tr>
             ))}
             </tbody>
         </table>
+        </div>
     );
 };
 

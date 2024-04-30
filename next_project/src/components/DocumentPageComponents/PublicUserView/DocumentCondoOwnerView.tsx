@@ -1,26 +1,27 @@
 import React, { useEffect, useState } from "react";
 import CardHeader from "@/components/GeneralComponents/CardHeader";
-import MyReservationTable from "@/components/ReservationPageComponents/CondoOwnerAndRentalView/MyReservationTable";
-import AvailableFacilityTable from "@/components/ReservationPageComponents/CondoOwnerAndRentalView/AvailableFacility";
-
+import { PiPlusSquareFill } from "react-icons/pi";
+import DocumentTable from "@/components/DocumentPageComponents/PublicUserView/DocumentTable";
 interface Property {
     property_id: number;
     property: {
-        address: string;
+        property_id: number;
         property_name: string;
+        address: string;
+        property_type: string;
     };
 }
 
-function CondoOwnerAndRentalPage({ userId }: { userId: number }) {
+
+interface RequestProps {
+    userId: number;
+}
+
+function Request({ userId }: RequestProps) {
     const [properties, setProperties] = useState<Property[]>([]);
     const [selectedPropertyId, setSelectedPropertyId] = useState<number | null>(null);
 
-    const handlePropertyClick = (propertyId: number) => {
-        setSelectedPropertyId(propertyId === selectedPropertyId ? null : propertyId);
-    };
-
-
-    // Getting properties from userId -> owner
+    // Getting properties from userId
     useEffect(() => {
         async function fetchProperties(userId: number) {
             try {
@@ -36,20 +37,8 @@ function CondoOwnerAndRentalPage({ userId }: { userId: number }) {
                     throw new Error('Network response was not ok');
                 }
 
-                const fetchedProperties: Property[] = await response.json();
-
-                // Filter out duplicate property IDs
-                const uniqueProperties: Property[] = [];
-                const uniquePropertyIds: Set<number> = new Set();
-                fetchedProperties.forEach((property) => {
-                    if (!uniquePropertyIds.has(property.property_id)) {
-                        uniquePropertyIds.add(property.property_id);
-                        uniqueProperties.push(property);
-                    }
-                });
-
-                setProperties(uniqueProperties);
-
+                const properties = await response.json();
+                setProperties(properties);
             } catch (error) {
                 console.error('Error fetching properties:', error);
             }
@@ -57,6 +46,10 @@ function CondoOwnerAndRentalPage({ userId }: { userId: number }) {
 
         fetchProperties(userId);
     }, [userId]);
+
+    const handlePropertyClick = (propertyId: number) => {
+        setSelectedPropertyId(propertyId === selectedPropertyId ? null : propertyId);
+    };
 
     return (
         <div>
@@ -85,7 +78,7 @@ function CondoOwnerAndRentalPage({ userId }: { userId: number }) {
                             <tr>
                                 <td colSpan={3}>
                                     <div className="p-5 text-black text-xl">
-                                        <AvailableFacilityTable propertyId={property.property_id} userId={userId} />
+                                        <DocumentTable propertyId={property.property_id} userId={userId} />
                                     </div>
                                 </td>
                             </tr>
@@ -98,4 +91,4 @@ function CondoOwnerAndRentalPage({ userId }: { userId: number }) {
     );
 }
 
-export default CondoOwnerAndRentalPage;
+export default Request;

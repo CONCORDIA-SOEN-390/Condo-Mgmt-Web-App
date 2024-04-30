@@ -57,7 +57,7 @@ const DocumentTable: React.FC<DocumentTableProps> = ({ userId, propertyId }) => 
       <div className="overflow-x-auto">
         <div className="bg-gray-50 rounded-lg shadow-md p-6">
           <div className="flex justify-between items-center">
-            <h2 className="text-xl font-bold mb-4">Doccuments</h2>
+            <h2 className="text-xl font-bold mb-4">Documents</h2>
             <button onClick={toggleAddExpense} className="flex items-center bg-blue-300 text-white px-4 py-2 rounded-md hover:bg-blue-700">
               <PiPlusSquareFill className="mr-2" />
               Add Document
@@ -67,7 +67,7 @@ const DocumentTable: React.FC<DocumentTableProps> = ({ userId, propertyId }) => 
         {error && <div>Error: {error}</div>}
         {documents.length > 0 && (
             <table className="min-w-full divide-y divide-gray-200">
-              <thead className="bg-blue-400 text-white">
+              <thead className="min-w-full bg-[#DAECFB] text-black">
               <tr>
                 <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Document ID</th>
                 <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Document Type</th>
@@ -80,7 +80,7 @@ const DocumentTable: React.FC<DocumentTableProps> = ({ userId, propertyId }) => 
               </thead>
               <tbody className="bg-white divide-y divide-gray-200">
               {documents.map(document => (
-                  <tr key={document.document_id}>
+                  <tr key={document.document_id} >
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{document.document_id}</td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{document.document_type}</td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{document.document_title}</td>
@@ -92,6 +92,7 @@ const DocumentTable: React.FC<DocumentTableProps> = ({ userId, propertyId }) => 
               ))}
               </tbody>
             </table>
+
         )}
       </div>
       </div>

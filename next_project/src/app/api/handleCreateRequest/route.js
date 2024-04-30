@@ -1,63 +1,27 @@
-import { createClient } from "@supabase/supabase-js";
+import pool from "../../../../utils/db";
 
-const supabase = createClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
-);
-
-// to fix
-function shuffleArray(array) {
-    for (let i = array.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [array[i], array[j]] = [array[j], array[i]];
-    }
-    return array;
-}
-
-export async function POST(req) {
+// used in request components
+export async function POST(req){
     const body = await req.json();
     const { userId, requestTypeId, details, unitId, propertyId } = body;
 
     const defaultStatusId = 1;
+    const client = await pool.connect();
 
     try {
-        // Query to fetch employee information
-        const { data: empsData, error: empsError } = await supabase
-            .from('employee')
-            .select('*')
-            .eq('property_id', propertyId);
-
-
-        if (empsError) {
-            throw empsError;
-        }
-
-
-        const shuffledEmpsData = shuffleArray(empsData);
-
-
-        const reqReviewerId = shuffledEmpsData[0].employee_id;
-
-        await supabase.from('request').insert([
-            {
-                unit_id: unitId,
-                property_id: propertyId,
-                req_creator: userId,
-                req_reviewer: reqReviewerId,
-                type_id: requestTypeId,
-                status_id: defaultStatusId,
-                details: details
-            }
-        ]);
-
-        return new Response('Success', {
-            status: 200,
+        await client.query("BEGIN"); // Start the transaction
+        await client.query("INSERT INTO request (unit_id, property_id, req_creator, type_id, status_id, details) VALUES ($1, $2, $3, $4, $5, $6)", [unitId, propertyId, userId, requestTypeId, defaultStatusId, details]);
+        await client.query("COMMIT");
+        return new Response('Success',{
+            status:200,
         });
-
     } catch (error) {
-        console.error("Error inserting request:", error);
-        return new Response('Internal Server Error', {
-            status: 500
+        await client.query("ROLLBACK"); // Rollback the transaction if an error occurs
+        console.error("Error inserting data into tables:", error);
+        return new Response('Internal Server Errror', {
+          status:500,
         });
-    }
+      } finally {
+        client.release();
+      }
 }

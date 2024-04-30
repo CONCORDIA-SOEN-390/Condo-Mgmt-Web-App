@@ -1,35 +1,23 @@
-import { createClient } from '@supabase/supabase-js';
-
-// Initialize Supabase client
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL,
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
-);
+import pool from "../../../utils/db";
 
 export async function POST(req) {
   const body = await req.json();
   const { propertyId, name, description} = body;
 
-  try {
-    
-const { data, error } = await supabase
-.from('facility')
-.insert([
-  {property_id: propertyId, name: name, description: description},
-])
-.select();
+  const client = await pool.connect();
 
-    if (error != null){
-      return new Response(JSON.stringify(error), {
-        status:500,
-      });
-    }
+  try {
+    await client.query("INSERT INTO facility(property_id, name, description) VALUES ($1, $2, $3)", [propertyId, name, description]);
+
     return new Response('Success',{
       status:200,
     });
   } catch (error) {
+    console.error("Error inserting data into tables:", error);
     return new Response('Internal Server Errror', {
       status:500,
     });
+  } finally {
+    client.release();
   }
 }

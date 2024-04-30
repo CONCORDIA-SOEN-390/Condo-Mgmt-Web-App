@@ -1,33 +1,44 @@
-"use client"
-import React, { useState } from "react";
-import CompanySideBar from "@/components/GeneralComponents/CompanyView/SideBar";
+"use client";
+import { MdEditSquare } from "react-icons/md";
+import { MdCancel } from "react-icons/md";
 import PublicUserSideBar from "@/components/GeneralComponents/PublicUserView/SideBar";
-import CompanyViewPage from "@/components/FinancePageComponents/CompanyView/CompanyViewPage";
-import CondoOwnerViewPage from "@/components/FinancePageComponents/PublicUserView/CondoOwnerViewPage";
-import {useSession} from "next-auth/react";
+import CompanySideBar from "@/components/GeneralComponents/CompanyView/SideBar";
 import CardHeader from "@/components/GeneralComponents/CardHeader";
-
+import PublicUserFinanceTable from "@/components/FinancePageComponents/PublicUserView/FinanceTable";
+import CompanyFinanceTable from "@/components/FinancePageComponents/CompanyView/FinanceTable";
+import {PiPlusSquareFill} from "react-icons/pi";
+import React, {useState} from "react";
+import AddFinanceForm from "@/components/FinancePageComponents/CompanyView/AddFinanceForm";
 
 function FinancesPage() {
-    const { data: session } = useSession();
-    // @ts-ignore comment
-    const userId = session?.user?.user_id;
-    // @ts-ignore comment
-    const page = session?.user?.account_type;
+  const page = 'company';
 
-  return (
-      <div className="flex min-h-screen-nav items-center justify-center h-full bg-white">
-           <CompanySideBar page='finances'/>
-          <div className="absolute w-5/6 inset-y-0 right-5 bg-white shadow-lg rounded-xl">
-              <CardHeader title="Finances">
-              .
-              </CardHeader>
-              {page === 'company'
-              ? <CompanyViewPage userId={userId} />
-              : <CondoOwnerViewPage userId={userId} />
-          }
-          </div>
+
+    const [showAddFinanceForm, setshowAddFinanceFormFormStatus] = useState(false);
+
+    const toggleFormAdd = () => {
+      setshowAddFinanceFormFormStatus(!showAddFinanceForm);
+    };
+
+
+
+    return (
+    <div className="flex min-h-screen-nav items-center justify-center h-full bg-white">
+      {page === 'company'? <CompanySideBar page='finances'/>:<PublicUserSideBar page='finances'/>}
+      
+      <div className="absolute w-5/6 right-6 top-5 bottom-5 bg-white shadow-lg rounded-xl">
+        <CardHeader title="Finances">
+            <button onClick={toggleFormAdd}><PiPlusSquareFill/></button>
+
+          <MdCancel className="" />
+        </CardHeader>
+
+        {showAddFinanceForm && <AddFinanceForm />}
+        {page === 'company'? <CompanyFinanceTable/>:<PublicUserFinanceTable/>}
+        
       </div>
+    </div>
   );
 }
+
 export default FinancesPage;

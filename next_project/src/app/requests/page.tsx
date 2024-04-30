@@ -1,34 +1,47 @@
 "use client";
-import React from "react";
+import { MdEditSquare } from "react-icons/md";
 import PublicUserSideBar from "@/components/GeneralComponents/PublicUserView/SideBar";
 import CompanySideBar from "@/components/GeneralComponents/CompanyView/SideBar";
 import CardHeader from "@/components/GeneralComponents/CardHeader";
-import RequestCompanyView from "@/components/RequestPageComponents/CompanyView/Request";
-import RequestPublicView from "@/components/RequestPageComponents/PublicUserView/Request";
-import RequestEmployeeView from "@/components/RequestPageComponents/EmployeeView/RequestTable";
-import { useSession } from "next-auth/react";
+import {PiPlusSquareFill} from "react-icons/pi";
+import React, {useState} from "react";
+import AddRequestForm from "@/components/RequestPageComponents/CompanyView/AddRequestForm";
+import CompanyRequestTable from "@/components/RequestPageComponents/CompanyView/RequestTable";
+import EditRequestForm from "@/components/RequestPageComponents/CompanyView/EditRequestForm";
+import PublicUserRequestTable from "@/components/RequestPageComponents/PublicUserView/RequestTable"
 
+
+// i don't understand the company and public user rendering. For now, they both see the same content
 function RequestsPage() {
-    const { data: session } = useSession();
-    // @ts-ignore comment
-    const userId = session?.user?.user_id;
-    // @ts-ignore comment
-    const page = session?.user?.account_type;
-    // @ts-ignore comment
+    const page = 'company';
+
+    // toggle for add and edit
+    const [showAddRequestForm, setshowAddRequestFormFormStatus] = useState(false);
+    const toggleFormAdd = () => {
+        setshowAddRequestFormFormStatus(!showAddRequestForm);
+    };
+
+    const [showEditRequestForm, setshowEditRequestFormFormStatus] = useState(false);
+    const toggleFormEdit = () => {
+        setshowEditRequestFormFormStatus(!showEditRequestForm);
+    };
 
     return (
         <div className="flex min-h-screen-nav items-center justify-center h-full bg-white">
-            <CompanySideBar page='requests'/>
+            {page === 'company'? <CompanySideBar page='requests'/>:<PublicUserSideBar page='requests'/>}
+
             <div className="absolute w-5/6 right-6 top-5 bottom-5 bg-white shadow-lg rounded-xl">
                 <CardHeader title="Requests">
-                    .
+                    <button onClick={toggleFormAdd}><PiPlusSquareFill/></button>
+                    <button onClick={toggleFormEdit}><MdEditSquare/></button>
                 </CardHeader>
-                {page === 'company' && <RequestCompanyView userId={userId} />}
-                {page === 'reg_user' && <RequestPublicView userId={userId} />}
-                {page !== 'company' && page !== 'reg_user' && <RequestEmployeeView userId={userId} />}
+                {showAddRequestForm && <AddRequestForm />}
+                {showEditRequestForm && <EditRequestForm />}
+                {/*fix rendering here*/}
+                {page === 'company'? <CompanyRequestTable/>:<PublicUserRequestTable/>}
+
             </div>
         </div>
     );
 }
-
 export default RequestsPage;

@@ -1,29 +1,19 @@
-import { createClient } from '@supabase/supabase-js';
-
-// Initialize Supabase client
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL,
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
-);
-
+import pool from "../../../utils/db";
+// this was not used
 export async function GET(req){
-    try {
-      let { data: type, error } = await supabase
-      .from('request_type')
-      .select('*');
-      
-      if (error != null){
-          return new Response(JSON.stringify(error), {
-            status:500,
-          });
-      }
+    const client = await pool.connect();
 
-      return new Response(JSON.stringify(type), {
-        status:200
-      });
+    try {
+        const statuses = await client.query("SELECT * FROM request_type");
+        return new Response(statuses.rows, {
+            status:200
+        })
     } catch (error) {
-      return new Response('Internal Server Errror', {
-        status:500,
-      });
-    } 
+        console.error("Error getrting data from tables:", error);
+        return new Response('Internal Server Errror', {
+          status:500,
+        });
+      } finally {
+        client.release();
+      }
 }

@@ -27,7 +27,7 @@ export async function POST(req) {
 
         const { data: usersData, error: usersError } = await supabase
             .from('users')
-            .select('user_id, username, phone_number, account_type')
+            .select('user_id, username, phone_number, account_type, email')
             .in('user_id', userIds);
 
         if (usersError) {
@@ -45,7 +45,8 @@ export async function POST(req) {
                 ...employee,
                 username: userInfo.username,
                 phone_number: userInfo.phone_number,
-                account_type: userInfo.account_type
+                account_type: userInfo.account_type,
+                email: userInfo.email
             };
         });
 

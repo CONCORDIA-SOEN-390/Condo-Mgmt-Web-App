@@ -19,7 +19,7 @@ function ProfilePage() {
 
   return (
       <div className="flex min-h-screen-nav items-center justify-center h-full bg-white">
-          {page === 'company' ? <CompanySideBar page='profile'/> : <PublicUserSideBar page='properties'/>}
+           <CompanySideBar page='profile'/>
           <div className="absolute w-5/6 inset-y-0 right-5 bg-white shadow-lg rounded-xl">
               <CardHeader title="Profile">
                   .

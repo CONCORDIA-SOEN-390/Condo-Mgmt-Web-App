@@ -9,7 +9,7 @@ function AddEmployeeForm({ propertyId }: AddEmployeeFormProps) {
     const [password_, setPassword] = useState('');
     const [username, setUsername] = useState('');
     const [phoneNumber, setPhoneNumber] = useState('');
-    const [employeeType, setEmployeeType] = useState('');
+    const [employeeType, setEmployeeType] = useState('operations');
     const [profileUrl, setProfileUrl] = useState('');
     const [companyId, setCompanyId] = useState('');
     const [errorMessage, setErrorMessage] = useState('');
@@ -30,7 +30,7 @@ function AddEmployeeForm({ propertyId }: AddEmployeeFormProps) {
                         password_,
                         username,
                         phoneNumber,
-                        account_type: employeeType,
+                        employeeType,
                         profileUrl,
                         companyId,
                     }),

@@ -22,7 +22,7 @@ function AddExpenseForm({ propertyId }: AddFinanceFormProps) {
                     companyId: companyId,
                     value: amount,
                     description: description,
-                    occurrence: occurrence,
+                    occurence: occurrence,
                     date: transactionDate,
                     propertyId: propertyId
                 })

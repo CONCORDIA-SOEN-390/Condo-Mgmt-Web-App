@@ -8,6 +8,7 @@ interface Employee {
     username: string;
     phone_number: string;
     account_type: string;
+    email: string;
 }
 
 interface RequestTableProps {
@@ -87,6 +88,7 @@ const RequestTable: React.FC<RequestTableProps> = ({ propertyId }) => {
                             <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Property ID</th>
                             <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Username</th>
                             <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Phone Number</th>
+                            <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Email</th>
                             <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Type</th>
                         </tr>
                         </thead>
@@ -97,6 +99,7 @@ const RequestTable: React.FC<RequestTableProps> = ({ propertyId }) => {
                                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{employee.property_id}</td>
                                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{employee.username}</td>
                                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{employee.phone_number}</td>
+                                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{employee.email}</td>
                                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{employee.account_type}</td>
                             </tr>
                         ))}

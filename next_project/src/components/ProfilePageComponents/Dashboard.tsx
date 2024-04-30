@@ -169,6 +169,7 @@ const Dashboard: React.FC<DashboardProps> = ({ userId }) => {
 
 
     return (
+
         <div className="flex flex-wrap">
             <div className="w-full md:w-1/2 px-4 mb-4">
                 <h1 className="text-xl font-bold mb-2">Name: {userName} </h1>

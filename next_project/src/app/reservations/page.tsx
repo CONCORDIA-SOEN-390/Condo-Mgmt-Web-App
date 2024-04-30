@@ -1,34 +1,30 @@
-"use client"
-import React, { useState } from "react";
-import CompanySideBar from "@/components/GeneralComponents/CompanyView/SideBar";
-import PublicUserSideBar from "@/components/GeneralComponents/PublicUserView/SideBar";
-import CompanyViewPage from "@/components/ReservationPageComponents/CompanyView/CompanyViewPage";
-import { useSession } from "next-auth/react";
-import CondoOwnerViewPage from "@/components/ReservationPageComponents/CondoOwnerAndRentalView/CondoOwnerAndRentalPage";
+import React from "react";
+import SideBar from "@/components/GeneralComponents/PublicUserView/SideBar";
 import CardHeader from "@/components/GeneralComponents/CardHeader";
+import MyReservationTable from "@/components/ReservationPageComponents/MyReservationTable";
+import AvailableFacilityTable from "@/components/ReservationPageComponents/AvailableFacilityTable";
+import { MdEditSquare } from "react-icons/md";
 
 function ReservationsPage() {
-    const { data: session } = useSession();
-    // @ts-ignore comment
-    const userId = session?.user?.user_id;
-    // @ts-ignore comment
-    const page = session?.user?.account_type;
-
-    return (
-
-        <div className="flex min-h-screen-nav items-center justify-center h-full bg-white">
-            <CompanySideBar page='reservations'/>
-            <div className="absolute w-5/6 inset-y-0 right-5 bg-white shadow-lg rounded-xl">
-                <CardHeader title="Reservations">
-                    .
-                </CardHeader>
-                {page === 'company'
-                    ? <CompanyViewPage userId={userId} />
-                    : <CondoOwnerViewPage userId={userId} />
-                }
-            </div>
+  return (
+    <div className="flex min-h-screen-nav items-center justify-center h-full bg-white">
+      <SideBar page="reservations" />
+      <div className="absolute grid grid-rows-3 w-5/6 right-5 gap-5">
+        <div className="bg-white shadow-lg rounded-xl ">
+          <CardHeader title="My Reservations">
+            <MdEditSquare className="text-white text-3xl" />
+          </CardHeader>
+          <div className="grid grid-cols-2 grid-rows-3 gap-5 p-5 text-black text-xl"></div>
         </div>
-    );
+        <div className="bg-white shadow-lg rounded-xl">
+          <CardHeader title="Available Facilities">hello</CardHeader>
+          <div className="p-5 text-black text-xl">
+            <AvailableFacilityTable />
+          </div>
+        </div>
+      </div>
+    </div>
+  );
 }
 
 export default ReservationsPage;

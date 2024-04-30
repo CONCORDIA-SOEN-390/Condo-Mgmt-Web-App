@@ -1,29 +1,17 @@
-import { createClient } from '@supabase/supabase-js';
-
-// Initialize Supabase client
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL,
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
-);
+// /api/getRequestsByProperty.js
+import pool from "../../../../utils/db";
 
 export async function POST(req) {
     const body = await req.json();
     const { userId } = body;
 
-    try {
-        let { data: properties, error } = await supabase
-        .from('property')
-        .select('*')
-        .eq('user_id', userId);
+    const client = await pool.connect();
 
-        if (error != null){
-            return new Response(JSON.stringify(error), {
-              status:500,
-            });
-        }
+    try {
+        const prop = await client.query("SELECT * FROM property WHERE user_id = $1", [userId]);
 
         
-        return new Response(JSON.stringify(properties), {
+        return new Response(JSON.stringify(prop.rows), {
             status: 200,
             headers: {
                 'Content-Type': 'application/json'
@@ -34,5 +22,7 @@ export async function POST(req) {
         return new Response('Internal Server Error', {
             status: 500
         });
+    } finally {
+        client.release();
     }
 }

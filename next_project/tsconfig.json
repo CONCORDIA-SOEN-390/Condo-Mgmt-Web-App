@@ -27,6 +27,6 @@
     "**/*.tsx",
     ".next/types/**/*.ts",
     "jest.config.js"
-, "src/app/api/addproperty/route.js", "src/components/ReservationPageComponents/ReserveFacilityPopup.jsx", "src/actions/SignupAction.js", "src/lib/auth.js", "src/app/api/signupsteptwo/route.js", "src/app/api/getUserInfo/route.js"  ],
+, "src/app/api/addproperty/route.js", "src/components/ReservationPageComponents/ReserveFacilityPopup.jsx"  ],
   "exclude": ["node_modules"]
 }

@@ -1,30 +1,35 @@
-import { createClient } from '@supabase/supabase-js';
-
-// Initialize Supabase client
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL,
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
-);
+import pool from "../../../../utils/db";
 
 export async function POST(req) {
     const body = await req.json();
-    const { propertyId, unitId, sqft, pricePerSqft } = body;
+    const { userId, propertyId, unitId, sqft, pricePerSqft } = body;
+
+    const client = await pool.connect();
 
     try {
-        
-        if (sqft > 0 && pricePerSqft > 0){
-            let { data : res, error } = await supabase
-            .from('unit')
-            .update({square_footage: sqft, price_per_square_foot: pricePerSqft})
-            .eq('unit_id', unitId)
-            .eq('property_id', propertyId)
-            .select();
+        await client.query("BEGIN"); // Start the transaction
 
-            if (error != null){
-                return new Response(error, {
-                status:500,
-                });
-            }
+        // check if the property exists and belongs to the user
+        const propertyCheck = await client.query("SELECT * FROM property WHERE user_id = $1 AND property_id = $2", [userId, propertyId]);
+
+        if (propertyCheck.rows.length === 0) {
+            return new Response("Error: Property not found or doesn't belong to the user", {
+                status: 404
+            });
+        }
+
+        // check if the unit exists
+        const unitCheck = await client.query("SELECT * FROM unit WHERE unit_id = $1 AND property_id = $2", [unitId, propertyId]);
+
+        if (unitCheck.rows.length === 0) {
+            return new Response('Error: Unit not found', {
+                status: 404,
+            });
+        }
+
+        if (sqft > 0 && pricePerSqft > 0){
+            await client.query("UPDATE unit SET square_footage = $1, price_per_square_foot = $2 WHERE unit_id = $3 AND property_id = $4", [sqft, pricePerSqft, unitId, propertyId]);
+            await client.query("COMMIT"); // commit the transaction
             return new Response('Price updated successfully', {
                 status: 200
             });
@@ -34,8 +39,11 @@ export async function POST(req) {
             });
         }
     } catch (error) {
+        await client.query("ROLLBACK"); // rollback the transaction if an error occurs
         return new Response('Internal Server Error', {
             status: 500,
         });
+    } finally {
+        client.release();
     }
 }

@@ -1,58 +1,43 @@
-import { createClient } from '@supabase/supabase-js';
-
-// Initialize Supabase client
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL,
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
-);
+import pool from "../../../utils/db";
 
 export async function POST(req){
     const body = await req.json();
     const {userId, regKey} = body;
 
+    const client = await pool.connect();
+
     try {
+        await client.query("BEGIN"); // Start the transaction
 
-        let { data : unit, error } = await supabase
-        .from('unit')
-        .select('*')
-        .eq('registration_key', regKey);
-
-        if (error != null){
-            return new Response(error, {
-              status:500,
-            });
-        }
+        const unit = await client.query(
+            "SELECT * FROM unit WHERE registration_key = $1",
+            [regKey]
+        );
         
         if (unit.length == 0) {
-
             return new Response('Key does not exist', {
                 status:404,
               });
-
         } else {
-            const unitId = unit[0]["unit_id"];
+            const unitId = unit['rows'][0]["unit_id"];
+            await client.query(
+                "UPDATE unit SET owner_id = $1 WHERE unit_id = $2",
+                [userId, unitId]
+            );
 
-            let { data : res, errorUpdate } = await supabase
-            .from('unit')
-            .update({owner_id: userId, occupied: true})
-            .eq('unit_id', unit[0]['unit_id'])
-            .eq('property_id', unit[0]['property_id'])
-            .select();
-
-            if (errorUpdate != null){
-                return new Response(JSON.stringify(error), {
-                  status:500,
-                });
-            }
-
+            await client.query("COMMIT"); // Commit the transaction
             return new Response('Registration key updated successfully', {
                 status: 200
             });
         }
         
     } catch (error) {
+        await client.query("ROLLBACK"); // Rollback the transaction if an error occurs
+        console.error("Error:", error);
         return new Response('Internal Server Errror', {
           status:500,
         });
+      } finally {
+        client.release();
       }
 }

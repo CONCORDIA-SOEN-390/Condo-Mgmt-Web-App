@@ -1,17 +1,44 @@
 "use client";
-import { useState } from "react";
+import React from "react";
 import { FcGoogle } from "react-icons/fc";
 import Link from "next/link";
+import { useContext } from "react";
+import { UserContext } from "@/context/userInfoContext";
 import { useRouter } from "next/navigation";
-import { signIn } from "@/lib/auth";
-import { redirect } from "next/navigation";
-import {loginAction } from "@/actions/LoginAction";
 
 export default function LoginForm() {
-  
+  const { changeId, changeEmail, changeProfileUrl, changeAccountType, changePhoneNumber, changeUserName } = useContext(UserContext);
+  const router = useRouter();
 
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    const formData = new FormData(event.currentTarget);
+    fetch("/api/login", {
+      method: "POST",
+      body: JSON.stringify({
+        email: formData.get("email"),
+        password: formData.get("password"),
+      }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        changeId(data.id);
+        changeEmail(data['email']);
+        changeProfileUrl(data.profileUrl);
+        changeAccountType(data.accountType);
+        changePhoneNumber(data.phoneNumber);
+        changeUserName(data.userName)
+        router.push("/");
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+    
+  };
 
-  
   return (
     <>
       <div className="sm:mx-auto sm:w-full sm:max-w-sm">
@@ -19,7 +46,7 @@ export default function LoginForm() {
       </div>
 
       <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-        <form action={loginAction} method="POST">
+        <form onSubmit={handleSubmit} >
           <label htmlFor="email" className="block text-sm font-medium leading-6 text-gray-900">
             Email address*
           </label>

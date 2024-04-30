@@ -1,91 +1,100 @@
+import { useEffect, useState } from 'react';
+import React from "react";
+import UnitsTable from "@/components/UnitsPageComponents/CondoOwnerView/UnitsTable";
 
-const properties = [
-  {
-    address: "1111 one Street",
-    apartment: 604,
-    size: 5.5,
-    dimension: 1100,
-    parking: "S201",
-    locker: 238,
-    owner: "John Doe",
-    occupant: "John Doe" // John owns and occupies this condo
-  },
-  {
-    address: "2222 two Avenue",
-    apartment: 305,
-    size: 3.5,
-    dimension: 950,
-    parking: "S202",
-    locker: 182,
-    owner: "John Doe",
-    occupant: "" // John owns, but condo is vacant
-  },
-  {
-    address: "3333 three Blvd",
-    apartment: 708,
-    size: 4.5,
-    dimension: 1200,
-    parking: "S203",
-    locker: 215,
-    owner: "Lucy Lane",
-    occupant: "John Doe" // John occupies this condo but does not own it
-  },
-  {
-    address: "4444 four Drive",
-    apartment: 102,
-    size: 3.5,
-    dimension: 800,
-    parking: "S204",
-    locker: 190,
-    owner: "John Doe",
-    occupant: "Annie Doe" // John owns this condo, but someone else occupies it
-  },
-  {
-    address: "5555 five Lane",
-    apartment: 501,
-    size: 4.5,
-    dimension: 1050,
-    parking: "S205",
-    locker: 207,
-    owner: "John Doe",
-    occupant: "ALex Doe" 
-  }
-];
+interface Property {
+    property_id: number;
+    property: {
+        property_id: number;
+        property_name: string;
+        address: string;
+        property_type: string;
+    };
+}
 
+interface CompanyPropertyTableProps {
+    userId: number;
+}
 
-export default function PropertyTable() {
+export default function CompanyPropertyTable({ userId }: CompanyPropertyTableProps) {
+    const [properties, setProperties] = useState<Property[]>([]);
+    const [expandedPropertyId, setExpandedPropertyId] = useState<number | null>(null);
+
+    useEffect(() => {
+        async function fetchProperties(userId: number) {
+            try {
+                const response = await fetch('/api/getPropertyFromOwnerId', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ userId })
+                });
+
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+
+                const fetchedProperties: Property[] = await response.json();
+
+                // Filter out duplicate property IDs
+                const uniqueProperties: Property[] = [];
+                const uniquePropertyIds: Set<number> = new Set();
+                fetchedProperties.forEach((property) => {
+                    if (!uniquePropertyIds.has(property.property_id)) {
+                        uniquePropertyIds.add(property.property_id);
+                        uniqueProperties.push(property);
+                    }
+                });
+
+                setProperties(uniqueProperties);
+
+            } catch (error) {
+                console.error('Error fetching properties:', error);
+            }
+        }
+
+        fetchProperties(userId);
+    }, [userId]);
+
+    const handleRowClick = (propertyId: number) => {
+        setExpandedPropertyId((prevId) => (prevId === propertyId ? null : propertyId));
+    };
+
     return (
-        <table className="min-w-full divide-y divide-gray-200">
-            <thead className="min-w-full bg-[#DAECFB] text-black">
+        <div>
+            <table className="min-w-full divide-y divide-gray-200">
+                <thead className="min-w-full bg-[#DAECFB] text-black">
                 <tr>
                     <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">#</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">PropertyName</th>
                     <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Address</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Appartment</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Size</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Dimension (sqft)</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Parking</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Locker</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Owner</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Occupant</th>
                 </tr>
-            </thead>
-            <tbody>
-                {properties.map((property, id) => {
-                    return (
-                        <tr key={id}>
-                            <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{id + 1}</td>
-                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{property.address}</td>
-                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{property.apartment}</td>
-                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{property.size}</td>
-                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{property.dimension}</td>
-                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{property.parking}</td>
-                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{property.locker}</td>
-                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{property.owner}</td>
-                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{property.occupant}</td>
+                </thead>
+                <tbody>
+                {properties.map((property, id) => (
+                    <React.Fragment key={id}>
+                        <tr
+                            onClick={() => handleRowClick(property.property_id)}
+                            className={`${id % 2 === 0 ? 'bg-white' : 'bg-gray-50'} hover:bg-gray-200 cursor-pointer`}
+                        >
+                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{property.property_id}</td>
+                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{property.property.property_name}</td>
+                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{property.property.address}</td>
                         </tr>
-                    );
-                })}
-            </tbody>
-        </table>
+                        {expandedPropertyId === property.property_id && (
+                            <tr>
+                                <td colSpan={4} className="py-10">
+                                    <div className="space-y-8">
+                                        <UnitsTable propertyId={property.property_id} userId={userId} />
+                                    </div>
+                                </td>
+                            </tr>
+                        )}
+                    </React.Fragment>
+                ))}
+                </tbody>
+            </table>
+        </div>
     );
 }

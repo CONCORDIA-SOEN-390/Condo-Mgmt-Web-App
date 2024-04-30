@@ -40,3 +40,23 @@ FOR EACH ROW
 WHEN (OLD.owner_id IS DISTINCT FROM NEW.owner_id)
 EXECUTE FUNCTION record_sale();
 
+--
+--
+--
+
+--Record status update
+CREATE OR REPLACE FUNCTION record_request_update()
+RETURNS TRIGGER AS
+$$
+BEGIN
+    INSERT INTO req_update (req_id, update_new_status) VALUES (NEW.req_id, NEW.status_id);
+    RETURN NEW;
+END;
+$$
+LANGUAGE plpgsql;
+
+CREATE TRIGGER request_update_trigger
+AFTER UPDATE ON request
+FOR EACH ROW
+EXECUTE FUNCTION record_request_update();
+

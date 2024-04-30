@@ -1,212 +1,67 @@
-// Import necessary modules and dependencies
-import { TextEncoder, TextDecoder } from "util";
-import handler from "../src/app/api/getunit/route";
-Object.assign(global, { TextDecoder, TextEncoder });
+// Import the function to be tested
+import { POST } from "../src/app/api/getUnitDetails/route";
 
-const pool = require("../utils/db"); // Make sure to adjust the import based on your project structure
-//const handler = require("../pages/api/getunit"); // Adjust the import based on your project structure
-
-jest.mock("../utils/db", () => ({
-  connect: jest.fn(), // You might need to adjust this based on your actual implementation
+// Mock the Supabase client
+jest.mock("@supabase/supabase-js", () => ({
+  createClient: jest.fn(() => ({
+    from: jest.fn(() => ({
+      select: jest.fn(() => ({
+        eq: jest.fn(() => ({
+          eq: jest.fn(() => ({
+            data: [{ property_id: 1, unit_id: 11 }], // This can be customized for different scenarios
+            error: null, // This can be customized for different scenarios
+          })),
+        })),
+      })),
+    })),
+  })),
 }));
 
-describe("Unit Details API", () => {
-  it("should return unit details when valid property_id and unit_id are provided", async () => {
-    const mockQuery = jest.fn().mockReturnValue({
-      rows: [{ unit_id: 1, property_id: 1, owner_id: 1, occupied: false }],
-    });
-
-    const mockClient = {
-      query: mockQuery,
-      release: jest.fn(),
+describe("POST function", () => {
+  it("should return unit details when unitId and propertyId exist", async () => {
+    const req = {
+      json: jest.fn().mockResolvedValue({
+        unitId: 11,
+        propertyId: 1,
+      }),
     };
 
-    pool.connect.mockResolvedValueOnce(mockClient);
+    const response = await POST(req);
 
-    const mockReq = {
-      method: "GET",
-      query: { property_id: 1, unit_id: 1 },
-    };
+    expect(response.status).toBe(200);
 
-    const mockRes = {
-      status: jest.fn().mockReturnThis(),
-      json: jest.fn(),
-    };
-
-    await handler(mockReq, mockRes);
-
-    expect(mockRes.status).toHaveBeenCalledWith(200);
-    expect(mockRes.json).toHaveBeenCalledWith({
-      unit: { unit_id: 1, property_id: 1, owner_id: 1, occupied: false },
-    });
-    expect(pool.connect).toHaveBeenCalled();
-    expect(mockQuery).toHaveBeenCalledWith(
-      "SELECT * FROM unit WHERE property_id = $1 AND unit_id = $2",
-      [1, 1]
-    );
-    expect(mockClient.release).toHaveBeenCalled();
+    // You can add more specific assertions based on your expected response
   });
 
-  // Add other test cases here
-  // Previous test case ...
-
-  it("should return a 404 error when the property_id is provided but the unit_id is missing", async () => {
-    const mockReq = {
-      method: "GET",
-      query: { property_id: 1 },
+  it("should return 500 error when Supabase client returns an error", async () => {
+    const req = {
+      json: jest.fn().mockResolvedValue({
+        unitId: "someUnitId",
+        propertyId: "somePropertyId",
+      }),
     };
 
-    const mockRes = {
-      status: jest.fn().mockReturnThis(),
-      json: jest.fn(),
-    };
+    const mockError = new Error("Supabase error");
 
-    await handler(mockReq, mockRes);
+    // Override the mocked Supabase client function to return an error
+    require("@supabase/supabase-js").createClient.mockImplementation(() => ({
+      from: jest.fn(() => ({
+        select: jest.fn(() => ({
+          eq: jest.fn(() => ({
+            eq: jest.fn(() => ({
+              error: mockError,
+            })),
+          })),
+        })),
+      })),
+    }));
 
-    expect(mockRes.status).toHaveBeenCalledWith(400);
-    expect(mockRes.json).toHaveBeenCalledWith({
-      message: "Missing property_id or unit_id parameter",
-    });
-    expect(pool.connect).toHaveBeenCalled(); // Ensure that connect is not called
+    const response = await POST(req);
+
+    expect(response.status).toBe(500);
+    expect(response.body).toBe(JSON.stringify("Supabase error"));
+    // You can add more specific assertions based on your expected error response
   });
 
-  it("should return a 404 error when the unit_id is provided but the property_id is missing", async () => {
-    const mockReq = {
-      method: "GET",
-      query: { unit_id: 1 },
-    };
-
-    const mockRes = {
-      status: jest.fn().mockReturnThis(),
-      json: jest.fn(),
-    };
-
-    await handler(mockReq, mockRes);
-
-    expect(mockRes.status).toHaveBeenCalledWith(400);
-    expect(mockRes.json).toHaveBeenCalledWith({
-      message: "Missing property_id or unit_id parameter",
-    });
-    expect(pool.connect).toHaveBeenCalled(); // Ensure that connect is not called
-  });
-
-  it("should return a 404 error when both property_id and unit_id are missing", async () => {
-    const mockReq = {
-      method: "GET",
-      query: {},
-    };
-
-    const mockRes = {
-      status: jest.fn().mockReturnThis(),
-      json: jest.fn(),
-    };
-
-    await handler(mockReq, mockRes);
-
-    expect(mockRes.status).toHaveBeenCalledWith(400);
-    expect(mockRes.json).toHaveBeenCalledWith({
-      message: "Missing property_id or unit_id parameter",
-    });
-    expect(pool.connect).toHaveBeenCalled(); // Ensure that connect is not called
-  });
-
-  it("should handle errors during database query and return a 500 status", async () => {
-    const mockReq = {
-      method: "GET",
-      query: { property_id: 1, unit_id: 1 },
-    };
-
-    const mockRes = {
-      status: jest.fn().mockReturnThis(),
-      json: jest.fn(),
-    };
-
-    // Mock an error during the database query
-    const mockError = new Error("Database error");
-    pool.connect.mockRejectedValueOnce(mockError);
-
-    await handler(mockReq, mockRes);
-
-    expect(mockRes.status).toHaveBeenCalledWith(500);
-    expect(mockRes.json).toHaveBeenCalledWith({
-      message: "Internal Server Error",
-    });
-    expect(pool.connect).toHaveBeenCalled();
-  });
-
-  it("should return a 404 error when the unit is not found", async () => {
-    const mockQuery = jest.fn().mockReturnValue({ rows: [] });
-    const mockClient = { query: mockQuery, release: jest.fn() };
-
-    pool.connect.mockResolvedValueOnce(mockClient);
-
-    const mockReq = {
-      method: "GET",
-      query: { property_id: 1, unit_id: 2 },
-    };
-
-    const mockRes = {
-      status: jest.fn().mockReturnThis(),
-      json: jest.fn(),
-    };
-
-    await handler(mockReq, mockRes);
-
-    expect(mockRes.status).toHaveBeenCalledWith(404);
-    expect(mockRes.json).toHaveBeenCalledWith({ message: "Unit not found" });
-    expect(pool.connect).toHaveBeenCalled();
-    expect(mockQuery).toHaveBeenCalledWith(
-      "SELECT * FROM unit WHERE property_id = $1 AND unit_id = $2",
-      [1, 2]
-    );
-    expect(mockClient.release).toHaveBeenCalled();
-  });
-
-  it("should return a 405 error for non-GET requests", async () => {
-    const mockReq = {
-      method: "POST", // Change the method to test other HTTP methods
-      query: { property_id: 1, unit_id: 1 },
-    };
-
-    const mockRes = {
-      status: jest.fn().mockReturnThis(),
-      json: jest.fn(),
-    };
-
-    await handler(mockReq, mockRes);
-
-    expect(mockRes.status).toHaveBeenCalledWith(405);
-    expect(mockRes.json).toHaveBeenCalledWith({
-      message: "Method not allowed",
-    });
-    expect(pool.connect).toHaveBeenCalled(); // Ensure that connect is not called for non-GET requests
-  });
-
-  it("should return a 405 error for unsupported HTTP methods", async () => {
-    const unsupportedMethods = ["PUT", "DELETE", "PATCH", "OPTIONS"];
-
-    for (const method of unsupportedMethods) {
-      const mockReq = {
-        method,
-        query: { property_id: 1, unit_id: 1 },
-      };
-
-      const mockRes = {
-        status: jest.fn().mockReturnThis(),
-        json: jest.fn(),
-      };
-
-      await handler(mockReq, mockRes);
-
-      expect(mockRes.status).toHaveBeenCalledWith(405);
-      expect(mockRes.json).toHaveBeenCalledWith({
-        message: "Method not allowed",
-      });
-      expect(pool.connect).toHaveBeenCalled(); // Ensure that connect is not called for unsupported methods
-    }
-  });
-  // After all test cases, restore the original implementation of pool.connect
-  afterAll(() => {
-    jest.restoreAllMocks();
-  });
+  // Add more test cases as needed for edge cases, error handling, etc.
 });

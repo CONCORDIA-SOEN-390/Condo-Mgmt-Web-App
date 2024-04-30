@@ -1,21 +1,20 @@
 "use client";
 
-import Image from "next/image";
-import { useFormState } from "react-dom";
-import { CompleteProfileVerification } from "@/actions/SignupCompleteAction";
-import { useState, useContext } from "react";
-import { UploadButton } from "@/../utils/uploadthing";
-import { UserContext } from "@/context/userInfoContext";
+import { useState } from "react";
+import { UploadButton } from "@/utils/uploadthing";
+import { useSearchParams } from "next/navigation";
+import { useRouter } from 'next/navigation'
 
 
 
 function ProfileCompletionForm() {
-  const [state, onSubmit] = useFormState(CompleteProfileVerification, null); //null is the initial state
   const [username, setUsername] = useState("");
   const [num, setNum] = useState("");
   const [userType, setUserType] = useState("");
   const [profileUrl, setProfileUrl] = useState("");
-  const {email} = useContext(UserContext);
+  const email = useSearchParams().get("email") || "";
+  const router = useRouter()
+
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -29,7 +28,7 @@ function ProfileCompletionForm() {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          email, // Assuming state.email contains the email value
+          email, 
           username,
           num,
           userType,
@@ -40,6 +39,7 @@ function ProfileCompletionForm() {
       if (response.ok) {
         // Handle success
         console.log('Profile updated successfully');
+        router.push('/properties')
       } else {
         // Handle error
         console.error('Failed to update profile');
@@ -57,7 +57,7 @@ function ProfileCompletionForm() {
   return (
 
     <form onSubmit={handleSubmit} className="flex flex-col items-center ">
-      <div className="w-5/12  rounded-2xl p-6 ">
+      <div className=" rounded-2xl p-6 ">
         <h2 className="text-3xl font-semibold text-center mb-6 ">Set Up Profile</h2>
         <div className="mb-6 ">
           <div className="relative">

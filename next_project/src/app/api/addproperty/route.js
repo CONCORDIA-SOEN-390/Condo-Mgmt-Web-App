@@ -1,20 +1,29 @@
-import pool from "../../../utils/db";
 import { v4 as uuidv4 } from 'uuid'; // Import UUID library
+import { createClient } from '@supabase/supabase-js';
+
+// Initialize Supabase client
+const supabase = createClient(
+  process.env.NEXT_PUBLIC_SUPABASE_URL,
+  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+);
+
 
 export async function POST(req) {
   const body = await req.json();
-  const { userId, propertyName, address, numberOfUnits, numberOfFloors, numberOfUnitsPerFloor, numberOfParkingSpaces, numberOfLockers, propertyType } = body;
-
-  const client = await pool.connect();
+  const { userId, propertyName, address, numberOfFloors, numberOfUnitsPerFloor, numberOfParkingSpaces, numberOfLockers, propertyType, defaultUnitSqft, defaultUnitPpSqft, defaultLockerFee, defaultParkingFee } = body;
+  const defaultUnitFee = defaultUnitSqft * defaultUnitPpSqft;
 
   try {
-    await client.query("BEGIN"); // Start the transaction
-
     // Insert data into table1
-    const propertyResult = await client.query("INSERT INTO property(user_id, property_name, property_type, address) VALUES ($1, $2, $3, $4) RETURNING property_id", [userId, propertyName, propertyType, address]);
 
+    const { data, error } = await supabase
+    .from('property')
+    .insert([
+      {user_id: userId, property_name: propertyName, property_type: propertyType, address: address},
+    ])
+    .select();
     //retrieve property id generated for use in future queries
-    const propertyId = propertyResult.rows[0].property_id;
+    const propertyId = data[0]['property_id'];
     let unit_id = "";
 
       for (let i = 1; i <= numberOfFloors; i++) {
@@ -32,30 +41,57 @@ export async function POST(req) {
           //Generation of unique registration key through this call to a library.
           const registrationKey = uuidv4();
 
-          await client.query("INSERT INTO unit(unit_id, property_id, owner_id, occupied, registration_key) VALUES ($1, $2, $3, $4, $5)", [unit_id, propertyId, userId, 0, registrationKey]);
+          const { data2, error2 } = await supabase
+          .from('unit')
+          .insert([
+            {unit_id: unit_id, property_id: propertyId, owner_id: userId, occupied: 0, registration_key: registrationKey, square_footage: defaultUnitSqft, price_per_square_foot: defaultUnitPpSqft, condo_fee: defaultUnitFee},
+          ])
+          .select();
+          if (error2 != null){
+            return new Response(JSON.stringify(error), {
+              status:500,
+            });
+          }
           unit_id = "";
         }
       }
 
-    for (let i = 0; i < numberOfLockers; i++) {
-      await client.query("INSERT INTO locker(locker_id, property_id, owner_id, occupied) VALUES ($1, $2, $3, $4)", [i, propertyId, userId, 0]);
+      // removed default because its causing error - only one by user
+    for (let i = 1; i <= numberOfLockers; i++) {
+      const { data3, error3 } = await supabase
+          .from('locker')
+          .insert([
+            { locker_id: i, property_id: propertyId, occupied: false, condo_fee: defaultLockerFee },
+          ])
+          .select();
+      if (error3 != null) {
+        return new Response(JSON.stringify(error3), {
+          status: 500,
+        });
+      }
     }
 
-    for (let i = 0; i < numberOfParkingSpaces; i++) {
-      await client.query("INSERT INTO parking(parking_id, property_id, owner_id, occupied) VALUES ($1, $2, $3, $4)", [i, propertyId, userId, 0]);
+    for (let i = 1; i <= numberOfParkingSpaces; i++) {
+      const { data4, error4 } = await supabase
+          .from('parking')
+          .insert([
+            { parking_id: i, property_id: propertyId, occupied: false, condo_fee: defaultParkingFee },
+          ])
+          .select();
+      if (error4 != null) {
+        return new Response(JSON.stringify(error4), {
+          status: 500,
+        });
+      }
     }
 
-    await client.query("COMMIT"); // Commit the transaction
+
     return new Response('Success',{
       status:200,
     });
   } catch (error) {
-    await client.query("ROLLBACK"); // Rollback the transaction if an error occurs
-    console.error("Error inserting data into tables:", error);
     return new Response('Internal Server Errror', {
       status:500,
     });
-  } finally {
-    client.release();
   }
 }

@@ -1,31 +1,36 @@
-import pool from "../../../utils/db";
+
+import { NextResponse } from "next/server";
+import { signIn } from "@/lib/auth";
+import { AuthError } from "next-auth";
+import { createClient } from "@supabase/supabase-js";
+
+const supabase = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL, process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY);
 
 export async function POST(req) {
-    const body = await req.json();
-    const { email, username, num, userType, profileUrl} = body;
+  const body = await req.json();
+  const { email, username, num, userType, profileUrl } = body;
+  console.log(email, username, num, userType, profileUrl);
 
-        if (!email || !username || !num || !userType || !profileUrl) {
-            return new Response(email,{
-                status:400,
-              });
-        }
+  if (!email || !username || !num || !userType || !profileUrl) {
+    return new Response(email, {
+      status: 400,
+    });
+  }
 
-        const client = await pool.connect();
 
-        try {
-            await client.query('BEGIN');
-            const user = await client.query("UPDATE users SET username = $1 , phone_number = $2 , account_type = $3 , profile_picture_url=$4 WHERE email=$5", [username, num, userType, profileUrl, email]);
-            await client.query('COMMIT');
-            return new Response(email,{
-                status:200,
-              });
-        } catch (error) {
-            await client.query('ROLLBACK');
-            console.error("Error Updating table:", error);
-            return new Response('Internal Server Error',{
-                status:500,
-              });
-        } finally {
-            client.release();
-        }
+  try {
+    const { data, error } = await supabase
+      .from("users")
+      .update({
+        username: username,
+        phone_number: num,
+        account_type: userType,
+        profile_picture_url: profileUrl,
+      })
+      .eq("email", email);
+  } catch (error) {
+    console.error("Error Updating table:", error);
+    return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
+  }
+  await signIn("credentials", { email, password: "", firstSignIn: true });
 }

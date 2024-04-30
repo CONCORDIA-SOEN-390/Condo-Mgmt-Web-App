@@ -1,38 +1,32 @@
-"use client";
+"use client"
 import React, { useState } from "react";
 import SideBar from "@/components/GeneralComponents/PublicUserView/SideBar";
-import { UserContext } from "@/context/userInfoContext";
-import { useContext } from "react";
-import Image from "next/image";
+import {useSession} from "next-auth/react";
+import RegisterForm from "@/components/ProfilePageComponents/RegistrationForm";
+import {auth} from "@/lib/auth";
+import CompanySideBar from "@/components/GeneralComponents/CompanyView/SideBar";
+import PublicUserSideBar from "@/components/GeneralComponents/PublicUserView/SideBar";
+import CardHeader from "@/components/GeneralComponents/CardHeader";
+
+import Dashboard from "@/components/ProfilePageComponents/Dashboard";
 
 function ProfilePage() {
-  const {profileUrl, email, phoneNumber, userName} = useContext(UserContext);
+    const { data: session } = useSession();
+    // @ts-ignore comment
+    const userId = session?.user?.user_id;
+    // @ts-ignore comment
+    const page = session?.user?.account_type;
+
   return (
-    <div className="flex min-h-screen-nav items-center justify-center h-full bg-white">
-      <SideBar page="profile" />
-      <div className="absolute grid grid-rows-4 grid-cols-1 gap-4 p-5 text-black text-xl justify-center items-center">
-        <div className="row-start-2 row-end-2 col-start-1 col-end-2 flex items-center justify-center">
-          <div className="w-40 h-40">
-            <Image
-              src= {profileUrl}
-              alt= "Profile Picture"
-              className="w-full h-full object-cover full"
-            />
+      <div className="flex min-h-screen-nav items-center justify-center h-full bg-white">
+           <CompanySideBar page='profile'/>
+          <div className="absolute w-5/6 inset-y-0 right-5 bg-white shadow-lg rounded-xl">
+              <CardHeader title="Profile">
+                  .
+              </CardHeader>
+              <Dashboard userId={userId} />
           </div>
-        </div>
-        <div className="row-start-3 mrow-end-4 col-start-1 col-end-2">
-          <div className="col-start-2 col-end-3 p-2">
-            <strong>Name: </strong> {userName}
-          </div>
-          <div className="col-start-2 col-end-3 p-2">
-            <strong>Email: </strong> {email}
-          </div>
-          <div className="col-start-2 col-end-3 p-2">
-            <strong>Phone Number:</strong> {phoneNumber}
-          </div>
-        </div>
       </div>
-    </div>
   );
 }
 

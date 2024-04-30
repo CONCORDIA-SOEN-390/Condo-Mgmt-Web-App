@@ -8,7 +8,7 @@ const supabase = createClient(
 
 export async function POST(req) {
     const body = await req.json();
-    const { facilityId, propertyId, reservationDay } = body;
+    const { propertyId, reservationDay } = body;
 
     const nextDay = new Date(reservationDay);
     nextDay.setDate(nextDay.getDate() + 1);
@@ -29,6 +29,7 @@ export async function POST(req) {
         }
         
         return new Response(JSON.stringify(reservation), {
+
             status: 200,
             headers: {
                 'Content-Type': 'application/json'
@@ -41,3 +42,4 @@ export async function POST(req) {
         });
     }
 }
+

@@ -38,8 +38,9 @@ CREATE TABLE IF NOT EXISTS employee (
 --File table
 CREATE TABLE File_
 (
-    file_id INT,
+    file_id SERIAL,
     file_data VARCHAR(255) NOT NULL, -- Assuming PDF files will be stored as binary data
+	title VARCHAR(50),
     property_id INTEGER,
 	PRIMARY KEY (file_id, property_id),
     FOREIGN KEY (property_id) REFERENCES property(property_id)

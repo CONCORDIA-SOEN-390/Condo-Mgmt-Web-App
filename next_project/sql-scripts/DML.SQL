@@ -28,10 +28,10 @@ VALUES
     (1, 'User2', 'rental', '789 Tryia');
 
 -- Adding default files
-INSERT INTO File_ (file_id, file_data, property_id) 
+INSERT INTO File_ (title, file_data, property_id) 
 VALUES 
-    (1, 'file_data_example_1.pdf', 2),
-    (2, 'file_data_example_2.pdf', 2);
+    ('condo regulations', 'file_data_example_1.pdf', 2),
+    ('pool schedule', 'file_data_example_2.pdf', 2);
 
 -- Adding default units
 INSERT INTO unit (unit_id, property_id, owner_id, occupied, registration_key) 

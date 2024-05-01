@@ -1,7 +1,7 @@
 "use server";
 
 import { z } from "zod";
-import pool from "@/../utils/db";
+import pool from "@/utils/db";
 
 
 

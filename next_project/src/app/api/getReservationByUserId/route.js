@@ -7,13 +7,14 @@ const supabase = createClient(
 
 export async function POST(req) {
     const body = await req.json();
-    const { userId, propertyId } = body;
+    const { userId, propertyId, facilityId } = body;
 
     try {
         let { data: reservations, error } = await supabase
             .from('reservation')
             .select('*')
             .eq('user_id', userId)
+            .eq('facility_id', facilityId)
             .eq('property_id', propertyId);
 
         if (error != null){

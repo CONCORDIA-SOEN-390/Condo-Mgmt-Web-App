@@ -14,6 +14,7 @@ function AddPropertyForm({ userId }: { userId: number }) {
   const [defaultParkingFee, setDefaultParkingFee] = useState(0);
   const [propertyType, setPropertyType] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
+  const [successMessage, setSuccessMessage] = useState("");
 
   const handleConfirm = async () => {
     if (propertyName.trim() === "" || address.trim() === "" || propertyType.trim() === "") {
@@ -44,8 +45,8 @@ function AddPropertyForm({ userId }: { userId: number }) {
 
         const data = await response.json();
         if (response.ok) {
-          setErrorMessage("Form Submitted Successfully!");
-          // Clear form fields if submission successful
+          setSuccessMessage("Form Submitted Successfully!");
+          setErrorMessage("");
           setNumberOfUnits(0);
           setNumberOfFloors(0);
           setNumberOfUnitsPerFloor(0);
@@ -63,10 +64,11 @@ function AddPropertyForm({ userId }: { userId: number }) {
         }
       } catch (error) {
         console.error('Error:', error);
-        setErrorMessage('An error occurred while submitting the form.');
+        setErrorMessage('');
       }
     }
   };
+
 
   const handleCancel = () => {
     setNumberOfUnits(0);
@@ -84,12 +86,13 @@ function AddPropertyForm({ userId }: { userId: number }) {
   };
 
   return (
-      <div className="h-screen">
+      <div className="mb-5">
         <div className="bg-sky-100 min-h-screen p-5">
-          <h6 className="text-blue-800 font-semibold text-lg mb-6">Add Property</h6>
+          <h2 className="text-blue-800 font-semibold text-lg mb-6">Add Property</h2>
+
           <div>
             <div className="mb-4">
-              <label htmlFor="Address" className="block text-sm font-bold text-blue-700 mb-2">Address</label>
+              <label htmlFor="Address" className="block text-sm font-bold text-black mb-2">Address</label>
               <input
                   className="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                   type="text"
@@ -100,7 +103,7 @@ function AddPropertyForm({ userId }: { userId: number }) {
               />
             </div>
             <div className="mb-4">
-              <label htmlFor="propertyName" className="block text-sm font-bold text-blue-700 mb-2">Property Name</label>
+              <label htmlFor="propertyName" className="block text-sm font-bold text-black mb-2">Property Name</label>
               <input
                   className="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                   type="text"
@@ -111,7 +114,7 @@ function AddPropertyForm({ userId }: { userId: number }) {
               />
             </div>
             <div className="mb-4">
-              <label htmlFor="propertyType" className="block text-sm font-bold text-blue-700 mb-2">Property Type</label>
+              <label htmlFor="propertyType" className="block text-sm font-bold text-black mb-2">Property Type</label>
               <input
                   className="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                   type="text"
@@ -124,7 +127,7 @@ function AddPropertyForm({ userId }: { userId: number }) {
           </div>
           <div>
             <div className="mb-4">
-              <label htmlFor="numberOfFloors" className="block text-sm font-bold text-blue-700 mb-2">Number of Floors</label>
+              <label htmlFor="numberOfFloors" className="block text-sm font-bold text-black mb-2">Number of Floors</label>
               <input
                   className="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                   type="number"
@@ -134,7 +137,7 @@ function AddPropertyForm({ userId }: { userId: number }) {
               />
             </div>
             <div className="mb-4">
-              <label htmlFor="numberOfUnitsPerFloor" className="block text-sm font-bold text-blue-700 mb-2">Number of Units Per Floor</label>
+              <label htmlFor="numberOfUnitsPerFloor" className="block text-sm font-bold text-black mb-2">Number of Units Per Floor</label>
               <input
                   className="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                   type="number"
@@ -146,7 +149,7 @@ function AddPropertyForm({ userId }: { userId: number }) {
           </div>
           <div>
             <div className="mb-4">
-              <label htmlFor="numberOfParkingSpaces" className="block text-sm font-bold text-blue-700 mb-2">Number of Parking Spaces</label>
+              <label htmlFor="numberOfParkingSpaces" className="block text-sm font-bold text-black mb-2">Number of Parking Spaces</label>
               <input
                   className="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                   type="number"
@@ -156,7 +159,7 @@ function AddPropertyForm({ userId }: { userId: number }) {
               />
             </div>
             <div className="mb-4">
-              <label htmlFor="numberOfLockers" className="block text-sm font-bold text-blue-700 mb-2">Number of Lockers</label>
+              <label htmlFor="numberOfLockers" className="block text-sm font-bold text-black mb-2">Number of Lockers</label>
               <input
                   className="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                   type="number"
@@ -168,7 +171,7 @@ function AddPropertyForm({ userId }: { userId: number }) {
           </div>
           <div>
             <div className="mb-4">
-              <label htmlFor="defaultUnitSqft" className="block text-sm font-bold text-blue-700 mb-2">Default Unit Sqft</label>
+              <label htmlFor="defaultUnitSqft" className="block text-sm font-bold text-black mb-2">Default Unit Sqft</label>
               <input
                   className="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                   type="number"
@@ -178,7 +181,7 @@ function AddPropertyForm({ userId }: { userId: number }) {
               />
             </div>
             <div className="mb-4">
-              <label htmlFor="defaultUnitPpSqft" className="block text-sm font-bold text-blue-700 mb-2">Default Unit Price Per Sqft</label>
+              <label htmlFor="defaultUnitPpSqft" className="block text-sm font-bold text-black mb-2">Default Unit Price Per Sqft</label>
               <input
                   className="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                   type="number"
@@ -188,7 +191,7 @@ function AddPropertyForm({ userId }: { userId: number }) {
               />
             </div>
             <div className="mb-4">
-              <label htmlFor="defaultLockerFee" className="block text-sm font-bold text-blue-700 mb-2">Default Locker Fee</label>
+              <label htmlFor="defaultLockerFee" className="block text-sm font-bold text-black mb-2">Default Locker Fee</label>
               <input
                   className="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                   type="number"
@@ -198,7 +201,7 @@ function AddPropertyForm({ userId }: { userId: number }) {
               />
             </div>
             <div className="mb-4">
-              <label htmlFor="defaultParkingFee" className="block text-sm font-bold text-blue-700 mb-2">Default Parking Fee</label>
+              <label htmlFor="defaultParkingFee" className="block text-sm font-bold text-black mb-2">Default Parking Fee</label>
               <input
                   className="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                   type="number"
@@ -208,19 +211,23 @@ function AddPropertyForm({ userId }: { userId: number }) {
               />
             </div>
           </div>
-          <div className="text-red-500 py-2">
+          <div className="py-2">
+            {/* Success Message */}
+            {successMessage && (
+                <div className="text-green-500 py-2">
+                  <p>{successMessage}</p>
+                </div>
+            )}
+            {/* Error Message */}
             {errorMessage && (
-                <p>
-                  {errorMessage}
-                </p>
+                <div className="text-red-500 py-2">
+                  <p>{errorMessage}</p>
+                </div>
             )}
           </div>
           <div className="flex justify-between">
             <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" onClick={handleConfirm}>
               Confirm
-            </button>
-            <button className="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" onClick={handleCancel}>
-              Cancel
             </button>
           </div>
         </div>

@@ -138,8 +138,8 @@ export default function CompanyPropertyTable({ userId }: CompanyPropertyTablePro
             <table className="min-w-full divide-y divide-gray-200">
                 <thead className="min-w-full bg-[#DAECFB] text-black">
                 <tr>
-                    <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">#</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">PropertyName</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">ID</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Property Name</th>
                     <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Address</th>
                     <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Property Type</th>
                     <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Number of Units</th>
@@ -150,7 +150,10 @@ export default function CompanyPropertyTable({ userId }: CompanyPropertyTablePro
                 <tbody>
                 {properties.map((property, id) => (
                     <React.Fragment key={id}>
-                        <tr onClick={() => handleRowClick(property.property_id)}>
+                        <tr
+                            onClick={() => handleRowClick(property.property_id)}
+                            className={`${id % 2 === 0 ? 'bg-white' : 'bg-gray-50'} hover:bg-gray-200 cursor-pointer`}
+                        >
                             <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{property.property_id}</td>
                             <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{property.property_name}</td>
                             <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{property.address}</td>
@@ -170,7 +173,7 @@ export default function CompanyPropertyTable({ userId }: CompanyPropertyTablePro
                                 </td>
                             </tr>
                         )}
-                    </ React.Fragment>
+                    </React.Fragment>
                 ))}
                 </tbody>
             </table>

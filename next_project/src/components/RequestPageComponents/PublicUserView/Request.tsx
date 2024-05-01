@@ -73,7 +73,7 @@ function Request({ userId }: RequestProps) {
     }, [userId]);
 
     return (
-        <div>
+        <div className="overflow-x-auto p-3">
             <table className="min-w-full divide-y divide-gray-200">
                 <thead className="min-w-full bg-[#DAECFB] text-black">
                 <tr>

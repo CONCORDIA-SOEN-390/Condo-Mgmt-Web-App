@@ -26,7 +26,7 @@ const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
 };
 
 return (
-    <div className="h-screen">
+    <div>
         <div className="bg-sky-100 min-h-screen p-5">
             <h6 className="text-blue-800 font-semibold text-lg mb-6">Document Upload</h6>
             <form onSubmit={handleSubmit}>
@@ -61,7 +61,7 @@ return (
                             return `Max 4MB: ${fileTypes.join(", ")}`;
                         },
                     }}
-                    endpoint="imageUploader"
+                    endpoint="pdfUploader"
                     onClientUploadComplete={(res) => {
                         // Do something with the response
                         console.log(res[0]["url"]);

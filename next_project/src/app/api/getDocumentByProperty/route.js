@@ -16,6 +16,8 @@ export async function POST(req) {
             .select('*')
             .eq('property_id', propertyId);
 
+        console.log(documents);
+
         if (error != null){
             return new Response(JSON.stringify(error), {
                 status:500,

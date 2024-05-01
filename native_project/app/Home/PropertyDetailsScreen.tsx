@@ -1,19 +1,19 @@
 import React from 'react';
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Linking } from 'react-native';
 
+interface Document {
+  id: string;
+  title: string;
+  url: string;
+}
+
 interface PropertyDetails {
-    unitId: string;
-    size: string;
-    parkingSpotId: string;
-    lockerId: string;
-    documents: Document[];
-  }
-  
-  interface Document {
-    id: string;
-    title: string;
-    url: string; 
-  }
+  unitId: string;
+  size: string;
+  parkingSpotId: string;
+  lockerId: string;
+  documents: Document[];
+}
 
 const propertyDetails: PropertyDetails = {
   unitId: 'Unit 101',
@@ -36,10 +36,22 @@ const PropertyDetailsScreen = () => {
       <Text style={styles.header}>Property Details</Text>
 
       <View style={styles.detailSection}>
-        <Text style={styles.detailTitle}>Unit ID: {propertyDetails.unitId}</Text>
-        <Text style={styles.detail}>Size: {propertyDetails.size}</Text>
-        <Text style={styles.detail}>Parking Spot ID: {propertyDetails.parkingSpotId}</Text>
-        <Text style={styles.detail}>Locker ID: {propertyDetails.lockerId}</Text>
+        <View style={styles.detailItem}>
+          <Text style={styles.detailTitle}>Unit ID:</Text>
+          <Text style={styles.detail}>{propertyDetails.unitId}</Text>
+        </View>
+        <View style={styles.detailItem}>
+          <Text style={styles.detailTitle}>Size:</Text>
+          <Text style={styles.detail}>{propertyDetails.size}</Text>
+        </View>
+        <View style={styles.detailItem}>
+          <Text style={styles.detailTitle}>Parking Spot ID:</Text>
+          <Text style={styles.detail}>{propertyDetails.parkingSpotId}</Text>
+        </View>
+        <View style={styles.detailItem}>
+          <Text style={styles.detailTitle}>Locker ID:</Text>
+          <Text style={styles.detail}>{propertyDetails.lockerId}</Text>
+        </View>
       </View>
 
       <Text style={styles.header}>Documents</Text>
@@ -65,13 +77,18 @@ const styles = StyleSheet.create({
   detailSection: {
     marginBottom: 20,
   },
+  detailItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 10,
+  },
   detailTitle: {
-    fontSize: 18,
+    fontSize: 16,
     fontWeight: 'bold',
+    marginRight: 5,
   },
   detail: {
     fontSize: 16,
-    marginTop: 5,
   },
   documentItem: {
     padding: 10,

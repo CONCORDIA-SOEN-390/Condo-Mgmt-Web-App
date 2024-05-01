@@ -11,7 +11,7 @@ interface Reservation {
     username: string;
 }
 
-const MyReservationTable: React.FC<{ propertyId: number, userId: number, facilityId: number }> = ({ propertyId, userId, facilityId }) => {
+const MyReservationTable: React.FC<{ propertyId: number, userId: number }> = ({ propertyId, userId }) => {
     const [reservations, setReservations] = useState<Reservation[]>([]);
     const [loading, setLoading] = useState(true);
 
@@ -26,7 +26,6 @@ const MyReservationTable: React.FC<{ propertyId: number, userId: number, facilit
                     body: JSON.stringify({
                         propertyId: propertyId,
                         userId: userId,
-                        facilityId: facilityId
                     }),
                 });
 
@@ -76,33 +75,32 @@ const MyReservationTable: React.FC<{ propertyId: number, userId: number, facilit
     }
 
     return (
-        <div className="bg-gray-50 rounded-lg shadow-md p-6">
-            <h2 className="text-xl font-bold mb-4">Reservations</h2>
-            <table className="min-w-full divide-y divide-gray-200">
-                <thead className="bg-[#DAECFB] text-black">
-                <tr>
-                    <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Reservation ID</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">User</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Start Time</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">End Time</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Action</th>
+        <table className="min-w-full divide-y divide-gray-200">
+            <thead className="bg-blue-500 text-white">
+            <tr>
+                <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Reservation ID</th>
+                <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Facility Name</th>
+                <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">User</th>
+                <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Start Time</th>
+                <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">End Time</th>
+                <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Action</th>
+            </tr>
+            </thead>
+            <tbody className="bg-white divide-y divide-gray-200">
+            {reservations.map((reservation, index) => (
+                <tr key={reservation.reservation_id} className={index % 2 === 0 ? 'bg-white' : 'bg-gray-50'}>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{reservation.reservation_id}</td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{reservation.facility_id}</td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{reservation.user_id}</td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{new Date(reservation.start_time).toLocaleString()}</td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{new Date(reservation.end_time).toLocaleString()}</td>
+                    <td className="px-6 py-4 whitespace-nowrap">
+                        <button className="bg-blue-500 hover:bg-zinc-600 text-sm mr-7 text-white py-2 px-4 rounded mr-5" onClick={() => handleCancel(reservation.reservation_id)}>Cancel</button>
+                    </td>
                 </tr>
-                </thead>
-                <tbody className="bg-white divide-y divide-gray-200">
-                {reservations.map((reservation, index) => (
-                    <tr key={reservation.reservation_id} className={index % 2 === 0 ? 'bg-white' : 'bg-gray-50'}>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{reservation.reservation_id}</td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{reservation.user_id}</td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{new Date(reservation.start_time).toLocaleString()}</td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{new Date(reservation.end_time).toLocaleString()}</td>
-                        <td className="px-6 py-4 whitespace-nowrap">
-                            <button className="bg-zinc-500 hover:bg-zinc-600 text-sm mr-7 text-white py-2 px-4 rounded mr-5" onClick={() => handleCancel(reservation.reservation_id)}>Cancel</button>
-                        </td>
-                    </tr>
-                ))}
-                </tbody>
-            </table>
-        </div>
+            ))}
+            </tbody>
+        </table>
     );
 };
 

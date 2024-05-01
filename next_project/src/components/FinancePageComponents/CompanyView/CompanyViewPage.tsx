@@ -1,10 +1,8 @@
 import React, { useEffect, useState } from "react";
 import CardHeader from "@/components/GeneralComponents/CardHeader";
 import { PiPlusSquareFill } from "react-icons/pi";
-import AddExpenseForm from "@/components/FinancePageComponents/CompanyView/AddExpenseForm";
-import ExpenseTable from "@/components/FinancePageComponents/CompanyView/ExpenseTable";
-import UnitFee from "@/components/FinancePageComponents/CompanyView/UnitFee";
-import IncomeTable from "@/components/FinancePageComponents/CompanyView/IncomeTable";
+import AddFinanceForm from "@/components/FinancePageComponents/CompanyView/AddFinanceForm";
+import FinanceTable from "@/components/FinancePageComponents/CompanyView/FinanceTable";
 
 interface RequestProps {
     userId: number;
@@ -19,8 +17,16 @@ interface Property {
 }
 
 function Request({ userId }: RequestProps) {
-    const [selectedPropertyId, setSelectedPropertyId] = useState<number | null>(null);
+    const [showAddEmployee, setShowAddEmployee] = useState<Record<number, boolean>>({});
     const [properties, setProperties] = useState<Property[]>([]);
+    const [showAddRequest, setShowAddRequest] = useState({});
+
+    const toggleAddEmployee = (propertyId: number) => {
+        setShowAddEmployee((prevVisibility) => ({
+            ...prevVisibility,
+            [propertyId]: !prevVisibility[propertyId],
+        }));
+    };
 
     // Getting properties from userId
     useEffect(() => {
@@ -48,64 +54,20 @@ function Request({ userId }: RequestProps) {
         fetchProperties(userId);
     }, [userId]);
 
-    const handlePropertyClick = (propertyId: number) => {
-        setSelectedPropertyId(propertyId === selectedPropertyId ? null : propertyId);
-    };
-
     return (
         <div>
-            <table className="min-w-full divide-y divide-gray-200">
-                <thead className="min-w-full bg-[#DAECFB] text-black">
-                <tr>
-                    <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">ID</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Property Name</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Address</th>
-
-                </tr>
-                </thead>
-                <tbody>
-                {properties.map((property, id) => (
-                    <React.Fragment key={id}>
-                        <tr
-                            onClick={() => handlePropertyClick(property.property_id)}
-                            className={`${id % 2 === 0 ? 'bg-white' : 'bg-gray-50'} hover:bg-gray-200 cursor-pointer`}
-                        >
-                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{property.property_id}</td>
-                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{property.property_name}</td>
-                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{property.address}</td>
-
-                        </tr>
-                        {selectedPropertyId === property.property_id && (
-                            <>
-                                <tr>
-                                    <td colSpan={7}>
-                                        <div className="p-5 text-black text-xl">
-                                            <ExpenseTable propertyId={property.property_id} userId={userId} />
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td colSpan={7}>
-                                        <div className="p-5 text-black text-xl">
-                                            <IncomeTable propertyId={property.property_id} userId={userId} />
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td colSpan={7}>
-                                        <div className="p-5 text-black text-xl">
-                                            <UnitFee propertyId={property.property_id} />
-                                        </div>
-                                    </td>
-                                </tr>
-                            </>
-                        )}
-                    </React.Fragment>
-                ))}
-                </tbody>
-            </table>
+            {properties.map((property) => (
+                <div key={property.property_id} className="bg-white shadow-lg rounded-xl mb-5">
+                    <CardHeader title={`Finances for ${property.property_name}`}>
+                        <button onClick={() => toggleAddEmployee(property.property_id)}><PiPlusSquareFill /></button>
+                    </CardHeader>
+                    <div className="p-5 text-black text-xl">
+                        {showAddEmployee[property.property_id] && <AddFinanceForm propertyId={property.property_id} />}
+                        <FinanceTable propertyId={property.property_id} userId={userId} />
+                    </div>
+                </div>
+            ))}
         </div>
-
     );
 }
 

@@ -67,6 +67,7 @@ const RequestTable: React.FC<RequestTableProps> = ({ userId }) => {
 
                 const data = await response.json();
                 setRequestStatuses(data);
+                console.log("Request statuses:", data);
             } catch (error) {
                 console.error("Error fetching request statuses:", error);
             }
@@ -86,6 +87,7 @@ const RequestTable: React.FC<RequestTableProps> = ({ userId }) => {
 
                 const data = await response.json();
                 setRequestTypes(data);
+                console.log("Request types:", data);
             } catch (error) {
                 console.error("Error fetching request types:", error);
             }
@@ -117,7 +119,13 @@ const RequestTable: React.FC<RequestTableProps> = ({ userId }) => {
     };
 
     const handleRowClick = (request: Request) => {
-        setSelectedRequest(request === selectedRequest ? null : request);
+        if (selectedRequest && selectedRequest.req_id === request.req_id) {
+            // Clicked on the selected row again, close the form
+            setSelectedRequest(null);
+        } else {
+            // Clicked on a different row, select it
+            setSelectedRequest(request);
+        }
     };
 
     const getStatusNameById = (statusId: number) => {
@@ -132,30 +140,25 @@ const RequestTable: React.FC<RequestTableProps> = ({ userId }) => {
 
     return (
         <div className="overflow-x-auto">
-            <table className="min-w-full divide-y divide-gray-200">
-                <thead className="min-w-full bg-[#DAECFB] text-black">
-                <tr>
-                    <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Request ID</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Unit ID</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Property ID</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Request Creator</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Request Reviewer</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Type ID</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Status ID</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Details</th>
-                </tr>
-                </thead>
-                <tbody className="bg-white divide-y divide-gray-200">
-                {requests.map(request => (
-                    <React.Fragment key={request.req_id}>
-                        <tr
-                            className={`${
-                                selectedRequest && selectedRequest.req_id === request.req_id
-                                    ? 'bg-gray-100'
-                                    : 'bg-white'
-                            } hover:bg-gray-200 cursor-pointer`}
-                            onClick={() => handleRowClick(request)}
-                        >
+            <h2 className="text-xl font-semibold mb-4">Request</h2>
+            {requests.length > 0 && (
+                <table className="min-w-full divide-y divide-gray-200">
+                    <thead className="bg-blue-400 text-white">
+                    <tr>
+                        <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Request ID</th>
+                        <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Unit ID</th>
+                        <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Property ID</th>
+                        <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Request Creator ID</th>
+
+                        <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Request Reviewer</th>
+                        <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Type ID</th>
+                        <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Status ID</th>
+                        <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Details</th>
+                    </tr>
+                    </thead>
+                    <tbody className="bg-white divide-y divide-gray-200">
+                    {requests.map(request => (
+                        <tr key={request.req_id} className="bg-gray-50" onClick={() => handleRowClick(request)}>
                             <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{request.req_id}</td>
                             <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{request.unit_id}</td>
                             <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{request.property_id}</td>
@@ -165,36 +168,31 @@ const RequestTable: React.FC<RequestTableProps> = ({ userId }) => {
                             <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{getStatusNameById(request.status_id)}</td>
                             <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{request.details}</td>
                         </tr>
-                        {selectedRequest && selectedRequest.req_id === request.req_id && (
-                            <tr>
-                                <td colSpan={8} className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                    <div className="mt-4 text-lg text-black">
-                                        <h2 className="mb-2">Update Status</h2>
-                                        <select
-                                            className="border border-gray-300 rounded px-3 py-2 mr-2"
-                                            value={newStatus}
-                                            onChange={(e) => setNewStatus(e.target.value)}
-                                        >
-                                            <option value="">Select Status</option>
-                                            {requestStatuses.map(status => (
-                                                <option key={status.status_id} value={status.status_id}>{status.status_name}</option>
-                                            ))}
-                                        </select>
-                                        <button
-                                            className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded"
-                                            onClick={handleStatusChange}
-                                        >
-                                            Update Status
-                                        </button>
-                                    </div>
-
-                                </td>
-                            </tr>
-                        )}
-                    </React.Fragment>
-                ))}
-                </tbody>
-            </table>
+                    ))}
+                    </tbody>
+                </table>
+            )}
+            {selectedRequest && (
+                <div className="mt-4">
+                    <h3 className="mb-2">Update Status</h3>
+                    <select
+                        className="border border-gray-300 rounded px-3 py-2 mr-2"
+                        value={newStatus}
+                        onChange={(e) => setNewStatus(e.target.value)}
+                    >
+                        <option value="">Select Status</option>
+                        {requestStatuses.map(status => (
+                            <option key={status.status_id} value={status.status_id}>{status.status_name}</option>
+                        ))}
+                    </select>
+                    <button
+                        className="bg-blue-500 text-white px-4 py-2 rounded"
+                        onClick={handleStatusChange}
+                    >
+                        Update Status
+                    </button>
+                </div>
+            )}
             {requests.length === 0 && (
                 <div>No requests found</div>
             )}

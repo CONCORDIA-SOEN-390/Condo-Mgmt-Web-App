@@ -4,20 +4,17 @@ import ProfileCompletionForm from "@/components/CompleteProfileComponents/Profil
 import NavBar from "@/components/GeneralComponents/NavBar";
 import Footer from "@/components/GeneralComponents/Footer";
 import "@/app/styling/style.css";
-import { Suspense } from "react";
 
 function completeSignup() {
   return (
     <div className="container-hero">
       <div>
-        <NavBar />
+        <NavBar/>
         <div className="bg-sky-50/[0.75] my-36 py-10 rounded-lg mx-auto max-w-xl">
-          <Suspense>
-            <ProfileCompletionForm />
-          </Suspense>
+          <ProfileCompletionForm/>
         </div>
-        <Footer />
-      </div>
+        <Footer/>
+        </div>
     </div>
   );
 }

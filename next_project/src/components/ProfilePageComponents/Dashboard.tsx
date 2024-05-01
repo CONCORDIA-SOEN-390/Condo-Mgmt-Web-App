@@ -7,6 +7,7 @@ interface User {
     user_id: number;
     username: string;
     email: string;
+    profile_picture_url: string;
 }
 
 interface Notification {
@@ -56,6 +57,8 @@ const Dashboard: React.FC<DashboardProps> = ({ userId }) => {
     const email = session?.user?.email;
     // @ts-ignore comment
     const phoneNumber = session?.user?.phone_number;
+    // @ts-ignore comment
+    const profilePicture = session?.user?.profile_picture_url;
 
 
     useEffect(() => {
@@ -172,6 +175,7 @@ const Dashboard: React.FC<DashboardProps> = ({ userId }) => {
 
         <div className="flex flex-wrap">
             <div className="w-full md:w-1/2 px-4 mb-4">
+                <img src={profilePicture} alt="Profile Picture" className="w-40 h-40 rounded-full mt-4" />
                 <h1 className="text-xl font-bold mb-2">Name: {userName} </h1>
                 <h1 className="text-xl font-bold mb-2">Email: {email} </h1>
                 <h1 className="text-xl font-bold mb-2">Phone Number: {phoneNumber} </h1>

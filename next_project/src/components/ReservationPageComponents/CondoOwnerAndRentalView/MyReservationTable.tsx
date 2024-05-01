@@ -46,7 +46,7 @@ const MyReservationTable: React.FC<{ propertyId: number, userId: number, facilit
 
         fetchReservations();
 
-    }, [propertyId, userId]);
+    }, [propertyId, userId, facilityId]);
 
     const handleCancel = async (reservationId: number) => {
         try {

@@ -2,6 +2,9 @@ import React, { useEffect, useState } from "react";
 import CardHeader from "@/components/GeneralComponents/CardHeader";
 import { PiPlusSquareFill } from "react-icons/pi";
 import DocumentTable from "@/components/DocumentPageComponents/CompanyView/DocumentTable";
+
+
+
 interface Property {
     property_id: number;
     property_name: string;

@@ -5,7 +5,7 @@ import { FaHouse, FaFile, FaPerson } from "react-icons/fa6";
 import { FaChartColumn } from "react-icons/fa6";
 import { FiLogOut } from "react-icons/fi";
 import Link from "next/link";
-import { signOutAction } from "@/actions/LogoutAction";
+import { signOutAction } from "@/actions/logoutAction";
 
 export default function SideBar({ page }: { page: string }) {
   return (

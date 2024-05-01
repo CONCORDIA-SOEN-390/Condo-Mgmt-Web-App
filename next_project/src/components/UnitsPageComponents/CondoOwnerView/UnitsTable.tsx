@@ -34,7 +34,6 @@ export default function UnitsTable({ propertyId, userId }: { propertyId: number,
     const [lockers, setLockers] = useState<Record<number, Locker>>({});
     const [parkings, setParkings] = useState<Record<number, Parking>>({});
     const [owners, setOwners] = useState<Record<number, Owner>>({});
-    const [selectedRow, setSelectedRow] = useState<number | null>(null);
 
 
 
@@ -141,9 +140,6 @@ export default function UnitsTable({ propertyId, userId }: { propertyId: number,
         });
     }, [propertyId, units]);
 
-    const handleRowClick = (index: number) => {
-        setSelectedRow(selectedRow === index ? null : index);
-    };
 
     return (
         <div>
@@ -159,48 +155,30 @@ export default function UnitsTable({ propertyId, userId }: { propertyId: number,
                         <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Owner Email</th>
                         <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Locker ID</th>
                         <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Parking ID</th>
-                        <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Fee Per Sq Ft</th>
                         <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Square Footage</th>
+                        <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Fee Per Sq Ft</th>
                         <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Condo Fee ($)</th>
+                        <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Registration Key</th>
                     </tr>
                     </thead>
                     <tbody>
-                    {units.map((unit, index) => (
-                        <React.Fragment key={unit.unit_id}>
-                            <tr
-                                onClick={() => handleRowClick(index)}
-                                className={`${index % 2 === 0 ? 'bg-white' : 'bg-gray-50'} hover:bg-gray-200 cursor-pointer${
-                                    selectedRow === index ? 'hover:bg-gray-200' : ''
-                                }`}
-                            >
-                                <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{unit.unit_id}</td>
-                                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{unit.occupied ? 'Yes' : 'No'}</td>
-                                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{unit.owner_id}</td>
-                                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                    {owners[unit.owner_id] && owners[unit.owner_id].username}
-                                </td>
-                                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                    {owners[unit.owner_id] && owners[unit.owner_id].email}
-                                </td>
-                                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                    {lockers[unit.owner_id] && lockers[unit.owner_id].locker_id}
-                                </td>
-                                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                    {parkings[unit.owner_id] && parkings[unit.owner_id].parking_id}
-                                </td>
+                    {units.map((unit) => (
+                        <tr key={unit.unit_id}>
+                            <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{unit.unit_id}</td>
+                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{unit.occupied ? 'Yes' : 'No'}</td>
+                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{unit.owner_id}</td>
+                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{owners[unit.owner_id] && owners[unit.owner_id].username}</td>
+                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{owners[unit.owner_id] && owners[unit.owner_id].email}</td>
+                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                {lockers[unit.owner_id] && lockers[unit.owner_id].locker_id}</td>
+                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                {parkings[unit.owner_id] && parkings[unit.owner_id].parking_id}</td>
+                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{unit.price_per_square_foot}</td>
+                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{unit.square_footage}</td>
+                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{unit.condo_fee}</td>
+                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{unit.registration_key}</td>
 
-                                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{unit.price_per_square_foot}</td>
-                                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{unit.square_footage}</td>
-                                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{unit.condo_fee}</td>
-                            </tr>
-                            {selectedRow === index && (
-                                <tr>
-                                    <td colSpan={10} className="px-6 bg-blue-100 py-4 pb-6 whitespace-nowrap text-l text-black">
-                                        Registration Key: {unit.registration_key}
-                                    </td>
-                                </tr>
-                            )}
-                        </React.Fragment>
+                        </tr>
                     ))}
                     </tbody>
                 </table>

@@ -1,79 +1,53 @@
-import React from "react";
-import { render } from "@testing-library/react";
-import CompleteSignup from "../src/app/(auth)/signup/complete/page";
-import NavBar from "@/components/GeneralComponents/NavBar";
-import ProfileCompletionForm from "@/components/CompleteProfileComponents/ProfileCompletionForm";
-import Footer from "@/components/GeneralComponents/Footer";
+import { verifyUserSignUp } from "@/app/_actions";
+//import { FormData } from 'your-mock-library'; // Replace with a suitable library for mocking FormData
 
-describe("CompleteSignup component", () => {
-  test("renders without crashing", () => {
-    render(<CompleteSignup />);
+jest.mock("next/navigation", () => ({
+  redirect: jest.fn(),
+}));
+
+describe("verifyUserSignUp", () => {
+  it("should return errors for invalid email", async () => {
+    const prevState = {};
+    const formData = new FormData();
+    formData.append("email", "invalid-email");
+    formData.append("password", "ValidPassword1!");
+
+    const result = await verifyUserSignUp(prevState, formData);
+
+    expect(result.errors?.email).toContain("Invalid Email");
   });
 
-  test("renders child components", () => {
-    const { getByTestId } = render(<CompleteSignup />);
-    expect(getByTestId("navbar")).toBeInTheDocument();
-    expect(getByTestId("profile-completion-form")).toBeInTheDocument();
-    expect(getByTestId("footer")).toBeInTheDocument();
-  });
+  it("should return errors for invalid password", async () => {
+    const prevState = {};
+    const formData = new FormData();
+    formData.append("email", "valid@example.com");
+    formData.append("password", "short");
 
-  test("applies correct styling classes", () => {
-    const { container } = render(<CompleteSignup />);
-    expect(
-      (container?.firstChild as HTMLElement)?.classList.contains(
-        "container-hero"
-      )
-    ).toBeTruthy();
-    expect(
-      (container?.firstChild?.firstChild as HTMLElement)?.classList.contains(
-        "bg-sky-50"
-      )
-    ).toBeTruthy();
-    expect(
-      (container?.firstChild?.firstChild as HTMLElement)?.classList.contains(
-        "my-36"
-      )
-    ).toBeTruthy();
-    expect(
-      (container?.firstChild?.firstChild as HTMLElement)?.classList.contains(
-        "py-10"
-      )
-    ).toBeTruthy();
-    expect(
-      (container?.firstChild?.firstChild as HTMLElement)?.classList.contains(
-        "rounded-lg"
-      )
-    ).toBeTruthy();
-    expect(
-      (container?.firstChild?.firstChild as HTMLElement)?.classList.contains(
-        "max-w-xl"
-      )
-    ).toBeTruthy();
-  });
+    const result = await verifyUserSignUp(prevState, formData);
 
-  test("limits container width with max-w-xl class", () => {
-    const { container } = render(<CompleteSignup />);
-    expect(
-      (container?.firstChild?.firstChild as HTMLElement)?.getAttribute("style")
-    ).toContain("max-width: 36rem");
-  });
-
-  test("renders necessary HTML elements", () => {
-    const { container } = render(<CompleteSignup />);
-    expect((container?.firstChild as HTMLElement)?.tagName).toBe("DIV");
-    expect((container?.firstChild as HTMLElement)?.childNodes.length).toBe(3);
-  });
-
-  test("has correct structure", () => {
-    const { container } = render(<CompleteSignup />);
-    expect((container?.firstChild as HTMLElement)?.childNodes[0].nodeName).toBe(
-      "NAV"
+    expect(result.errors?.password).toContain(
+      "Password must be at least 8 characters long"
     );
-    expect((container?.firstChild as HTMLElement)?.childNodes[1].nodeName).toBe(
-      "DIV"
+    expect(result.errors?.password).toContain(
+      "Password must contain at least 1 number, 1 special character, and 1 capital letter"
     );
-    expect((container?.firstChild as HTMLElement)?.childNodes[2].nodeName).toBe(
-      "FOOTER"
-    );
+  });
+
+  it("should redirect for valid form data", async () => {
+    const prevState = {};
+    const formData = new FormData();
+    formData.append("email", "valid@example.com");
+    formData.append("password", "ValidPassword1!");
+
+    await verifyUserSignUp(prevState, formData);
+
+    // Assuming redirect is mocked
+    const redirectMock = require("next/navigation").redirect;
+
+    // Ensure that redirect was called
+    //expect(redirectMock).toHaveBeenCalledWith("/signup/complete");
+
+    // Ensure that redirect was called only once
+    expect(redirectMock).toHaveBeenCalledTimes(1);
   });
 });

@@ -6,19 +6,13 @@ import AvailableFacilityTable from "@/components/ReservationPageComponents/Condo
 interface Property {
     property_id: number;
     property: {
-        address: string;
+        property_id: number;
         property_name: string;
     };
 }
 
 function CondoOwnerAndRentalPage({ userId }: { userId: number }) {
     const [properties, setProperties] = useState<Property[]>([]);
-    const [selectedPropertyId, setSelectedPropertyId] = useState<number | null>(null);
-
-    const handlePropertyClick = (propertyId: number) => {
-        setSelectedPropertyId(propertyId === selectedPropertyId ? null : propertyId);
-    };
-
 
     // Getting properties from userId -> owner
     useEffect(() => {
@@ -60,40 +54,22 @@ function CondoOwnerAndRentalPage({ userId }: { userId: number }) {
 
     return (
         <div>
-            <table className="min-w-full divide-y divide-gray-200">
-                <thead className="min-w-full bg-[#DAECFB] text-black">
-                <tr>
-                    <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">ID</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Property Name</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Address</th>
-                </tr>
-                </thead>
-                <tbody>
-                {properties.map((property, id) => (
-                    <React.Fragment key={id}>
-                        <tr
-                            onClick={() => handlePropertyClick(property.property_id)}
-                            className={`${
-                                id % 2 === 0 ? 'bg-white' : 'bg-gray-50'
-                            } hover:bg-gray-200 cursor-pointer`}
-                        >
-                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{property.property_id}</td>
-                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{property.property.property_name}</td>
-                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{property.property.address}</td>
-                        </tr>
-                        {selectedPropertyId === property.property_id && (
-                            <tr>
-                                <td colSpan={3}>
-                                    <div className="p-5 text-black text-xl">
-                                        <AvailableFacilityTable propertyId={property.property_id} userId={userId} />
-                                    </div>
-                                </td>
-                            </tr>
-                        )}
-                    </React.Fragment>
-                ))}
-                </tbody>
-            </table>
+            {properties.map((property) => (
+                <div key={property.property_id} className="bg-white shadow-lg rounded-xl mb-5">
+                    <CardHeader title={`Reservations for Property ${property.property.property_name}`}>
+                        .
+                    </CardHeader>
+                    <div className="p-5 text-black text-xl">
+                        <MyReservationTable propertyId={property.property_id} userId={userId} />
+                    </div>
+                    <CardHeader title={`Available Facilities for Property ${property.property.property_name}`}>
+                        .
+                    </CardHeader>
+                    <div className="p-5 text-black text-xl">
+                        <AvailableFacilityTable propertyId={property.property_id} userId={userId} />
+                    </div>
+                </div>
+            ))}
         </div>
     );
 }

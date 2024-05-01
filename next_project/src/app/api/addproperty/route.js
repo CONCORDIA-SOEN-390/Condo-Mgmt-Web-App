@@ -56,35 +56,33 @@ export async function POST(req) {
         }
       }
 
-      // removed default because its causing error - only one by user
     for (let i = 1; i <= numberOfLockers; i++) {
       const { data3, error3 } = await supabase
-          .from('locker')
-          .insert([
-            { locker_id: i, property_id: propertyId, occupied: false, condo_fee: defaultLockerFee },
-          ])
-          .select();
-      if (error3 != null) {
-        return new Response(JSON.stringify(error3), {
-          status: 500,
+      .from('locker')
+      .insert([
+        {locker_id: i, property_id: propertyId, owner_id: userId, occupied: false, condo_fee: defaultLockerFee},
+      ])
+      .select();
+      if (error3 != null){
+        return new Response(JSON.stringify(error), {
+          status:500,
         });
       }
     }
 
     for (let i = 1; i <= numberOfParkingSpaces; i++) {
       const { data4, error4 } = await supabase
-          .from('parking')
-          .insert([
-            { parking_id: i, property_id: propertyId, occupied: false, condo_fee: defaultParkingFee },
-          ])
-          .select();
-      if (error4 != null) {
-        return new Response(JSON.stringify(error4), {
-          status: 500,
+      .from('parking')
+      .insert([
+        {parking_id: i, property_id: propertyId, owner_id: userId, occupied: false, condo_fee: defaultParkingFee},
+      ])
+      .select();
+      if (error4 != null){
+        return new Response(JSON.stringify(error), {
+          status:500,
         });
-      }
+      }    
     }
-
 
     return new Response('Success',{
       status:200,

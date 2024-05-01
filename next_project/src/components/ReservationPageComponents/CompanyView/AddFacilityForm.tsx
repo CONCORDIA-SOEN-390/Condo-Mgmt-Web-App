@@ -1,10 +1,11 @@
 import React, { useState } from "react";
 
 interface AddFacilityFormProps {
+    onClose: () => void;
     propertyId: number;
 }
 
-function AddFacilityForm({ propertyId }: AddFacilityFormProps) {
+function AddFacilityForm({ onClose, propertyId }: AddFacilityFormProps) {
     const [formData, setFormData] = useState({
         facilityName: "",
         facilityDescription: ""
@@ -43,7 +44,7 @@ function AddFacilityForm({ propertyId }: AddFacilityFormProps) {
                 facilityName: "",
                 facilityDescription: ""
             });
-
+            onClose();
         } catch (error) {
             console.error('Error:', error);
             setErrorMessage('An error occurred while submitting the request.');
@@ -89,7 +90,7 @@ function AddFacilityForm({ propertyId }: AddFacilityFormProps) {
                         <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="submit">
                             Confirm
                         </button>
-                        <button className="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="button" >
+                        <button className="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="button" onClick={onClose}>
                             Cancel
                         </button>
                     </div>

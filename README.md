@@ -1,4 +1,9 @@
-# Condo-Mgmt-Web-App
+
+
+Deployed web app: <a href="condo-mgmt-web-app.vercel.app"> Condo360 </a>
+<br>
+<br>
+
 <table>
   <tr>
     <td>Name</td>
@@ -6,94 +11,92 @@
     <td>GitHub</td>
   </tr>
 
-  
   <tr>
     <td>Karyenne Vuong</td>
     <td>40157011</td>
-    <td>[karyennevu](https://github.com/karyennevu)</td>
+    <td><a href="https://github.com/karyennevu">karyennevu</a></td>
   </tr>
   
   <tr>
     <td>Cristian Gasparesc</td>
     <td>40209208</td>
-    <td>[Cristian](https://github.com/CritixGames)</td>
+    <td><a href="https://github.com/CritixGames">Cristian</a></td>
   </tr>
 
   <tr>
     <td>Amirhossein Tavakkoly</td>
     <td>40203604</td>
-    <td>[Amir] (https://github.com/amirhossein942)</td>
+    <td><a href="https://github.com/amirhossein942">Amir</a></td>
   </tr>
 
   <tr>
     <td>William Nazarian</td>
     <td>40213100</td>
-    <td>[William] (https://github.com/WilliamNazarian)</td>
+    <td><a href="https://github.com/WilliamNazarian">William</a></td>
   </tr>
 
   <tr>
     <td>Vanisha Patel</td>
     <td>40242554</td>
-    <td>[vani2525] (https://github.com/vani2525)</td>
+    <td><a href="https://github.com/vani2525">vani2525</a></td>
   </tr>
 
   <tr>
     <td>Racha Kara</td>
     <td>40210865</td>
-    <td>[r-kara] (https://github.com/r-kara)</td>
+    <td><a href="https://github.com/r-kara">r-kara</a></td>
   </tr>
-
 
   <tr>
     <td>Ryan Guzelian</td>
     <td>40211846</td>
-    <td>[RyanGuzelian] (https://github.com/ryanguzelian)</td>
+    <td><a href="https://github.com/ryanguzelian">RyanGuzelian</a></td>
   </tr>
-
 
   <tr>
     <td>Imane Madda</td>
     <td>40208741</td>
-    <td>[imanemadda] (https://github.com/imanemadda)</td>
+    <td><a href="https://github.com/imanemadda">imanemadda</a></td>
   </tr>
 
-
   <tr>
-    <td> Daniel Bondar</td>
+    <td>Daniel Bondar</td>
     <td>40213095</td>
-    <td>[KiwamiMeansExtreme] (https://github.com/KiwamiMeansExtreme)</td>
+    <td><a href="https://github.com/KiwamiMeansExtreme">KiwamiMeansExtreme</a></td>
   </tr>
 
   <tr>
-    <td></td>
-    <td></td>
-    <td></td>
+    <td>Fadi Nimer</td>
+    <td>40183225</td>
+    <td><a href="https://github.com/Lukateki">Lukateki</a></td>
+
   </tr>
 
-</table>
+</table> 
 
-<br>
-Deployed web app: condo-mgmt-web-app.vercel.app
-<br>
 
-<h2>Sprint 4</h2>
-The deliverables can be found in the Sprint_3_Deliverables folder in the main branch, or in the following link.
-<br> <a href="https://drive.google.com/drive/folders/1nSOur2yILN-avJMKgkyCWabeld0ez2Jv">Link to the Sprint 4 Folder Repository</a> <br>
-There is no submission for the UI prototype since we have already completed all the front-end work on both the web app and the mobile app.<br>
+<h2>Final Submissions</h2>
+The deliverables can be found in our Google Drive Repository:
+<br> <a href="https://drive.google.com/drive/folders/1nSOur2yILN-avJMKgkyCWabeld0ez2Jv">Link to the Google Drive Repository</a> <br><br>
+<ul>
+  <li>Documentation</li>
+  <li>Zip File for code</li>
+</ul>
 
 <br><br>
 <br>
 
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
 ## Running the Application
 
-To run the application, follow these steps:
+This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+
+To run the web application, follow these steps:
 
 1. Navigate to the main directory in your terminal:
 
     ```bash
-    cd Condo-Mgmt-Web-App
+    cd Condo-Mgmt-Web-App/next_project
     ```
 
 2. Install the necessary dependencies:

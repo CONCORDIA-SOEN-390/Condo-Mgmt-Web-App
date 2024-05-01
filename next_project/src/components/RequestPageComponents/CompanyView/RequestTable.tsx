@@ -33,6 +33,7 @@ interface RequestTableProps {
     propertyId: number;
 }
 
+// request table
 const RequestTable: React.FC<RequestTableProps> = ({ userId, propertyId }) => {
     const [requests, setRequests] = useState<Request[]>([]);
     const [selectedRequest, setSelectedRequest] = useState<Request | null>(null);

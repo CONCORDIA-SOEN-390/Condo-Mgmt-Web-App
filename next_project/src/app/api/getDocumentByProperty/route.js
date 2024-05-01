@@ -12,7 +12,7 @@ export async function POST(req) {
 
     try {
         let { data: documents, error } = await supabase
-            .from('document')
+            .from('file_')
             .select('*')
             .eq('property_id', propertyId);
 

@@ -152,7 +152,7 @@ const RequestTable: React.FC<{ propertyId: number, userId: number }> = ({ proper
             </button>
 
             {showAddRequest && <AddRequestForm propertyId={propertyId} userId={userId} />}
-            <div className="overflow-x-auto">
+            <div className="overflow-x-auto p-3">
                 {requests.length > 0 && (
                     <table className="min-w-full divide-y divide-gray-200">
                         <thead className="min-w-full bg-[#DAECFB] text-black">

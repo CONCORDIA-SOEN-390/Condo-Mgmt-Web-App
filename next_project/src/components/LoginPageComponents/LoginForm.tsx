@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { FcGoogle } from "react-icons/fc";
 import Link from "next/link";
 import { loginAction } from "@/actions/LoginAction";
+import { isObject } from "util";
 
 export default function LoginForm() {
   const [errorMessage, setErrorMessage] = useState("");
@@ -19,13 +20,13 @@ export default function LoginForm() {
     }
   };
 
-  const handleFormSubmit = async (e) => {
+  const handleFormSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const formData = new FormData(e.target);
+    const formData = new FormData(e.currentTarget as HTMLFormElement);
 
     try {
-      const result = await loginAction(formData);
-      if (result && result.message) {
+      const result: any = await loginAction(formData);
+      if (isObject(result) && result.message) {
         setErrorMessage(result.message);
       } else {
         clearErrorMessage();

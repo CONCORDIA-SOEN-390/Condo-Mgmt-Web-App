@@ -170,3 +170,42 @@ SELECT ru.update_id,
        r.details
 FROM req_update ru
 INNER JOIN request r ON ru.req_id = r.req_id;
+
+CREATE OR REPLACE VIEW rental_income AS
+SELECT 
+			p.user_id,
+			p.property_id,
+            p.property_name,
+            p.address,
+            COALESCE(u.condo_fee, 0) + COALESCE(l.locker_fee, 0) + COALESCE(pr.parking_fee, 0) AS total_condo_fee
+        FROM 
+            property p
+        LEFT JOIN (
+            SELECT 
+                property_id,
+                SUM(condo_fee) AS condo_fee
+            FROM 
+                unit
+            GROUP BY 
+                property_id
+        ) u ON p.property_id = u.property_id
+        LEFT JOIN (
+            SELECT 
+                property_id,
+                SUM(CASE WHEN occupied THEN condo_fee ELSE 0 END) AS locker_fee
+            FROM 
+                locker
+            GROUP BY 
+                property_id
+        ) l ON p.property_id = l.property_id
+        LEFT JOIN (
+            SELECT 
+                property_id,
+                SUM(CASE WHEN occupied THEN condo_fee ELSE 0 END) AS parking_fee
+            FROM 
+                parking
+            GROUP BY 
+                property_id
+        ) pr ON p.property_id = pr.property_id
+        WHERE 
+            p.property_type = 'rental';

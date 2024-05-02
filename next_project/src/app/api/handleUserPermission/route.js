@@ -1,14 +1,21 @@
-import pool from "../../../utils/db";
+import { createClient } from '@supabase/supabase-js';
 
+// Initialize Supabase client
+const supabase = createClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+  );
 export async function POST(req) {
     const body = await req.json();
     const { userId, pageType } = body;
-    const client = await pool.connect();
     let allowAccess = false;
 
     try {
-        const user = await client.query("SELECT * FROM users WHERE user_id = $1", [userId]);
-        const account_type= user.rows[0]['account_type'];
+        let { data: user, error } = await supabase
+        .from('users')
+        .select("*")
+        .eq('user_id', userId);
+        const account_type= user[0]['account_type'];
         switch (account_type){
             case 'company':
                 allowAccess = true;
@@ -39,7 +46,5 @@ export async function POST(req) {
         return new Response('Internal Server Error',{
             status:500,
         });
-    } finally {
-        client.release();
     }
 }

@@ -3,6 +3,33 @@
 Deployed web app: condo-mgmt-web-app.vercel.app
 <br>
 <br>
+Accounts For Testing (or create an account)
+<table>
+  <tr>
+    <th>Type</th>
+    <th>Email</th>
+    <th>Password</th>
+  </tr>
+  <tr>
+    <td>Company</td>
+    <td>company1@gmail.com</td>
+    <td>Company1!</td>
+  </tr>
+  <tr>
+    <td>Condo Owner</td>
+    <td>owner11@gmail.com</td>
+    <td>Owner11!</td>
+  </tr>
+  <tr>
+    <td>Employee</td>
+    <td>emp1@gmail.com</td>
+    <td>qwerty</td>
+  </tr>
+</table>
+
+
+<br>
+<br>
 
 <table>
   <tr>

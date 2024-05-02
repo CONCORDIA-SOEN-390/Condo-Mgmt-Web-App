@@ -1,6 +1,6 @@
 
 
-Deployed web app: <a href="condo-mgmt-web-app.vercel.app"> Condo360 </a>
+Deployed web app: condo-mgmt-web-app.vercel.app
 <br>
 <br>
 
@@ -76,14 +76,9 @@ Deployed web app: <a href="condo-mgmt-web-app.vercel.app"> Condo360 </a>
 
 
 <h2>Final Submissions</h2>
-The deliverables can be found in our Google Drive Repository:
-<br> <a href="https://drive.google.com/drive/folders/1nSOur2yILN-avJMKgkyCWabeld0ez2Jv">Link to the Google Drive Repository</a> <br><br>
-<ul>
-  <li>Documentation</li>
-  <li>Zip File for code</li>
-</ul>
+The deliverables can be found in their respective sprint folders in this repository, as well as in our Google Drive Repository:
+<br> <a href="https://drive.google.com/drive/folders/1Vsr0mZFP2RmtuVDbYk3VzxJ2AIYcYo2o">Link to the Google Drive Repository</a> <br><br>
 
-<br><br>
 <br>
 
 

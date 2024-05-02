@@ -186,8 +186,8 @@ const Dashboard: React.FC<DashboardProps> = ({ userId }) => {
             </div>
 
 
-            <h2 className="text-xl font-bold mb-2">Notifications:</h2>
-            <div className="overflow-x-auto">
+            <h2 className="text-xl font-bold mb-2 p-3">Notifications:</h2>
+            <div className="overflow-x-auto p-3">
                 <table className="min-w-full divide-y divide-gray-200">
                     <thead className="bg-[#DAECFB]">
                     <tr>

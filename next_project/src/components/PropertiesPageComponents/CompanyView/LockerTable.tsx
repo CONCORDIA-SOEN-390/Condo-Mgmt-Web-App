@@ -163,7 +163,7 @@ const LockerTable: React.FC<LockerTableProps> = ({ propertyId }) => {
     };
 
     return (
-        <div className="bg-gray-50 rounded-lg shadow-md p-6">
+        <div className="overflow-x-auto bg-gray-50 rounded-lg shadow-md p-6">
             <h2 className="text-xl font-bold mb-4">Locker Information</h2>
             <button
                 onClick={handleToggleRegisterForm}

@@ -99,59 +99,56 @@ function ReserveFacilityPopup({ facility, userId, propertyId, onReservationSubmi
 
 
   return (
-      <div className="popup bg-white p-6 rounded-lg flex flex-col">
-        <strong className="p-3">Reserve Facility</strong>
-        <form onSubmit={handleSubmit} className="flex flex-col flex-grow">
-          <div className="form-group text-lg p-3">
-            <label htmlFor="description">Facility Type: {facility.type}</label>
-          </div>
-          <div className="form-group text-lg p-3">
-            <label htmlFor="description">Description: {facility.description}</label>
-          </div>
-          <div className="form-group text-lg p-3 flex-grow">
+    <div className="popup bg-white p-6 rounded-lg flex flex-col">
+      <strong className="p-3">Reserve Facility</strong>
+      <form onSubmit={handleSubmit} className="flex flex-col flex-grow">
+        <div className="form-group text-lg p-3">
+          <label htmlFor="description">Description: {facility.description}</label>
+        </div>
+        <div className="form-group text-lg p-3 flex-grow flex">
+          <div className="flex flex-col mr-4">
             <label htmlFor="date">Date: {selectedDate.toDateString()}</label>
             <Calendar
-                value={selectedDate}
-                onChange={handleDateChange}
-                className="mb-4 p mt-3"
-                tileClassName={tileClassName}
+              value={selectedDate}
+              onChange={handleDateChange}
+              className="mb-4 p mt-3"
+              tileClassName={tileClassName}
             />
           </div>
-          <div className="form-group text-lg p-3 flex-grow">
+          <div className="flex flex-col pt-9">
             <label htmlFor="startTime">Start Time:</label>
             <input
-                type="time"
-                value={startTime}
-                onChange={handleStartTimeChange}
-                className="mb-4 p mt-3"
+              type="time"
+              value={startTime}
+              onChange={handleStartTimeChange}
+              className="mb-4 p mt-3"
             />
-          </div>
-          <div className="form-group text-lg p-3 flex-grow">
             <label htmlFor="endTime">End Time:</label>
             <input
-                type="time"
-                value={endTime}
-                onChange={handleEndTimeChange}
-                className="mb-4 p mt-3"
+              type="time"
+              value={endTime}
+              onChange={handleEndTimeChange}
+              className="mb-4 p mt-3"
             />
           </div>
-          <div className="form-group flex justify-between">
-            <button
-                type="submit"
-                className="bg-zinc-500 hover:bg-zinc-600 text-lg text-white px-4 py-2 rounded ml-3"
-            >
-              Confirm
-            </button>
-            <button
-                type="button"
-                onClick={onCancel}
-                className="bg-zinc-500 hover:bg-zinc-600 text-lg text-white px-4 py-2 rounded mr-3"
-            >
-              Cancel
-            </button>
-          </div>
-        </form>
-      </div>
+        </div>
+        <div className="form-group flex justify-between">
+          <button
+            type="submit"
+            className="bg-zinc-500 hover:bg-zinc-600 text-lg text-white px-4 py-2 rounded ml-3"
+          >
+            Confirm
+          </button>
+          <button
+            type="button"
+            onClick={onCancel}
+            className="bg-zinc-500 hover:bg-zinc-600 text-lg text-white px-4 py-2 rounded mr-3"
+          >
+            Cancel
+          </button>
+        </div>
+      </form>
+    </div>
   );
 }
 
